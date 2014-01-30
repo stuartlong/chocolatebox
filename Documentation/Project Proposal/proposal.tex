@@ -1,0 +1,53 @@
+\documentclass[pdftex,12pt,letter]{article}
+\usepackage{fancyhdr}
+\usepackage{enumerate}
+\usepackage{tabularx}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage[toc,page]{appendix}
+\usepackage[justification=justified,singlelinecheck=false]{caption}
+\usepackage{placeins}
+\pagestyle{fancy}
+\makeatletter
+  \renewcommand\@seccntformat[1]{\csname the#1\endcsname.\quad}
+\makeatother
+
+\newcolumntype {Y}{ >{\raggedright \arraybackslash }X}
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+\captionsetup{labelformat=empty}
+
+\begin{document}
+
+\begin{titlepage}
+\begin{flushright}
+\HRule \\[0.4cm]
+{ \bfseries
+{\huge EECS 395 Project Proposal\\[1cm]}
+{\Large for\\[1cm]}
+{\huge Chocolate Box\large\\[.1cm]
+A Procedural Level Generator for Unity\\[3cm]}
+{\large Prepared by\\[1cm]James Fitzpatrick\\Stuart Long\\Frank Singel\\[2cm]
+Version 1.0\\
+February 3, 2014\\
+}}
+\end{flushright}
+\end{titlepage}
+\begin{table}[!h]
+\caption*{\bfseries Revision History}
+\begin{tabularx}{\textwidth }[t]{|l|l|Y|l|}
+\hline
+\bfseries Name & \bfseries Date & \bfseries Reasons for Change & \bfseries Version \\ \hline
+\end{tabularx}
+\end{table}
+\FloatBarrier
+\newpage
+\section{Abstract}
+\newpage
+
+\section{Introduction}
+\section{Application}
+\section{Methodology}
+\section{Software Design}
+\section{Project Management}
+\section{User Interface}
+\end{document}
