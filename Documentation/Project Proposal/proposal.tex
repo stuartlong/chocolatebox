@@ -86,7 +86,7 @@ The next highest priority for the team will be the randomized generation of enem
 Enemies will be of various forms and capabilities. For the purposes of generation, game developers will add scripts to their pre-existing enemy Game Objects to be incorporated into our generation algorithm. Enemies will have two different parameters to denote the required conditions for generation. The origin attribute will denote where on the map the enemy will be generated. 
 \begin{itemize}
 
-\item \textit{Ground Enemies}, as their names imply, will primarily be limited to Ground movement. In our generation,\textit{Ground Enemies} will be generated at the ground level, with a requisite amount of terrain as per the movement requirements of each. 
+\item \textit{Ground Enemies}, as their names imply, will primarily be limited to ground movement. In our generation,\textit{Ground Enemies} will be generated at the ground level, with a requisite amount of terrain as per the movement requirements of each. 
 
 \item \textit{Aerial Enemies} are limited to airborn movement (at least initially). Aerial enemies will have a requiste aerial space for generation, primarily based on the movement pattern of the enemy. \\
 
@@ -96,9 +96,9 @@ Enemies will be of various forms and capabilities. For the purposes of generatio
 Enemies will also have one of four different movement attributes: \textit{Stationary, Dumb, Intelligent, and Set}. Examples for this section will be taken from the \textit{Super Mario Bros.} Saga of video games. 
 \begin{itemize}
 
-\item \textit{Stationary Enemies} will not move from the spot of their creation. An example of a Stationary enemy is the \textit{Pirhanna Plant} from the \textit{Super Mario Bros.} saga of games.
+\item \textit{Stationary Enemies} will not move from the spot of their creation. An example of a Stationary enemy is the \textit{Pirhanna Plant}.
 
-\item \textit{Dumb Enemies} or \textit{Context Insensitive} will continuously move from their point of origin in a set direction without consideration of the environment around them. These enemies will stray and fall off cliffs or into other hazardous environments. An example of a Dumb Enemy is the \textit{Goomba} from the \textit{Super Mario Bros.} Saga of games.
+\item \textit{Dumb Enemies} or \textit{Context Insensitive} will continuously move from their point of origin in a set direction without consideration of the environment around them. These enemies will stray and fall off cliffs or into other hazardous environments. An example of a Dumb Enemy is the \textit{Goomba}s.
 
 \item \textit{Intelligent Enemies} or \textit{Context Sensitive} enemies will account for the existence of platforming perils and will move in such as way as to preserve their lives. An example of this enemy would be the \textit{Koopa Troopa}.
 
@@ -118,7 +118,7 @@ A constant feature in many games is the use of interactable items. These items s
 
 \item \textit{Power-Ups} are items that allow the player to enhance their capabilities. Examples of these items include \textit{Fire Flowers} from the \textit{Super Mario Bros}.
 
-\item \textit{Interactible} items are able to be interacted with by the player and, logically, destroyed. These items are usually able to support player movement. Examples of these are the various blocks from the \textit{Super Mario} franchise. \\
+\item \textit{Interactible} items are able to be interacted with by the player and, possibly, destroyed. These items are usually able to support player movement. Examples of these are the various blocks from the \textit{Super Mario} franchise. \\
 
 \endgroup
 
@@ -126,36 +126,34 @@ Each item will have a set of parameters that will define its behavior. Some of t
 \\
 
 \subsection{Unity Platformer Game Demonstration}
-To utilize all of the tools that we will be generating, there will be a playable demo game for the final presentation. The demo that will be created will take many of its influences from the \textit{Megaman} style of platformer.  Player interaction will be noted with a playable character that will have an array of weapons at the player's disposal. The platformer will utilize sectionalized environments with a variety of enemy types. 
+To utilize all of the tools that we will be generating, there will be a playable demo game for the final presentation. The demo that will be created will take many of its influences from the \textit{Megaman} style of platformer.  Player interaction will be noted with a standard side-scrolling playable character. The platformer will utilize sectionalized environments with a variety of enemy types. 
 \\
 
 \section{Challenges}
-\subsubsection{Flow}
-One of the most important aspects of game design is the concept of \textit{flow}.  For the \textit{Chocolate Box} to be useful, it must ensure that games are sufficiently challenging, yet not too challenging as to keep players away from the game. While most of the  exact balancing of each level in the hands of the users, the library must enable the users to be able to adjust the difficulty of each level themselves in a meaningful way. Levels must have distinct differences between each other in terms of difficulty as well as other user modifiable parameters. 
-\subsubsection{Performance}
-For the \textit{Chocolate Box} to be a useful tool it must not be too large that it impacts the performance of the overall game. Utilizing algorithm optimization and by reducing the overal size of the necessary files, the generation algorithms will go unnoticed to the players. 
-\subsubsection{Playability}
-In the simplest sense, each game must generate playable levels. This problem is manyfold. Levels must be able to be completed from start to finish. Levels should also have limits on redundant level paths from start to finish. Dead ends, are also another dimension of video games, particularly in platformers, that should be reduced. These issues can all be addressed by effective and meaningful heursitics in level generation.
-\subsubsection{Uniqueness}
-Another challenge of procedural level generation is the idea of having a unique experience for each playthrough of the game. To compound this challenge, there must be some amount of consistency between levels such that there is a thematic unity to the game. Further, there must be a uniqueness between sections of each level. Having a varied structure to each level will increase playback rates as well as improve overall user experience. By defining appropriate heuristics and parameters for user modificiation, the library will allow for such variety. 
-\subsubsection{Usability}
-One of the largest challenges for this project is for the \textit{Chocolate Box} to not just be powerful, but also easy to use. There are many powerful tools at the disposal of users. Often these tools are too feature heavy and less important tools can convolute the strengths of many features of similar libraries. The library tool be too complex that it cannot allow for a quickened game design workflow. It also must be able to seemlessly adapt to a variety of user assets. By using many built-in WYSIWYG features of Unity, this challenge will be simplified. 
+\subsection{Flow}
+One of the most important aspects of game design is the concept of \textit{flow}.  For \textit{Chocolate Box} to be useful, it must ensure that games are sufficiently challenging, yet not too challenging as to keep players away from the game. While most of the  exact balancing of each level is in the hands of the users, the library must enable the users to be able to adjust the difficulty of each level themselves in a meaningful way. Levels must have distinct differences between each other in terms of difficulty as well as other user modifiable parameters. 
+\subsection{Performance}
+For \textit{Chocolate Box} to be a useful tool it must not be too large that it impacts the performance of the overall game. Utilizing algorithm optimization and by reducing the overall size of the necessary files, the generation algorithms will go unnoticed to the players. 
+\subsection{Playability}
+In the simplest sense, each game must generate playable levels. This problem is manyfold. Levels must be able to be completed from start to finish. Levels should also have limits on redundant level paths from start to finish. Dead ends are also another dimension of video games, particularly in platformers, that should be reduced. These issues can all be addressed by effective and meaningful heuristics in level generation.
+\subsection{Uniqueness}
+Another challenge of procedural level generation is the idea of having a unique experience for each playthrough of the game. To compound this challenge, there must be some amount of consistency between levels such that there is a thematic unity to the game. Further, there must be a uniqueness between sections of each level. Having a varied structure to each level will increase playback rates as well as improve overall user experience. By defining appropriate heuristics and parameters for user modification, the library will allow for such variety. 
+\subsection{Usability}
+One of the largest challenges for this project is fo \textit{Chocolate Box} to not just be powerful, but also easy to use. The library tool must not be too complex that it cannot allow for a quickened game design workflow. It also must be able to seemlessly adapt to a variety of user assets. By using many built-in WYSIWYG (what you see is what you get) features of Unity, this challenge will be simplified. 
 
 
 \section{Software Design}
 \subsection{User Classes}
-Our users will be varying types of game developers. These users will range from individuals looking to make games recreationally, to groups doing game design projects. The type of games that users will be developing with this API will typically be side-scrolling shooters and platforming games. Such games often feature enemy units of varying types.
+Our users will be varying types of game developers. These users will range from individuals looking to make games recreationally, to groups doing game design projects. The type of games that users will be developing with this library will typically be side-scrolling shooters and platforming games.
 \subsection{Operating Environment}
-This library will be designed to work with Unity 4.3 and newer. Scripts will be written in C\#, based on Unity's native support of it.
+This library will be designed to work with Unity 4.3 and newer. Scripts will be written in C\#.
 \subsection{Performance Constraints}
-This library will procedurally generate a playable, pseudo-random level in under 30 seconds. This level will vary depending on user-defined parameters, such as difficulty and size. We will keep the file size under 50MB.
-\subsection{Software Specifications}
-This project will be completed as one manager script that will call upon many background scripts. Some of the background script functions will include: platform generation, level playability testing, enemy placement, and object placement.
+This library will procedurally generate a playable, pseudo-random level in under 30 seconds. This level will vary depending on user-defined parameters, such as difficulty and size. We will keep the total file size of the library under 50MB.
 \subsection{Data Structures}
-Our library will take advantage of Unity's cohesive interfaces to allow users to seemlessly incorporate their assets. As a result, many of our structures will inheirit from  Unity native objects. Some of the internal data structures we will use will include a base “enemy” class, from which we will base different types of enemy spawn locations based on what types of enemies (such as flying, walking, and stationary) they are. We will also include a class for collectables, which will encompass various pickups such as health, ammo, coins, etc. Also, by using GameObjects as storage points for user content, we will be able to use Unity's drag-and-drop functionality to navigate and expand our generator's functionalities and use additional assets in level creation.
+Our library will take advantage of Unity's cohesive interface to allow users to seemlessly incorporate their assets.  Also, by using GameObjects as storage points for user content, we will be able to use Unity's drag-and-drop functionality to navigate and expand our generator's functionalities and use additional assets in level creation.
 
 \section{Project Management}
-The \textit{Chocolate Box} team is small and familiar, allowing for a more project management schema. Stuart Long is the project manager and he will be responsible for the overall project management. Each member of the team will have set responsibilities, but the team as a whole will collaborate on any challenges or problems that arise if need be. The team will be using the on-line task tracking system Trello to keep track of project tasks and bugs. A private git repository on GitHub has been secured to use as the version control system for the project. Below is a Gantt chart outlining the broad goals and time-line of the project that the team have so far determined.\\[.5cm]
+The \textit{Chocolate Box} team is small and familiar, allowing for a more flexible project management schema. Stuart Long is the project manager and he will be responsible for the overall project management. Each member of the team will have set responsibilities, but the team as a whole will collaborate on any challenges or problems that arise if need be. The team will be using the on-line task tracking system Trello to keep track of project tasks and bugs. A private git repository on GitHub has been secured to use as the version control system for the project. Below is a Gantt chart outlining the broad goals and time-line of the project that the team have so far determined.\\[.5cm]
 \centerline{\includegraphics[width=7in]{GanttSS.png}}
 
 \subsection{Team Responsibilities}
@@ -170,7 +168,7 @@ Frank Singel & Initial level generation, user parameters, and the demo game.\\\h
 \end{tabularx}
 \end{table}
 \subsection{Deliverables}
-
+The final version of the project will include the \textit{Chocolate Box} library comprised of a number of scripts, documentation explaining how to use the library, and a demo game illustrating the use of the library.
 \FloatBarrier
 \section{User Interface}
 \textit{Chocolate Box} will be fully integrated into Unity. Thus it will not requires its own User Interface. Instead, it will be used through Unity's own interface, specifically the part known as the Inspector. A mock up of this interface can be seen on the right-hand side of the figure below.\\
