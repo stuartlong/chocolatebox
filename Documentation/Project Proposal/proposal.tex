@@ -124,9 +124,6 @@ To utilize all of the tools that we will be generating, there will be a playable
 This demo will be designed during the last month of our development and will be led by Frank Singel with assistance from James Fitzpatrick and Stuart Long as necessary. 
 
 \section{Methodology}
-\subsection{Data Structures}
-Our libraries will take advantage of Unity's cohesive interfaces to allow users to seemlessly incorporate their assets. By using GameObjects as storage points for user content, we will be able to use Unity's drag-and-drop functionality to navigate and expand our generator's functionalities and use additional assets in level creation. Many of our structures will inheirit from  Unity native objects.
-
 \subsection{Challenges}
 \subsubsection{Flow}
 One of the most important aspects of game design is the concept of \textit{flow}.  For the \textit{Chocolate Box} to be useful, it must ensure that games are sufficiently challenging, yet not too challenging as to keep players away from the game. While most of the  exact balancing of each level in the hands of the users, the library must enable the users to be able to adjust the difficulty of each level themselves in a meaningful way. Levels must have distinct differences between each other in terms of difficulty as well as other user modifiable parameters. 
@@ -144,15 +141,15 @@ One of the largest challenges for this project is for the \textit{Chocolate Box}
 \subsection{User Classes}
 Our users will be varying types of game developers. These users will range from individuals looking to make games recreationally, to groups doing game design projects. The type of games that users will be developing with this API will typically be side-scrolling shooters and platforming games. Such games often feature enemy units of varying types.
 \subsection{Operating Environment}
-This API will be designed to work with Unity 4.3 and newer. Scripts will be written in C#, based on Unity's native support of it.
+This library will be designed to work with Unity 4.3 and newer. Scripts will be written in C\#, based on Unity's native support of it.
 \subsection{Performance Constraints}
-This API will procedurally generate a playable, pseudo-random level in under 30 seconds. This level will vary depending on user-defined parameters, such as difficulty and size. We will keep the file size under 50MB.
+This library will procedurally generate a playable, pseudo-random level in under 30 seconds. This level will vary depending on user-defined parameters, such as difficulty and size. We will keep the file size under 50MB.
 \subsection{Software Specifications}
 This project will be completed as one manager script that will call upon many background scripts. Some of the background script functions will include: platform generation, level playability testing, enemy placement, and object placement.
 \subsection{Data Structures}
-Some of the internal data structures we will use will include a base “enemy” class, from which we will base different types of enemy spawn locations based on what types of enemies (such as flying, walking, and stationary) they are. We will also include a class for collectables, which will encompass various pickups such as health, ammo, coins, etc.
+Our library will take advantage of Unity's cohesive interfaces to allow users to seemlessly incorporate their assets. As a result, many of our structures will inheirit from  Unity native objects. Some of the internal data structures we will use will include a base “enemy” class, from which we will base different types of enemy spawn locations based on what types of enemies (such as flying, walking, and stationary) they are. We will also include a class for collectables, which will encompass various pickups such as health, ammo, coins, etc. Also, by using GameObjects as storage points for user content, we will be able to use Unity's drag-and-drop functionality to navigate and expand our generator's functionalities and use additional assets in level creation.
 /subsection{Software Architecture}
-This will be an API to be included in Unity 4.3 projects.
+This will be a library to be included in Unity 4.3 projects.
 
 \section{Project Management}
 The \textit{Chocolate Box} team is small and familiar, allowing for a more project management schema. Stuart Long is the project manager and he will be responsible for the overall project management. Each member of the team will have set responsibilities, but the team as a whole will collaborate on any challenges or problems that arise if need be. The team will be using the on-line task tracking system Trello to keep track of project tasks and bugs. A private git repository on GitHub has been secured to use as the version control system for the project. Below is a Gantt chart outlining the broad goals and time-line of the project that the team have so far determined.
