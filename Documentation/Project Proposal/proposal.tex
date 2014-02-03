@@ -62,6 +62,66 @@ Two of the members of the \textit{Chocolate Box} team have experience with Unity
 Below is described in detail the full feature set of \textit{Chocolate Box}, the team's methodology in developing it, and this project's software requirements. By the end of February, a month from now, the team expects to be able to generate a rudimentary level and to spawn enemies in it in a rudimentary fashion.
 
 \section{Application}
+\subsection{Environment Generation}
+The first priority for the team is to create a functioning procedural environment generator. The environment will consist of the non-destructible areas upon which characters can move. This will also include the creation of dangerous terrain as well, such as spike traps, lava, and bottomless holes for the characters to fall through. The balance of walkable area and hazardous area will be determined by user parameters before the generation of each level. 
+\\\\
+Aside from the the Environment Generation will also create subsections of the overarching level structure. Each subsection will contain more harsh transtions between areas in the level. Examples of the division of subsections will include the alternation between inside and outside zones in a level or the alternation between a standard and lava filled cave. These subsections can be created by the user and will be generated at a parameterized rate as specified by the user. Each of these subsections will utilize transition areas between non-homogenous subsections. (Example: A transition between two outdoor areas will be noted by an open air area at the edge of the section. A transition from an outside to an inside area will be noted by a door with some evidence of a structure present). 
+\\\\
+Along with the interactible environments, the Environment Generation will also place non-essential elements to the background, such as trees. These elements, while not directly impacting gameplay, will add to the realism of level and, in a greater sense, the platformer. 
+\\\\
+Environment Generation will be lead by Stuart Long. Due to the importance of this task, Frank Singel will be assisting during the early stages of development.
+
+\subsection{Enemy Generation}
+The next highest priority for the team will be the randomized generation of enemies about the level. Based on the difficult parameter for the level specified, the level will have many or few enemies present. 
+\\\\
+Enemies will be of various forms and capabilities. There will be two types of enemies featured in our games: Ground and Aerial. 
+\begin{itemize}
+
+\item \textit{Ground Enemies}, as their names imply, will primarily be limited to Ground movement. In our generation,\textit{Ground Enemies} will be generated at the ground level, with a requisite amount of terrain as per the movement requirements of each. 
+
+\item \textit{Aerial Enemies} are limited to airborn movement (at least initially). Aerial enemies will have a requiste aerial space for generation, primarily based on the movement pattern of the enemy. \\
+
+\endgroup
+
+
+Enemies will also have one of four different movement patterns: \textit{Stationary, Dumb, Intelligent, and Set}. Examples for this section will be taken from the \textit{Super Mario Bros.} Saga of video games. 
+\begin{itemize}
+
+\item \textit{Stationary Enemies} will not move from the spot of their creation. An example of a Stationary enemy is the \textit{Pirhanna Plant} from the \textit{Super Mario Bros.} saga of games.
+
+\item \textit{Dumb Enemies} or \textit{Context Insensitive} will continuously move from their point of origin in a set direction without consideration of the environment around them. These enemies will stray and fall off cliffs or into other hazardous environments. An example of a Dumb Enemy is the \textit{Goomba} from the \textit{Super Mario Bros.} Saga of games.
+
+\item \textit{Intelligent Enemies} or \textit{Context Sensitive} enemies will account for the existence of platforming perils and will move in such as way as to preserve their lives. An example of this enemy would be the \textit{Koopa Troopa}.
+
+\item \textit{Set Enemies} will be limited to a unique pattern of movement. This is limited to a set area of movement as defined by further parameters set by the game developer. This area can be defined in the X, Y, or both dimensions. An example of this type of enemy would be \textit{The Hammer Bros.}\\
+
+\endgroup
+
+The movement patterns of each enemy will determine where each enemy can be appropriately placed, given the state of the environment. 
+\\\\
+Enemies, while maintaining many parameters, will also allow for the game developers to add custom scripts to have unique actions for each enemy. An example of this would be allowing enemies to have a number of hits taken before being destroyed. Scripted enemies can also take the players position into account through these scripts and act accordingly. Through these scripts, enemies can drop items that can benefit the player as per the Game Developer's design. 
+\\\\
+The Enemy Generation will be lead by James Fitzpatrick.
+
+\subsection{Items Generation}
+A constant feature in many games is the use of interactable items. These items serve many purposes and will appear at different frequencies. Example of items are listed below:
+\begin{itemize}
+\item \textit{Collectible Items} will be able to be picked up by the player over the course of a game. These items generally do not have an immediate benefit to the player and often have an effect on the players score at the end of levels. An example of this item is the \textit{Coin} or \textit{Ring} from \textit{Super Mario} and \textit{Sonic} franchises respectively. 
+
+\item \textit{Power-Ups} are items that allow the player to enhance their capabilities. Examples of these items include \textit{Fire Flowers} from the \textit{Super Mario Bros}.
+
+\item \textit{Interactible} items are able to be interacted with by the player and, logically, destroyed. These items are usually able to support player movement. Examples of these are the various blocks from the \textit{Super Mario} franchise. \\
+
+\endgroup
+
+Each item will have a set of parameters that will define its behavior. Some of these parameters will include but will not be limited to \textit{Frequency, Player Benefit, Difficulty to Acquire}. The exact function of each item will be defined by the Game Developer through Unity Scripts. 
+\\\\
+Item Generation will be lead by Stuart Long with early development assitance from Frank Singel and late developent assistance from James Fitzpatrick
+
+\subsection{Unity Platformer Game Demonstration}
+To utilize all of the tools that we will be generating, there will be a playable demo game for the final presentation. The demo that will be created will take many of its influences from the \textit{Megaman} style of platformer.  Player interaction will be noted with a playable character that will have an array of weapons at the player's disposal. The platformer will utilize sectionalized environments with a variety of enemy types. 
+\\\\
+This demo will be designed during the last month of our development and will be led by Frank Singel with assistance from James Fitzpatrick and Stuart Long as necessary. 
 
 \section{Methodology}
 \subsection{Data Structures}
