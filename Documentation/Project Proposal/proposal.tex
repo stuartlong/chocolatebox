@@ -37,9 +37,14 @@ February 3, 2014\\
 \begin{tabularx}{\textwidth }[t]{|l|l|Y|l|}
 \hline
 \bfseries Name & \bfseries Date & \bfseries Reasons for Change & \bfseries Version \\ \hline
+Stuart Long & 2/3/14 & Initial Abstract / Introduction / User Interface / Project Management & 1.0 \\ \hline
+James Fitzpatrick & 2/3/14 & Initial Application / Methodology & 1.0 \\\hline
+Frank Singel & 2/3/14 & Initial Software Design & 1.0\\\hline
 \end{tabularx}
 \end{table}
 \FloatBarrier
+\newpage
+\tableofcontents
 \newpage
 \section{Abstract}
 \textit{Chocolate Box} will be a helpful tool for video game developers. Its goal is to provide an easy-to-use software library for any game developers working with the common game engine, Unity. It will allow developers to create unique levels purposed towards whatever game they are currently developing. These levels will be pseudo-random, so each level created will be unique. This tool will enable developers to create games with an infinite variety of levels which is perfect for arcade-like games. 
@@ -57,7 +62,7 @@ Unity 4.3 was released a few short months ago in late 2013. One the major new fe
 \subsection{Related Work}
 There currently does not exist any form of library to provide procedural level generation for Unity in either a 2D or 3D form. However, procedural level generation has been done for games such as \textit{Minecraft}. Such games are not open sourced and were not developed through Unity. 
 \\\\
-Two of the members of the \textit{Chocolate Box} team have experience with Unity. Stuart Long helped developed a fully functional game, \textit{Gumdrop Gauntlet}, in Unity. James Fitzpatrick has served as the design and programming leads for a number of Unity game demos, relevantly including a 2D puzzle-platformer, and a roleplaying game (RPG) in the style of Final Fantasy and Dragon Warrior. Frank Singel has the most experience on the team in the area of AI which will prove useful when creating the generation algorithms.
+Two of the members of the \textit{Chocolate Box} team have experience with Unity. Stuart Long helped developed a fully functional game, \textit{Gumdrop Gauntlet}, in Unity. James Fitzpatrick has served as the design and programming leads for a number of Unity game demos, relevantly including a 2D puzzle-platformer, and a roleplaying game (RPG) in the style of \textit{Final Fantasy} and \textit{Dragon Warrior}. Frank Singel has the most experience on the team in the area of AI which will prove useful when creating the generation algorithms.
 \subsection{Goals}
 Below is described in detail the full feature set of \textit{Chocolate Box}, the team's methodology in developing it, and this project's software requirements. By the end of February, a month from now, the team expects to be able to generate a rudimentary level and to spawn enemies in it in a rudimentary fashion.
 
@@ -142,11 +147,11 @@ One of the largest challenges for this project is for the \textit{Chocolate Box}
 
 \section{Software Design}
 \section{Project Management}
-The \textit{Chocolate Box} team is small and familiar, allowing for a more project management schema. Stuart Long is the project manager and he will be responsible for the overall project management. Each member of the team will have set responsibilities, but the team as a whole will collaborate on any challenges or problems that arise if need be. The team will be using the on-line task tracking system Trello to keep track of project tasks and bugs. A private git repository on GitHub has been secured to use as the version control system for the project. Below is a Gantt chart outlining the broad goals and time-line of the project that the team have so far determined.
+The \textit{Chocolate Box} team is small and familiar, allowing for a more project management schema. Stuart Long is the project manager and he will be responsible for the overall project management. Each member of the team will have set responsibilities, but the team as a whole will collaborate on any challenges or problems that arise if need be. The team will be using the on-line task tracking system Trello to keep track of project tasks and bugs. A private git repository on GitHub has been secured to use as the version control system for the project. Below is a Gantt chart outlining the broad goals and time-line of the project that the team have so far determined.\\[.5cm]
 \centerline{\includegraphics[width=7in]{GanttSS.png}}
 \FloatBarrier
 \section{User Interface}
-\textit{Chocolate Box} will be fully integrated into Unity. Thus it will not requires its own User Interface. Instead, it will be used through Unity's own interface, specifically the part known as the Inspector. A mock up of this interface can be seen on the right-hand side of the figure below.
+\textit{Chocolate Box} will be fully integrated into Unity. Thus it will not requires its own User Interface. Instead, it will be used through Unity's own interface, specifically the part known as the Inspector. A mock up of this interface can be seen on the right-hand side of the figure below.\\
 
 \centerline{\includegraphics[width=7in]{UnitySS.png}}
 \FloatBarrier
