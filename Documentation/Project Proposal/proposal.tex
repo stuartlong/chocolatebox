@@ -121,7 +121,7 @@ A constant feature in many games is the use of interactable items. These items s
 
 Each item will have a set of parameters that will define its behavior. Some of these parameters will include but will not be limited to \textit{Frequency, Player Benefit, Difficulty to Acquire}. The exact function of each item will be defined by the Game Developer through Unity Scripts. 
 \\\\
-Item Generation will be lead by Stuart Long with early development assitance from Frank Singel and late developent assistance from James Fitzpatrick
+Item Generation will be lead by James Fitzpatrick
 
 \subsection{Unity Platformer Game Demonstration}
 To utilize all of the tools that we will be generating, there will be a playable demo game for the final presentation. The demo that will be created will take many of its influences from the \textit{Megaman} style of platformer.  Player interaction will be noted with a playable character that will have an array of weapons at the player's disposal. The platformer will utilize sectionalized environments with a variety of enemy types. 
@@ -146,6 +146,19 @@ One of the largest challenges for this project is for the \textit{Chocolate Box}
 
 
 \section{Software Design}
+\subsection{User Classes}
+Our users will be varying types of game developers. These users will range from individuals looking to make games recreationally, to groups doing game design projects. The type of games that users will be developing with this API will typically be side-scrolling shooters and platforming games. Such games often feature enemy units of varying types.
+\subsection{Operating Environment}
+This API will be designed to work with Unity 4.3 and newer. Scripts will be written in C#, based on Unity's native support of it.
+\subsection{Performance Constraints}
+This API will procedurally generate a playable, pseudo-random level in under 30 seconds. This level will vary depending on user-defined parameters, such as difficulty and size. We will keep the file size under 50MB.
+\subsection{Software Specifications}
+This project will be completed as one manager script that will call upon many background scripts. Some of the background script functions will include: platform generation, level playability testing, enemy placement, and object placement.
+\subsection{Data Structures}
+Some of the internal data structures we will use will include a base “enemy” class, from which we will base different types of enemy spawn locations based on what types of enemies (such as flying, walking, and stationary) they are. We will also include a class for collectables, which will encompass various pickups such as health, ammo, coins, etc.
+/subsection{Software Architecture}
+This will be an API to be included in Unity 4.3 projects.
+
 \section{Project Management}
 The \textit{Chocolate Box} team is small and familiar, allowing for a more project management schema. Stuart Long is the project manager and he will be responsible for the overall project management. Each member of the team will have set responsibilities, but the team as a whole will collaborate on any challenges or problems that arise if need be. The team will be using the on-line task tracking system Trello to keep track of project tasks and bugs. A private git repository on GitHub has been secured to use as the version control system for the project. Below is a Gantt chart outlining the broad goals and time-line of the project that the team have so far determined.\\[.5cm]
 \centerline{\includegraphics[width=7in]{GanttSS.png}}
