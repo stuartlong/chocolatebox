@@ -57,11 +57,29 @@ Unity 4.3 was released a few short months ago in late 2013. One the major new fe
 \subsection{Related Work}
 There currently does not exist any form of library to provide procedural level generation for Unity in either a 2D or 3D form. However, procedural level generation has been done for games such as \textit{Minecraft}. Such games are not open sourced and were not developed through Unity. 
 \\\\
-Two of the members of the \textit{Chocolate Box} team have experience with Unity. Stuart Long helped developed a fully functional game, \textit{Gumdrop Gauntlet}, in Unity. WHAT DID JAMES DO?!?! Frank Singel has the most experience on the team in the area of AI which will prove useful when creating the generation algorithms.
+Two of the members of the \textit{Chocolate Box} team have experience with Unity. Stuart Long helped developed a fully functional game, \textit{Gumdrop Gauntlet}, in Unity. James Fitzpatrick has served as the design and programming leads for a number of Unity game demos, relevantly including a 2D puzzle-platformer, and a roleplaying game (RPG) in the style of Final Fantasy and Dragon Warrior. Frank Singel has the most experience on the team in the area of AI which will prove useful when creating the generation algorithms.
 \subsection{Goals}
 Below is described in detail the full feature set of \textit{Chocolate Box}, the team's methodology in developing it, and this project's software requirements. By the end of February, a month from now, the team expects to be able to generate a rudimentary level and to spawn enemies in it in a rudimentary fashion.
+
 \section{Application}
+
 \section{Methodology}
+\subsection{Data Structures}
+Our libraries will take advantage of Unity's cohesive interfaces to allow users to seemlessly incorporate their assets. By using GameObjects as storage points for user content, we will be able to use Unity's drag-and-drop functionality to navigate and expand our generator's functionalities and use additional assets in level creation. Many of our structures will inheirit from  Unity native objects.
+
+\subsection{Challenges}
+\subsubsection{Flow}
+One of the most important aspects of game design is the concept of \textit{flow}.  For the \textit{Chocolate Box} to be useful, it must ensure that games are sufficiently challenging, yet not too challenging as to keep players away from the game. While most of the  exact balancing of each level in the hands of the users, the library must enable the users to be able to adjust the difficulty of each level themselves in a meaningful way. Levels must have distinct differences between each other in terms of difficulty as well as other user modifiable parameters. 
+\subsubsection{Performance}
+For the \textit{Chocolate Box} to be a useful tool it must not be too large that it impacts the performance of the overall game. Utilizing algorithm optimization and by reducing the overal size of the necessary files, the generation algorithms will go unnoticed to the players. 
+\subsubsection{Playability}
+In the simplest sense, each game must generate playable levels. This problem is manyfold. Levels must be able to be completed from start to finish. Levels should also have limits on redundant level paths from start to finish. Dead ends, are also another dimension of video games, particularly in platformers, that should be reduced. These issues can all be addressed by effective and meaningful heursitics in level generation.
+\subsubsection{Uniqueness}
+Another challenge of procedural level generation is the idea of having a unique experience for each playthrough of the game. To compound this challenge, there must be some amount of consistency between levels such that there is a thematic unity to the game. Further, there must be a uniqueness between sections of each level. Having a varied structure to each level will increase playback rates as well as improve overall user experience. By defining appropriate heuristics and parameters for user modificiation, the library will allow for such variety. 
+\subsubsection{Usability}
+One of the largest challenges for this project is for the \textit{Chocolate Box} to not just be powerful, but also easy to use. There are many powerful tools at the disposal of users. Often these tools are too feature heavy and less important tools can convolute the strengths of many features of similar libraries. The library tool be too complex that it cannot allow for a quickened game design workflow. It also must be able to seemlessly adapt to a variety of user assets. By using many built-in WYSIWYG features of Unity, this challenge will be simplified. 
+
+
 \section{Software Design}
 \section{Project Management}
 The \textit{Chocolate Box} team is small and familiar, allowing for a more project management schema. Stuart Long is the project manager and he will be responsible for the overall project management. Each member of the team will have set responsibilities, but the team as a whole will collaborate on any challenges or problems that arise if need be. The team will be using the on-line task tracking system Trello to keep track of project tasks and bugs. A private git repository on GitHub has been secured to use as the version control system for the project. Below is a Gantt chart outlining the broad goals and time-line of the project that the team have so far determined.
