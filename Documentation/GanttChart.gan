@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?><project name="Chocolate Box" company="CWRU" webLink="http://" view-date="2013-12-29" view-index="0" gantt-divider-location="310" resource-divider-location="300" version="2.0" locale="en_US">
+<?xml version="1.0" encoding="UTF-8"?><project name="Chocolate Box" company="CWRU" webLink="http://" view-date="2014-01-05" view-index="0" gantt-divider-location="1" resource-divider-location="300" version="2.0" locale="en_US">
     <description><![CDATA[EECS 395 Senior Project]]></description>
-    <view zooming-state="default:7" id="gantt-chart">
-        <field id="tpd3" name="Name" width="72" order="0"/>
-        <field id="tpd4" name="Begin date" width="11" order="1"/>
-        <field id="tpd5" name="End date" width="16" order="2"/>
+    <view zooming-state="default:6" id="gantt-chart">
+        <field id="tpd3" name="Name" width="33" order="0"/>
+        <field id="tpd4" name="Begin date" width="33" order="1"/>
+        <field id="tpd5" name="End date" width="33" order="2"/>
         <option id="taskLabelUp" value="name"/>
         <option id="taskLabelDown" value="resources"/>
     </view>
@@ -85,9 +85,9 @@
         <displaycolumn property-id="tpd9" order="-1" width="75" visible="false"/>
         <displaycolumn property-id="tpd1" order="-1" width="75" visible="false"/>
         <displaycolumn property-id="tpd0" order="-1" width="75" visible="false"/>
-        <displaycolumn property-id="tpd3" order="0" width="222" visible="true"/>
-        <displaycolumn property-id="tpd4" order="1" width="35" visible="true"/>
-        <displaycolumn property-id="tpd5" order="2" width="49" visible="true"/>
+        <displaycolumn property-id="tpd3" order="0" width="15" visible="true"/>
+        <displaycolumn property-id="tpd4" order="1" width="15" visible="true"/>
+        <displaycolumn property-id="tpd5" order="2" width="15" visible="true"/>
     </taskdisplaycolumns>
     <previous/>
     <roles roleset-name="Default"/>
