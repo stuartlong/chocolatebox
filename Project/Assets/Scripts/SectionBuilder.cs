@@ -22,8 +22,8 @@ public class SectionBuilder {
 		{
 			for (int j = 0; j < numberBlocksY; j++)
 			{
-				//for now just fill the bottom of the section with blocks
-				if (j == 0)
+				//for now just fill section border with blocks
+				if (j == 0 | j == numberBlocksY-1 | i == 0 | i == numberBlocksY-1)
 				{
 					section[i,j] = (int) LevelGenerator.AssetTypeKey.GroundBlock;
 				}
