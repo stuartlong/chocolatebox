@@ -2,6 +2,7 @@
 using System.Collections;
 
 public class LevelGenerator : MonoBehaviour {
+	public int floorCount;
 	public Vector2 levelSize;
 	public Vector2 baseBlockSize;
 	public SpriteRenderer groundBlock;
@@ -10,7 +11,7 @@ public class LevelGenerator : MonoBehaviour {
 
 	public void Start () {
 		//A grid of sections, but we might not even need to store this
-		int[,][,] master = new int[NUMSECTIONS,NUMSECTIONS][,];
+		int[,][,] master = new int[NUMSECTIONS,floorCount][,];
 		for (int width = 0; width < master.GetLength(0); width++)
 		{
 			for (int height = 0; height < master.GetLength(1); height++)
