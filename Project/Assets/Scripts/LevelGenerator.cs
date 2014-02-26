@@ -6,6 +6,8 @@ public class LevelGenerator : MonoBehaviour {
 	public Vector2 levelSize;
 	public Vector2 baseBlockSize;
 	public SpriteRenderer groundBlock;
+
+	//TODO this probably shouldn't be a constant
 	public const int NUMSECTIONS = 15; //Number of sections to divide map into
 	private bool done = false;
 
@@ -17,7 +19,7 @@ public class LevelGenerator : MonoBehaviour {
 			for (int height = 0; height < master.GetLength(1); height++)
 			{
 				//build the individual section
-				int[,] section = new SectionBuilder(levelSize/NUMSECTIONS, this).Build();
+				int[,] section = new SectionBuilder(levelSize/NUMSECTIONS, this).Build(1);
 
 				//Store each section in master
 				master[width, height] = section;
@@ -48,6 +50,7 @@ public class LevelGenerator : MonoBehaviour {
 
 	public enum AssetTypeKey 
 	{
+		None = 0,
 		GroundBlock = 1,
 		Entrance = 2,
 		Exit = 3
