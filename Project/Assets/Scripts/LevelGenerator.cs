@@ -9,14 +9,19 @@ public class LevelGenerator : MonoBehaviour {
 	private bool done = false;
 
 	public void Start () {
-		//A grid of sections, might not even need to store this
-		SectionBuilder[,] master = new SectionBuilder[NUMSECTIONS,NUMSECTIONS];
+		//A grid of sections, but we might not even need to store this
+		int[,][,] master = new int[NUMSECTIONS,NUMSECTIONS][,];
 		for (int width = 0; width < master.GetLength(0); width++)
 		{
 			for (int height = 0; height < master.GetLength(1); height++)
 			{
+				//build the individual section
 				int[,] section = new SectionBuilder(levelSize/NUMSECTIONS, this).Build();
+
+				//Store each section in master
 				master[width, height] = section;
+
+				//generate the section
 				for (int i = 0; i < section.GetLength(0); i++)
 				{
 					for (int j = 0; j < section.GetLength(1); j++)
