@@ -16,7 +16,7 @@ public class SectionBuilder {
 		int numberBlocksX = (int) (size.x / generator.groundBlock.sprite.bounds.extents.x  * 2);
 		int numberBlocksY = (int) (size.y / generator.groundBlock.sprite.bounds.extents.y * 2);
 		int[,] section = new int[numberBlocksX,numberBlocksX];
-		float centerX = 0f;
+		//float centerX = 0f;
 
 		section[0,entrancePosition] = (int) LevelGenerator.AssetTypeKey.Entrance;
 		section[0,entrancePosition + 1] = (int) LevelGenerator.AssetTypeKey.Entrance;

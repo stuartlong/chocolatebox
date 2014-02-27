@@ -9,10 +9,11 @@ public class LevelGenerator : MonoBehaviour {
 
 	//TODO this probably shouldn't be a constant
 	public const int NUMSECTIONS = 15; //Number of sections to divide map into
-	private bool done = false;
+	//private bool done = false;
 
 	public void Start () {
 		//A grid of sections, but we might not even need to store this
+        // JBF: We should store it. Ints are easier to scan than a set of almost identical GameObjects
 		int[,][,] master = new int[NUMSECTIONS,floorCount][,];
 		for (int width = 0; width < master.GetLength(0); width++)
 		{
@@ -36,7 +37,8 @@ public class LevelGenerator : MonoBehaviour {
 							float centerY = groundBlock.sprite.bounds.extents.y * 2 * j + (
 								groundBlock.sprite.bounds.extents.y * 2 * section.GetLength(1) * height);
 							Instantiate(groundBlock, new Vector3(centerX,centerY,0), new Quaternion());
-							Debug.Log (centerX + ", " + centerY);
+                            
+							//Debug.Log (centerX + ", " + centerY);
 						}
 					}
 				}
