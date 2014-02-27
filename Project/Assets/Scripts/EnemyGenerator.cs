@@ -12,7 +12,14 @@ using System.Collections;
 
 public class EnemyGenerator : MonoBehaviour {
 
+    private LevelGenerator _level_generator;
+    private int _emptysquare = 0;
+    private bool generated = false;
+
+    public GameObject EnemyBlock;
+
 	void Start () {
+        _level_generator = (LevelGenerator) this.GetComponent("LevelGenerator");
 		// Launch the generator. Runs at load time in Unity
 		CalculateQuantities ();
 		GenerateEnemies ();
@@ -38,6 +45,26 @@ public class EnemyGenerator : MonoBehaviour {
 	}
 	
 	void Update () {
-	
+        if (!generated)
+        {
+            Debug.Log("Now I will generate shit!!");
+            generated = true;
+
+            foreach (int[,] section in _level_generator.master)
+            {
+                int i = 5;
+                int j = 5;
+               
+
+                float centerX = _level_generator.groundBlock.sprite.bounds.extents.x * 2 * i + (
+                                _level_generator.groundBlock.sprite.bounds.extents.y * 2 * section.GetLength(0) * _level_generator.master.GetLength(1));
+                float centerY = _level_generator.groundBlock.sprite.bounds.extents.y * 2 * j + (
+                    _level_generator.groundBlock.sprite.bounds.extents.y * 2 * section.GetLength(1) * _level_generator.master.GetLength(0));
+                if (section[i, j] == _emptysquare)
+                {
+                    Instantiate(EnemyBlock, new Vector3(centerX, centerY, 0), new Quaternion());
+                }
+            }
+        }
 	}
 }

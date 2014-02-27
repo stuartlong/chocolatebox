@@ -7,6 +7,9 @@ public class LevelGenerator : MonoBehaviour {
 	public Vector2 baseBlockSize;
 	public SpriteRenderer groundBlock;
 
+    [HideInInspector]
+    public int[,][,] master;
+
 	//TODO this probably shouldn't be a constant
 	public const int NUMSECTIONS = 15; //Number of sections to divide map into
 	//private bool done = false;
@@ -14,7 +17,7 @@ public class LevelGenerator : MonoBehaviour {
 	public void Start () {
 		//A grid of sections, but we might not even need to store this
         // JBF: We should store it. Ints are easier to scan than a set of almost identical GameObjects
-		int[,][,] master = new int[NUMSECTIONS,floorCount][,];
+		master = new int[NUMSECTIONS,floorCount][,];
 		for (int width = 0; width < master.GetLength(0); width++)
 		{
 			for (int height = 0; height < master.GetLength(1); height++)

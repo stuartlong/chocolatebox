@@ -21,7 +21,7 @@ public class CharacterAnims : MonoBehaviour
 	private anim currentAnim;
 
 	// hash the animation state string to save performance
-	private int _p1AnimState = Animator.StringToHash("animstate");
+	private int _playerAnimState = Animator.StringToHash("animstate");
 	private int _animState;
 
 	void Awake()
@@ -31,7 +31,7 @@ public class CharacterAnims : MonoBehaviour
 		_animator = this.GetComponent<Animator>();
 		character = this.GetComponent<Character>();
 
-		_animState = _p1AnimState;
+		_animState = _playerAnimState;
 
 	}
 	
