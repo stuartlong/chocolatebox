@@ -25,13 +25,13 @@ public class LevelGenerator : MonoBehaviour {
 				EntrancePositions entrances;
 				if (lastSection == null) 
 				{
-					entrances = new EntrancePositions(1,-1,-1,-1);
+					entrances = new EntrancePositions(Random.Range(1,(int) (levelSize.y/NUMSECTIONS)),-1,-1,-1);
 				}
 				else
 				{
 					entrances = new EntrancePositions(lastSection.finalEntrancePositions.eastEntrance, -1, -1, -1);
 				}
-				SectionBuilder newSection = new SectionBuilder(levelSize/NUMSECTIONS, this, entrances);
+				SectionBuilder newSection = new SectionBuilder(levelSize/NUMSECTIONS, this, entrances, .5f);
 				int[,] section = newSection.Build();
 				//Store each section in master
 				master[width, height] = section;
@@ -67,6 +67,7 @@ public class LevelGenerator : MonoBehaviour {
 	{
 		None = 0,
 		GroundBlock = 1,
-		Entrance = 2
+		Entrance = 2,
+		Pit = 3
 	}
 }
