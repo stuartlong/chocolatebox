@@ -3,4 +3,11 @@
 *.log
 *.toc
 *.out
+*.sln
+*.userprefs
+*.csproj
+*.pidb
+*.unityproj
+Temp/
+Project/Temp/
 *.gz

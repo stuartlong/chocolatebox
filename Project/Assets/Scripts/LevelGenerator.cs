@@ -6,6 +6,7 @@ public class LevelGenerator : MonoBehaviour {
 	public Vector2 levelSize;
 	public Vector2 baseBlockSize;
 	public SpriteRenderer groundBlock;
+	public bool openLevel;
 
 	//TODO this probably shouldn't be a constant
 	public const int NUMSECTIONS = 15; //Number of sections to divide map into
@@ -15,13 +16,23 @@ public class LevelGenerator : MonoBehaviour {
 		//A grid of sections, but we might not even need to store this
         // JBF: We should store it. Ints are easier to scan than a set of almost identical GameObjects
 		int[,][,] master = new int[NUMSECTIONS,floorCount][,];
+
+		SectionBuilder lastSection = null;
 		for (int width = 0; width < master.GetLength(0); width++)
 		{
 			for (int height = 0; height < master.GetLength(1); height++)
 			{
-				//build the individual section
-				int[,] section = new SectionBuilder(levelSize/NUMSECTIONS, this).Build(1);
-
+				EntrancePositions entrances;
+				if (lastSection == null) 
+				{
+					entrances = new EntrancePositions(1,-1,-1,-1);
+				}
+				else
+				{
+					entrances = new EntrancePositions(lastSection.finalEntrancePositions.eastEntrance, -1, -1, -1);
+				}
+				SectionBuilder newSection = new SectionBuilder(levelSize/NUMSECTIONS, this, entrances);
+				int[,] section = newSection.Build();
 				//Store each section in master
 				master[width, height] = section;
 
@@ -42,6 +53,8 @@ public class LevelGenerator : MonoBehaviour {
 						}
 					}
 				}
+
+				lastSection = newSection;
 			}
 		}
 	}
@@ -54,7 +67,6 @@ public class LevelGenerator : MonoBehaviour {
 	{
 		None = 0,
 		GroundBlock = 1,
-		Entrance = 2,
-		Exit = 3
+		Entrance = 2
 	}
 }
