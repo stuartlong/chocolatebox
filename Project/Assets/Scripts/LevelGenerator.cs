@@ -3,7 +3,7 @@ using System.Collections;
 
 public class LevelGenerator : MonoBehaviour {
 	public int floorCount;
-	public Vector2 levelSize;
+	public Vector2 sectionSize;
 	public Vector2 baseBlockSize;
 	public SpriteRenderer groundBlock;
 
@@ -11,7 +11,7 @@ public class LevelGenerator : MonoBehaviour {
     public int[,][,] master;
 
 	//TODO this probably shouldn't be a constant
-	public const int NUMSECTIONS = 15; //Number of sections to divide map into
+	public int NUMSECTIONS = 15; //Number of sections to divide map into
 	//private bool done = false;
 
 	public void Start () {
@@ -23,7 +23,7 @@ public class LevelGenerator : MonoBehaviour {
 			for (int height = 0; height < master.GetLength(1); height++)
 			{
 				//build the individual section
-				int[,] section = new SectionBuilder(levelSize/NUMSECTIONS, this).Build(1);
+				int[,] section = new SectionBuilder(sectionSize/NUMSECTIONS, this).Build(1);
 
 				//Store each section in master
 				master[width, height] = section;
