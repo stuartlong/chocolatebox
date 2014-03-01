@@ -127,7 +127,61 @@ Each item will have a set of parameters that will define its behavior. Some of t
 
 \subsubsection{Unity Platformer Game Demonstration}
 To utilize all of the tools that we will be generating, there will be a playable demo game for the final presentation. The demo that will be created will take many of its influences from the \textit{Megaman} style of platformer.  Player interaction will be noted with a standard side-scrolling playable character. The platformer will utilize sectionalized environments with a variety of enemy types. 
-\\
+
+\subsection{Prioritized List of Features}
+\begin{enumerate}
+\item Level Generator
+\begin{enumerate}
+\item Section Generation
+\item Transitions
+\item User Parameters
+\begin{enumerate}
+\item Pits/Spikes
+\item Elevation
+\item Difficulty
+\end{enumerate}
+\item Decorations
+\end{enumerate}
+
+\item Enemy Generator
+\begin{enumerate}
+\item Generation Algorithm
+\item Enemy User Parameters
+\begin{enumerate}
+\item Required Space
+\item Movement Type
+\item Frequency
+\item Difficulty
+\end{enumerate}
+\item Enemy Assets
+\begin{enumerate}
+\item Movement Pattern
+\item Character Interaction
+\item Miscellaneous Scripting
+\end{enumerate}
+\end{enumerate}
+
+\item{Item Generator}
+\begin{enumerate}
+\item Item Placement Algorithms
+\item User Parameters
+\begin{enumerate}
+\item Frequency
+\item Value
+\item Type
+\end{enumerate}
+\item Item Scripting
+\end{enumerate}
+
+
+\item{Unity Demo Game}
+\begin{enumerate}
+\item Level Design and Development
+\item Enemy Design and Development
+\item Item Design and Development
+\item Non-Generated Game Elements
+\end{enumerate}
+\end{enumerate}
 
 
 \section{Challenges}
@@ -141,6 +195,8 @@ In the simplest sense, each game must generate playable levels. This problem is 
 Another challenge of procedural level generation is the idea of having a unique experience for each playthrough of the game. To compound this challenge, there must be some amount of consistency between levels such that there is a thematic unity to the game. Further, there must be a uniqueness between sections of each level. Having a varied structure to each level will increase playback rates as well as improve overall user experience. By defining appropriate heuristics and parameters for user modification, the library will allow for such variety. 
 \subsection{Usability}
 One of the largest challenges for this project is fo \textit{Chocolate Box} to not just be powerful, but also easy to use. The library tool must not be too complex that it cannot allow for a quickened game design workflow. It also must be able to seemlessly adapt to a variety of user assets. By using many built-in WYSIWYG (what you see is what you get) features of Unity, this challenge will be simplified. 
+\subsection{Interdependencies}
+One of the first challenges to arise during the development of \textit{Chocolate Box} was the chalenges of iterdependencies. Much of the Enemy Generation level work strong depends on the status and structure of the underlying Level Generation. Problems that occur at the bottom levels of our structure often trickle up to the top levels of our hierarchy. By addressing problems early and well documenting new or confusing parts of code will help reduce the complexity of multiple developers coding at once. 
 
 
 \section{Software Design}
