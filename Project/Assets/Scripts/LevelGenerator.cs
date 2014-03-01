@@ -2,20 +2,16 @@
 using System.Collections;
 
 public class LevelGenerator : MonoBehaviour {
-	public int floorCount;
+	public int sectionsY;
+	public int sectionsX;
 	public Vector2 levelSize;
 	public Vector2 baseBlockSize;
 	public SpriteRenderer groundBlock;
 	public bool openLevel;
 
-	//TODO this probably shouldn't be a constant
-	public const int NUMSECTIONS = 15; //Number of sections to divide map into
-	//private bool done = false;
-
 	public void Start () {
-		//A grid of sections, but we might not even need to store this
-        // JBF: We should store it. Ints are easier to scan than a set of almost identical GameObjects
-		int[,][,] master = new int[NUMSECTIONS,floorCount][,];
+		//A grid of sections
+		int[,][,] master = new int[sectionsX,sectionsY][,];
 
 		SectionBuilder lastSection = null;
 		for (int width = 0; width < master.GetLength(0); width++)
@@ -25,14 +21,16 @@ public class LevelGenerator : MonoBehaviour {
 				EntrancePositions entrances;
 				if (lastSection == null) 
 				{
-					entrances = new EntrancePositions(Random.Range(1,(int) (levelSize.y/NUMSECTIONS)),-1,-1,-1);
+					entrances = new EntrancePositions(Random.Range(1,(int) (levelSize.y/sectionsY)),-1,-1,-1);
 				}
 				else
 				{
 					entrances = new EntrancePositions(lastSection.finalEntrancePositions.eastEntrance, -1, -1, -1);
 				}
-				SectionBuilder newSection = new SectionBuilder(levelSize/NUMSECTIONS, this, entrances, .5f);
+				Vector2 scaleNewSection = new Vector2(levelSize.x/sectionsX, levelSize.y/sectionsY);
+				SectionBuilder newSection = new SectionBuilder(scaleNewSection, this, entrances, .5f);
 				int[,] section = newSection.Build();
+
 				//Store each section in master
 				master[width, height] = section;
 

@@ -85,7 +85,7 @@ public class SectionBuilder {
 					section[x,y] = (int) LevelGenerator.AssetTypeKey.Pit;
 				} 
 				else if (section[x,y] == (int) LevelGenerator.AssetTypeKey.None &&
-				    (y <= groundHeight || ((generator.floorCount > 1 || !generator.openLevel) && (x == 0 || x == numberBlocksX-1 || y == numberBlocksY-1))))
+				    (y <= groundHeight || ((generator.sectionsY > 1 || !generator.openLevel) && (x == 0 || x == numberBlocksX-1 || y == numberBlocksY-1))))
 				{
 					section[x,y] = (int) LevelGenerator.AssetTypeKey.GroundBlock;
 					if (y == groundHeight)
