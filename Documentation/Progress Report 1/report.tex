@@ -208,6 +208,16 @@ This library will be designed to work with Unity 4.3 and newer. Scripts will be 
 This library will procedurally generate a playable, pseudo-random level in under 30 seconds. This level will vary depending on user-defined parameters, such as difficulty and size. We will keep the total file size of the library under 50MB.
 \subsection{Data Structures}
 Our library will take advantage of Unity's cohesive interface to allow users to seemlessly incorporate their assets.  Also, by using GameObjects as storage points for user content, we will be able to use Unity's drag-and-drop functionality to navigate and expand our generator's functionalities and use additional assets in level creation.
+\subsection{Modules}
+Our library will utilize a handful of C Sharp scripts to handle the various roles of level generation. Together, these modules will determine the size of the level, divide the level into the number of user-specified sections, then generate each section independently using SectionBuilder. 
+\begin{itemize}
+
+\item \textit{LevelGenerator:} This module takes several arguments: the number of sections in each direction, the size of the level, the size of the blocks, the block object being used, as well as whether or not the level will be interior or exterior. This module will contain a 2D array of sections, where each section will be represented by a 2D integer array. This module will then use the SectionBuilder Module to generate each section's representative array.
+
+\item \textit{SectionBuilder:} This module is called from LevelGenerator and need to be passed the size of the section, the parent LevelGenerator, the location of all applicable entrances, and a float (0-1) to determine how hilly the section is. This module then places the ground and pits before returning the representative array when Build() is called.
+
+\endgroup
+
 
 \section{Project Management}
 The \textit{Chocolate Box} team is small and familiar, allowing for a more flexible project management schema. Stuart Long is the project manager and he will be responsible for the overall project management. Each member of the team will have set responsibilities, but the team as a whole will collaborate on any challenges or problems that arise if need be. The team will be using the on-line task tracking system Trello to keep track of project tasks and bugs. A private git repository on GitHub has been secured to use as the version control system for the project. Below is a Gantt chart outlining the broad goals and time-line of the project that the team have so far determined.\\[.5cm]
