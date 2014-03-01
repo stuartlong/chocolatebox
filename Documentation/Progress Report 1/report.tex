@@ -152,7 +152,7 @@ This library will be designed to work with Unity 4.3 and newer. Scripts will be 
 This library will procedurally generate a playable, pseudo-random level in under 30 seconds. This level will vary depending on user-defined parameters, such as difficulty and size. We will keep the total file size of the library under 50MB.
 \subsection{Data Structures}
 Our library will take advantage of Unity's cohesive interface to allow users to seemlessly incorporate their assets.  Also, by using GameObjects as storage points for user content, we will be able to use Unity's drag-and-drop functionality to navigate and expand our generator's functionalities and use additional assets in level creation.
-\subsection{Modules}
+\subsection{Modules}\label{Modules}
 Our library will utilize a handful of C Sharp scripts to handle the various roles of level generation. Together, these modules will determine the size of the level, divide the level into the number of user-specified sections, then generate each section independently using SectionBuilder. 
 \begin{itemize}
 
@@ -203,7 +203,7 @@ Unity can be installed for free from \url{https://unity3d.com/}. The Unity websi
 \subsubsection{Installation}
 \textit{Chocolate Box} is used through Unity as its own Unity project. Once completed, the source code can be obtained from \url{https://github.com/stuartlong/chocolatebox}. To open \textit{Chocolate Box} in Unity, start Unity and select "Open Project" and navigate to the /ChocolateBox/Project folder and select it.
 \subsubsection{Code}
-For a brief overview of the code see the Software Specifications section. The code itself is explained in great detail in the comments and the project documentation provided on GitHub.
+For a brief overview of the code see Section \ref{Modules}. The code itself is explained in great detail in the comments and the project documentation provided on GitHub.
 
 \FloatBarrier
 \end{document}
