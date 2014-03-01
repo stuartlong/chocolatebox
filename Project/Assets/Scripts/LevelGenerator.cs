@@ -4,9 +4,10 @@ using System.Collections;
 public class LevelGenerator : MonoBehaviour {
 	public int sectionsY;
 	public int sectionsX;
-	public Vector2 levelSize;
+	public Vector2 sectionSize;
 	public Vector2 baseBlockSize;
 	public SpriteRenderer groundBlock;
+    public bool openLevel;
 
     [HideInInspector]
     public int[,][,] master;
@@ -24,13 +25,13 @@ public class LevelGenerator : MonoBehaviour {
 				EntrancePositions entrances;
 				if (lastSection == null) 
 				{
-					entrances = new EntrancePositions(Random.Range(1,(int) (levelSize.y/sectionsY)),-1,-1,-1);
+					entrances = new EntrancePositions(Random.Range(1,(int) (sectionSize.y/sectionsY)),-1,-1,-1);
 				}
 				else
 				{
 					entrances = new EntrancePositions(lastSection.finalEntrancePositions.eastEntrance, -1, -1, -1);
 				}
-				Vector2 scaleNewSection = new Vector2(levelSize.x/sectionsX, levelSize.y/sectionsY);
+				Vector2 scaleNewSection = new Vector2(sectionSize.x/sectionsX, sectionSize.y/sectionsY);
 				SectionBuilder newSection = new SectionBuilder(scaleNewSection, this, entrances, .5f);
 				int[,] section = newSection.Build();
 
