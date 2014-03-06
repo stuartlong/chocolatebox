@@ -1,6 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// SectionBuilder's are used to generate square, individual
+/// sections of a level. They are characterzied both by a passed in
+/// SBParams object and the LevelGenerator
+/// associated with this SectionBuilder.
+/// </summary>
 public class SectionBuilder {
 	//TODO should be based on player
 	private static int MAX_JUMP = 3;
@@ -8,10 +14,14 @@ public class SectionBuilder {
 	private static int MAX_PIT_LENGTH = 10;
 	private static int MIN_PIT_LENGTH = 3;
 
+	/// <summary>
+	/// The final entrance positions after building.
+	/// </summary>
+	public EntrancePositions finalEntrancePositions;
+
 	private Vector2 size;
 	private LevelGenerator generator;
 	private EntrancePositions givenEntrancePos;
-	public EntrancePositions finalEntrancePositions;
 	private int numberBlocksX;
 	private int numberBlocksY;
 	private int[,] section;
@@ -25,6 +35,11 @@ public class SectionBuilder {
 	private int firstPit;
 	private int currentMaxPitLength;
 
+	/// <summary>
+	/// Initializes a new instance of the <see cref="SectionBuilder"/> class.
+	/// </summary>
+	/// <param name="mainGenerator">The <see cref="LevelGenerator"/> using this SectionBuilder. </param>
+	/// <param name="sbParams">The various parameters characterizing this <see cref="SectionBuilder"/></param>
 	public SectionBuilder(LevelGenerator mainGenerator, SBParams sbParams)
 	{
 		size = sbParams.size;
@@ -45,6 +60,12 @@ public class SectionBuilder {
 		currentMaxPitLength = 0;
 	}
 
+	/// <summary>
+	/// <returns>
+	/// A 2D int array representing the built section.
+	/// Uses <see cref="LevelGenerator.AssetTypeKey"/> as keys.
+	/// </returns>
+	/// </summary>
 	public int[,] Build()
 	{
 		CreateEntrances();
