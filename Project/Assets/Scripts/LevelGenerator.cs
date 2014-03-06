@@ -1,15 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class LevelGenerator : MonoBehaviour {
+public class LevelGenerator : MonoBehaviour 
+{
+	public int seed = 854632157;
 	public int sectionsY;
 	public int sectionsX;
 	public Vector2 levelSize;
-	public Vector2 baseBlockSize;
 	public SpriteRenderer groundBlock;
 	public bool openLevel;
 
-	public void Start () {
+	public void Start () 
+	{
+		Random.seed = seed;
+
 		//A grid of sections
 		int[,][,] master = new int[sectionsX,sectionsY][,];
 
