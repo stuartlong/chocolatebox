@@ -32,7 +32,12 @@ public class LevelGenerator : MonoBehaviour
 					entrances = new EntrancePositions(lastSection.finalEntrancePositions.eastEntrance, -1, -1, -1);
 				}
 				Vector2 scaleNewSection = new Vector2(levelSize.x/sectionsX, levelSize.y/sectionsY);
-				SectionBuilder newSection = new SectionBuilder(scaleNewSection, this, entrances, .5f);
+				SBParams sbParams = new SBParams();
+				sbParams.size = scaleNewSection;
+				sbParams.entrancePositions = entrances;
+				sbParams.hilliness = 0.5f;
+
+				SectionBuilder newSection = new SectionBuilder(this, sbParams);
 				int[,] section = newSection.Build();
 
 				//Store each section in master

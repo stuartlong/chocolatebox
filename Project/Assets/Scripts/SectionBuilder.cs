@@ -25,23 +25,23 @@ public class SectionBuilder {
 	private int firstPit;
 	private int currentMaxPitLength;
 
-	public SectionBuilder(Vector2 sectionSize, LevelGenerator mainGenerator, EntrancePositions entrancePosition, float hilliness)
+	public SectionBuilder(LevelGenerator mainGenerator, SBParams sbParams)
 	{
-		size = sectionSize;
-		givenEntrancePos = entrancePosition;
+		size = sbParams.size;
+		givenEntrancePos = sbParams.entrancePositions;
 		generator = mainGenerator;
 		numberBlocksX = (int) (size.x / generator.groundBlock.sprite.bounds.extents.x  * 2);
 		numberBlocksY = (int) (size.y / generator.groundBlock.sprite.bounds.extents.y * 2);
 		section = new int[numberBlocksX,numberBlocksY];
-		groundHeight = entrancePosition.westEntrance - 1;
+		groundHeight = givenEntrancePos.westEntrance - 1;
 		blocksSinceLastChange = 0;
 		finalEntrancePositions = new EntrancePositions(givenEntrancePos);
-		hilly = hilliness;
+		hilly = sbParams.hilliness;
 		numberPits = 0;
 		makingPit = false;
 		pitLength = 0;
 		lastPitX = -1;
-		firstPit = Random.Range(2,(int)sectionSize.x);
+		firstPit = Random.Range(2,(int)size.x);
 		currentMaxPitLength = 0;
 	}
 
