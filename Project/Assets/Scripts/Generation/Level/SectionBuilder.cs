@@ -21,34 +21,30 @@ public class SectionBuilder {
 	/// </summary>
 	public EntrancePositions finalEntrancePositions;
 
-	private Vector2 size;
 	private LevelGenerator generator;
-	private EntrancePositions givenEntrancePos;
 	private int numberBlocksX;
 	private int numberBlocksY;
 	private int[,] section;
 	private int groundHeight;
 	private int blocksSinceLastChange;
-	private float hilly;
 	private List<int> pits;
+	private SBParams sbParams;
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="SectionBuilder"/> class.
 	/// </summary>
 	/// <param name="mainGenerator">The <see cref="LevelGenerator"/> using this SectionBuilder. </param>
 	/// <param name="sbParams">The various parameters characterizing this <see cref="SectionBuilder"/></param>
-	public SectionBuilder(LevelGenerator mainGenerator, SBParams sbParams)
+	public SectionBuilder(LevelGenerator mainGenerator, SBParams sectionParams)
 	{
-		size = sbParams.size;
-		givenEntrancePos = sbParams.entrancePositions;
+		sbParams = sectionParams;
 		generator = mainGenerator;
-		numberBlocksX = (int) (size.x / (generator.groundBlock.sprite.bounds.extents.x  * 2));
-		numberBlocksY = (int) (size.y / (generator.groundBlock.sprite.bounds.extents.y * 2));
+		numberBlocksX = (int) (sbParams.size.x / (generator.groundBlock.sprite.bounds.extents.x  * 2));
+		numberBlocksY = (int) (sbParams.size.y / (generator.groundBlock.sprite.bounds.extents.y * 2));
 		section = new int[numberBlocksX,numberBlocksY];
-		groundHeight = givenEntrancePos.westEntrance - 1;
+		groundHeight = sbParams.entrancePositions.westEntrance - 1;
 		blocksSinceLastChange = 0;
-		finalEntrancePositions = new EntrancePositions(givenEntrancePos);
-		hilly = sbParams.hilliness;
+		finalEntrancePositions = new EntrancePositions(sbParams.entrancePositions);
 		pits = new List<int>();
 	}
 
@@ -105,7 +101,7 @@ public class SectionBuilder {
 		bool makingPit = false;
 		int numberPits = 0;
 		int pitLength = 0;
-		int firstPit = Random.Range(2,(int)size.x);
+		int firstPit = Random.Range(2,(int)sbParams.size.x);
 		int currentMaxPitLength = 0;
 
 		for (int x = 0; x < numberBlocksX; x++) 
@@ -139,10 +135,10 @@ public class SectionBuilder {
 			return false;
 		}
 
-		bool shouldPit = Random.Range(0f,1f) > .1;
+		bool shouldPit = Random.Range(0f,1f) > Random.Range(0f,1f)/sbParams.Pittiness;
 		if (lastPitX != -1)
 		{
-			shouldPit &= Random.Range(0f,1f) > .5 && Beta(PercentChangeFromOne(lastPitX)) > .7;
+			shouldPit &= Beta(PercentChangeFromOne(lastPitX)) > Random.Range(0f,1f)/sbParams.Pittiness;
 		}
 
 		return shouldPit;
@@ -156,7 +152,7 @@ public class SectionBuilder {
 			return false;
 		}
 
-		return Beta((float) (PercentChangeFromOne(blocksSinceLastChange))) > Random.Range(0f,1f)/hilly;
+		return Beta((float) (PercentChangeFromOne(blocksSinceLastChange))) > Random.Range(0f,1f)/sbParams.Hilliness;
 	}
 
 	private float PercentChangeFromOne(float x)
@@ -168,6 +164,7 @@ public class SectionBuilder {
 	{
 		float alpha = 3;
 		float beta = 1;
+		Debug.Log (Mathf.Pow(x, alpha - 1)*Mathf.Pow(1-x,beta-1));
 		return Mathf.Pow(x, alpha - 1)*Mathf.Pow(1-x,beta-1);
 	}
 
@@ -191,28 +188,28 @@ public class SectionBuilder {
 
 	private void CreateEntrances()
 	{
-		if (givenEntrancePos.westEntrance >= 0)
+		if (sbParams.entrancePositions.westEntrance >= 0)
 		{
-			section[0,givenEntrancePos.westEntrance] = (int) LevelGenerator.AssetTypeKey.Entrance;
-			section[0,givenEntrancePos.westEntrance + 1] = (int) LevelGenerator.AssetTypeKey.Entrance;
+			section[0,sbParams.entrancePositions.westEntrance] = (int) LevelGenerator.AssetTypeKey.Entrance;
+			section[0,sbParams.entrancePositions.westEntrance + 1] = (int) LevelGenerator.AssetTypeKey.Entrance;
 		}
 
-		if (givenEntrancePos.eastEntrance >= 0)
+		if (sbParams.entrancePositions.eastEntrance >= 0)
 		{
-			section[numberBlocksX - 1,givenEntrancePos.eastEntrance] = (int) LevelGenerator.AssetTypeKey.Entrance;
-			section[numberBlocksX - 1,givenEntrancePos.eastEntrance + 1] = (int) LevelGenerator.AssetTypeKey.Entrance;
+			section[numberBlocksX - 1,sbParams.entrancePositions.eastEntrance] = (int) LevelGenerator.AssetTypeKey.Entrance;
+			section[numberBlocksX - 1,sbParams.entrancePositions.eastEntrance + 1] = (int) LevelGenerator.AssetTypeKey.Entrance;
 		}
 
-		if (givenEntrancePos.southEntrance >= 0)
+		if (sbParams.entrancePositions.southEntrance >= 0)
 		{
-			section[givenEntrancePos.southEntrance, 0] = (int) LevelGenerator.AssetTypeKey.Entrance;;
-			section[givenEntrancePos.southEntrance + 1, 0] = (int) LevelGenerator.AssetTypeKey.Entrance;;
+			section[sbParams.entrancePositions.southEntrance, 0] = (int) LevelGenerator.AssetTypeKey.Entrance;;
+			section[sbParams.entrancePositions.southEntrance + 1, 0] = (int) LevelGenerator.AssetTypeKey.Entrance;;
 		}
 
-		if (givenEntrancePos.northEntrance >= 0)
+		if (sbParams.entrancePositions.northEntrance >= 0)
 		{
-			section[givenEntrancePos.northEntrance, numberBlocksY - 1] = (int) LevelGenerator.AssetTypeKey.Entrance;;
-			section[givenEntrancePos.northEntrance + 1, numberBlocksY - 1] = (int) LevelGenerator.AssetTypeKey.Entrance;;
+			section[sbParams.entrancePositions.northEntrance, numberBlocksY - 1] = (int) LevelGenerator.AssetTypeKey.Entrance;;
+			section[sbParams.entrancePositions.northEntrance + 1, numberBlocksY - 1] = (int) LevelGenerator.AssetTypeKey.Entrance;;
 		}
 	}
 }

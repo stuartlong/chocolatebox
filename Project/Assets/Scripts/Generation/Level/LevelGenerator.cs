@@ -35,7 +35,8 @@ public class LevelGenerator : MonoBehaviour
 				SBParams sbParams = new SBParams();
 				sbParams.size = scaleNewSection;
 				sbParams.entrancePositions = entrances;
-				sbParams.hilliness = 0.5f;
+				sbParams.Pittiness = 0.9f;
+				sbParams.Hilliness = .2f;
 
 				SectionBuilder newSection = new SectionBuilder(this, sbParams);
 				int[,] section = newSection.Build();
