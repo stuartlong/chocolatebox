@@ -7,12 +7,12 @@ using System.Collections;
  * Stuart Long
  * */
 public class EntrancePositions {
-	public int westEntrance;
-	public int eastEntrance;
-	public int southEntrance;
-	public int northEntrance;
+	public EntrancePosition westEntrance;
+	public EntrancePosition eastEntrance;
+	public EntrancePosition southEntrance;
+	public EntrancePosition northEntrance;
 
-	public EntrancePositions(int west, int east, int south, int north)
+	public EntrancePositions(EntrancePosition west, EntrancePosition east, EntrancePosition south, EntrancePosition north)
 	{
 		westEntrance = west;
 		eastEntrance = east;

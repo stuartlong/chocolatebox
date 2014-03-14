@@ -32,11 +32,11 @@ public class LevelGenerator : MonoBehaviour
 				EntrancePositions entrances;
 				if (lastSection == null) 
 				{
-					entrances = new EntrancePositions(UnityEngine.Random.Range(1,(int) (levelSize.y/sectionsY)),-1,-1,-1);
+					entrances = new EntrancePositions(new EntrancePosition(UnityEngine.Random.Range(1,(int) (levelSize.y/sectionsY)),2),new EntrancePosition(),new EntrancePosition(),new EntrancePosition());
 				}
 				else
 				{
-					entrances = new EntrancePositions(lastSection.finalEntrancePositions.eastEntrance, -1, -1, -1);
+					entrances = new EntrancePositions(lastSection.finalEntrancePositions.eastEntrance, new EntrancePosition(), new EntrancePosition(), new EntrancePosition());
 				}
 				Vector2 scaleNewSection = new Vector2(levelSize.x/sectionsX, levelSize.y/sectionsY);
 				SBParams sbParams = new SBParams();
