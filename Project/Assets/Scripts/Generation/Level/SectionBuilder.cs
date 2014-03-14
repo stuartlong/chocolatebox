@@ -128,7 +128,7 @@ public class SectionBuilder {
 				pitLength = 0;
 			}
 		}
-	}
+	}f
 
 	private bool ShouldMakePit(int currentX, int lastPitX)
 	{
@@ -137,10 +137,10 @@ public class SectionBuilder {
 			return false;
 		}
 
-		bool shouldPit = Random.Range(0f,1f) > Random.Range(0f,1f)/sbParams.Pittiness;
+		bool shouldPit = Random.Range(0f,1f) > 1-sbParams.Pittiness;
 		if (lastPitX != -1)
 		{
-			shouldPit &= Beta(PercentChangeFromOne(lastPitX)) > Random.Range(0f,1f)/sbParams.Pittiness;
+			shouldPit &= Beta(PercentChangeFromOne(lastPitX)) > Random.Range(.4f*(1-sbParams.Pittiness),1f*sbParams.Pittiness);
 		}
 
 		return shouldPit;
@@ -149,24 +149,23 @@ public class SectionBuilder {
 	private bool ShouldChangeGroundHeight(int currentX) 
 	{
 		//temporary fix so entrances line up correctly
-		if (currentX == 0 || currentX >= numberBlocksX - 2)
+		if (currentX <= 1 || currentX >= numberBlocksX - 2)
 		{
 			return false;
 		}
-
-		return Beta((float) (PercentChangeFromOne(blocksSinceLastChange))) > Random.Range(0f,1f)*(1-sbParams.Hilliness);
+		float beta = Beta((float) (PercentChangeFromOne(blocksSinceLastChange)));
+		return Random.Range(0f,1f) > 1-sbParams.Hilliness;
 	}
 
 	private float PercentChangeFromOne(float x)
 	{
-		return ((x - 1) / x);
+		return ((float)(x - 1) / x);
 	}
 
 	private float Beta(float x)
 	{
 		float alpha = 3;
 		float beta = 1;
-		Debug.Log (Mathf.Pow(x, alpha - 1)*Mathf.Pow(1-x,beta-1));
 		return Mathf.Pow(x, alpha - 1)*Mathf.Pow(1-x,beta-1) / 3f;
 	}
 
@@ -175,12 +174,12 @@ public class SectionBuilder {
 		float r = Random.Range(0f,1f);
 		bool goUp = r >= .5;
 
-		int maxJump = ConvertToBlocksY(generator.player.maxJumpDistance.y);
+		int maxJump = (int) generator.player.maxJumpDistance.y;
 		//int difference = (int)((float) maxJump * Beta(Random.Range(0f,1f)));
 		int difference = Random.Range(1,maxJump);
 		if (goUp)
 		{
-			groundHeight = Mathf.Min(numberBlocksY-1, groundHeight + difference);
+			groundHeight = Mathf.Min(numberBlocksY-3, groundHeight + difference);
 		}
 		else
 		{

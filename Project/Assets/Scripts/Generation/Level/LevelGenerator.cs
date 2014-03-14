@@ -42,7 +42,7 @@ public class LevelGenerator : MonoBehaviour
 				SBParams sbParams = new SBParams();
 				sbParams.size = scaleNewSection;
 				sbParams.entrancePositions = entrances;
-				sbParams.Pittiness = 0.9f;
+				sbParams.Pittiness = 0.09f;
 				sbParams.Hilliness = .09f;
 
 				SectionBuilder newSection = new SectionBuilder(this, sbParams);
