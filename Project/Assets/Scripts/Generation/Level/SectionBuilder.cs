@@ -11,10 +11,11 @@ using System.Linq;
 /// </summary>
 public class SectionBuilder {
 	//TODO should be based on player
-	private static int MAX_JUMP = 3;
-	private static int MAX_PITS = 3;
 	private static int MAX_PIT_LENGTH = 10;
+
+	//TODO determined by difficulty?
 	private static int MIN_PIT_LENGTH = 3;
+	private static int MAX_PITS = 3;
 
 	/// <summary>
 	/// The final entrance positions after building.
@@ -39,8 +40,8 @@ public class SectionBuilder {
 	{
 		sbParams = sectionParams;
 		generator = mainGenerator;
-		numberBlocksX = (int) (sbParams.size.x / (generator.groundBlock.sprite.bounds.extents.x  * 2));
-		numberBlocksY = (int) (sbParams.size.y / (generator.groundBlock.sprite.bounds.extents.y * 2));
+		numberBlocksX = ConvertToBlocksX(sbParams.size.x);
+		numberBlocksY = ConvertToBlocksY(sbParams.size.y);
 		section = new int[numberBlocksX,numberBlocksY];
 		groundHeight = sbParams.entrancePositions.westEntrance - 1;
 		blocksSinceLastChange = 0;
@@ -122,7 +123,8 @@ public class SectionBuilder {
 
 			if (ShouldMakePit(x, lastPit))
 			{
-				currentMaxPitLength = Random.Range(MIN_PIT_LENGTH, Mathf.Min(MAX_PIT_LENGTH+1, numberBlocksX - 1 - x));
+				int maxLength = ConvertToBlocksX(generator.player.maxJumpDistance.x);
+				currentMaxPitLength = Random.Range(MIN_PIT_LENGTH, Mathf.Min(maxLength+1, numberBlocksX - 1 - x));
 				pitLength = 0;
 			}
 		}
@@ -152,7 +154,7 @@ public class SectionBuilder {
 			return false;
 		}
 
-		return Beta((float) (PercentChangeFromOne(blocksSinceLastChange))) > Random.Range(0f,1f)/sbParams.Hilliness;
+		return Beta((float) (PercentChangeFromOne(blocksSinceLastChange)))*3 > Random.Range(0f,1f)/sbParams.Hilliness;
 	}
 
 	private float PercentChangeFromOne(float x)
@@ -165,7 +167,7 @@ public class SectionBuilder {
 		float alpha = 3;
 		float beta = 1;
 		Debug.Log (Mathf.Pow(x, alpha - 1)*Mathf.Pow(1-x,beta-1));
-		return Mathf.Pow(x, alpha - 1)*Mathf.Pow(1-x,beta-1);
+		return Mathf.Pow(x, alpha - 1)*Mathf.Pow(1-x,beta-1) / 3f;
 	}
 
 	private void ChangeGroundHeightIfAble(int currentX)
@@ -173,8 +175,9 @@ public class SectionBuilder {
 		float r = Random.Range(0f,1f);
 		bool goUp = r >= .5;
 
-		int difference = (MAX_JUMP+1 - (int) Mathf.Sqrt(Random.Range(1,(MAX_JUMP+1)*(MAX_JUMP+1))));
-
+		int maxJump = ConvertToBlocksY(generator.player.maxJumpDistance.y);
+		//int difference = (int)((float) maxJump * Beta(Random.Range(0f,1f)));
+		int difference = Random.Range(1,maxJump);
 		if (goUp)
 		{
 			groundHeight = Mathf.Min(numberBlocksY-1, groundHeight + difference);
@@ -211,5 +214,15 @@ public class SectionBuilder {
 			section[sbParams.entrancePositions.northEntrance, numberBlocksY - 1] = (int) LevelGenerator.AssetTypeKey.Entrance;;
 			section[sbParams.entrancePositions.northEntrance + 1, numberBlocksY - 1] = (int) LevelGenerator.AssetTypeKey.Entrance;;
 		}
+	}
+
+	private int ConvertToBlocksY(float unityUnitsY)
+	{
+		return (int) (unityUnitsY / (generator.groundBlock.sprite.bounds.extents.y * 2));
+	}
+
+	private int ConvertToBlocksX(float unityUnitsX)
+	{
+		return (int) (unityUnitsX / (generator.groundBlock.sprite.bounds.extents.x * 2));
 	}
 }
