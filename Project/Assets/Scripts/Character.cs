@@ -28,9 +28,9 @@ public class Character : MonoBehaviour
     protected Rigidbody2D _rigidbody;
 
     // edit these to tune character movement	
-    private float walkVel = 5f; 	// walk speed
-    private float jumpVel = 5f; 	// jump velocity
-    private float jump2Vel = 3f; 	// double jump velocity
+    private float walkVel = 2.5f; 	// walk speed
+    private float jumpVel = 4f; 	// jump velocity
+    private float jump2Vel = 2f; 	// double jump velocity
     private float fallVel = 1f;		// fall velocity, gravity
 
     private float moveVel;

@@ -51,8 +51,8 @@ public class EnemyGenerator : MonoBehaviour {
             master = _level_generator.master;
             generated = true;
 
-            float xunit = 2 * _level_generator.groundBlock.sprite.bounds.extents.x;
-            float yunit = 2 * _level_generator.groundBlock.sprite.bounds.extents.y;
+            float xunit = 2*_level_generator.groundBlock.sprite.bounds.extents.x;
+            float yunit = 2*_level_generator.groundBlock.sprite.bounds.extents.y;
 
             Debug.Log("Units: " + xunit + ", " + yunit);
 
@@ -67,8 +67,8 @@ public class EnemyGenerator : MonoBehaviour {
             Debug.Log("X Per Section = " + xPerSection);
             Debug.Log("Y Per Section = " + yPerSection);
 
-            int num_sections = _level_generator.sectionsX;
-            int num_floors = _level_generator.sectionsY;
+            int num_sections = _level_generator.NUMSECTIONS;
+            int num_floors = _level_generator.floorCount;
 
             for (int x = 0; x < num_sections; x++) {
                 for (int y = 0; y < num_floors; y++){
