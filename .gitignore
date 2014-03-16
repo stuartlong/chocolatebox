@@ -4,3 +4,8 @@
 *.toc
 *.out
 *.gz
+Project/[Ll]ibrary/
+Project/[Tt]emp/
+Project/[Oo]obj/
+*.suo
+*.user
