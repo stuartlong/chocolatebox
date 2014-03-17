@@ -192,7 +192,7 @@ public class SectionBuilder {
 		int max_height = Random.Range((int) generator.player.maxPlayerSize.y+groundHeight, numberBlocksY-1 - groundHeight);
 		
 		for (int i = 0; i < max_height; i++)
-		{
+		{	//This line is causing Out Of Bounds Exceptions
 			section[xCoord, entrancePos+i] = (int) LevelGenerator.AssetTypeKey.Entrance;
 		}
 	}
