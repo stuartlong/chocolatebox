@@ -10,6 +10,7 @@ public class LevelGenerator : MonoBehaviour
 	public Vector2 levelSize;
 	public SpriteRenderer groundBlock;
 	public PlayerAttachment player;
+	public int MergeChance;
 
 	public void Start () 
 	{
@@ -23,6 +24,7 @@ public class LevelGenerator : MonoBehaviour
 		//A grid of sections
 		int[,][,] master = new int[sectionsX,sectionsY][,];
 
+		//build each section
 		SectionBuilder lastSection = null;
 		for (int width = 0; width < master.GetLength(0); width++)
 		{
@@ -49,26 +51,59 @@ public class LevelGenerator : MonoBehaviour
 
 				//Store each section in master
 				master[width, height] = section;
+				lastSection = newSection;
+			}
+		}
 
-				//generate the section
-				for (int i = 0; i < section.GetLength(0); i++)
+		//merge random sections
+		//for each section border shared with another section roll a number
+		//each section border will be compared only once by going through each section and checking their top and right edges
+		for (int width = 0; width < master.GetLength(0)-1; width++)
+		{
+			for (int height = 0; height < master.GetLength(1); height++)
+			{
+				//Determine if you want to merge right
+				if (UnityEngine.Random.Range(0,100) < MergeChance)
 				{
-					for (int j = 0; j < section.GetLength(1); j++)
+					//Merge to the right
+					for (int j = 0; j < master[width,height].GetLength(1); j++)
 					{
-						if (section[i,j] == (int) AssetTypeKey.GroundBlock)
+						//Don't overwrite entrances
+						if (master[width,height][1,j] != (int) AssetTypeKey.Entrance)
+						{
+							//overwrite right most tiles with second to leftmost tiles in next section
+							master[width,height][master[width,height].GetLength(0)-1,j] = 
+								master[width+1,height][1,j];
+							//overwrite the tiles in the first section now
+							master[width+1,height][0,j] = 
+								master[width,height][master[width,height].GetLength(0)-2,j];
+						}
+					}
+				}
+			}
+		}
+
+		//generate the sections using the representative arrays
+		for (int width = 0; width < master.GetLength(0); width++)
+		{
+			for (int height = 0; height < master.GetLength(1); height++)
+			{
+				for (int i = 0; i < master[width,height].GetLength(0); i++)
+				{
+					for (int j = 0; j < master[width,height].GetLength(1); j++)
+					{
+						if (master[width,height][i,j] == (int) AssetTypeKey.GroundBlock)
 						{
 							float centerX = groundBlock.sprite.bounds.extents.x  * 2 * i + (
-								groundBlock.sprite.bounds.extents.y * 2 * section.GetLength(0)* width);
+								groundBlock.sprite.bounds.extents.y * 2 * master[width,height].GetLength(0)* width);
 							float centerY = groundBlock.sprite.bounds.extents.y * 2 * j + (
-								groundBlock.sprite.bounds.extents.y * 2 * section.GetLength(1) * height);
+								groundBlock.sprite.bounds.extents.y * 2 * master[width,height].GetLength(1) * height);
 							Instantiate(groundBlock, new Vector3(centerX,centerY,0), new Quaternion());
                             
 							//Debug.Log (centerX + ", " + centerY);
 						}
 					}
 				}
-
-				lastSection = newSection;
 			}
 		}
 	}
