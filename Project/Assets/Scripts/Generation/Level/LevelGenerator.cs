@@ -11,6 +11,7 @@ public class LevelGenerator : MonoBehaviour
 	public SpriteRenderer groundBlock;
 	public PlayerAttachment player;
 	public int MergeChance;
+	public bool openLevel;
 
 	public void Start () 
 	{
@@ -99,19 +100,17 @@ public class LevelGenerator : MonoBehaviour
 							float centerY = groundBlock.sprite.bounds.extents.y * 2 * j + (
 								groundBlock.sprite.bounds.extents.y * 2 * master[width,height].GetLength(1) * height);
 							Instantiate(groundBlock, new Vector3(centerX,centerY,0), new Quaternion());
-                            
-							//Debug.Log (centerX + ", " + centerY);
 						}
 					}
 				}
 			}
 		}
 	}
-	
-	public void Update () {
 
-	}
-
+	/// <summary>
+	/// The keys for what integers represent what 
+	/// in the array representations of levels.
+	/// </summary>
 	public enum AssetTypeKey 
 	{
 		None = 0,
