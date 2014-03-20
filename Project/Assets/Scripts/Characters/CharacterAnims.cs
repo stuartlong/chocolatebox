@@ -18,10 +18,17 @@ public class CharacterAnims : MonoBehaviour
 		FallRight
 	}
 
+
+    public enum animstate
+    {
+        PLAYER_ANIMSTATE,
+        GOOMBA_ANIMSTATE
+    }
+
+
+
 	private anim currentAnim;
 
-	// hash the animation state string to save performance
-	private int _playerAnimState = Animator.StringToHash("animstate");
 	private int _animState;
 
 	void Awake()
@@ -31,7 +38,15 @@ public class CharacterAnims : MonoBehaviour
 		_animator = this.GetComponent<Animator>();
 		character = this.GetComponent<Character>();
 
-		_animState = _playerAnimState;
+        if (character.characterType == Character.CharacterType.Player)
+        {
+            _animState = Animator.StringToHash(animstate.PLAYER_ANIMSTATE.ToString());
+        }
+        else if (character.characterType == Character.CharacterType.Goomba)
+        {
+            _animState = Animator.StringToHash(animstate.GOOMBA_ANIMSTATE.ToString());
+        }
+
 
 	}
 	

@@ -9,6 +9,7 @@ public class LevelGenerator : MonoBehaviour
 	public int sectionsX;
 	public Vector2 levelSize;
 	public SpriteRenderer groundBlock;
+    public bool openLevel;
 	public PlayerAttachment player;
 
 	public void Start () 

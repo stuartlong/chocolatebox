@@ -6,6 +6,7 @@ public class Player : Character
     public override void Start()
     {
         base.Start();
+        characterType = Character.CharacterType.Player;
 
         spawnPos = _transform.position;
     }
@@ -34,6 +35,7 @@ public class Player : Character
         }
 
         // move right
+
         if (Input.GetKey(KeyCode.D) && currentInputState != inputState.WalkLeft)
         {
             currentInputState = inputState.WalkRight;

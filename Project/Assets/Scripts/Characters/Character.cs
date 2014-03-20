@@ -3,6 +3,16 @@ using System.Collections;
 
 public class Character : MonoBehaviour
 {
+    public enum CharacterType
+    {
+        Null, 
+        Player,
+        Goomba
+    }
+
+    public CharacterType characterType;
+
+    
     public enum inputState
     {
         None,
@@ -12,6 +22,7 @@ public class Character : MonoBehaviour
         Attack
     }
 
+    [HideInInspector]
     public inputState currentInputState;
 
     [HideInInspector]
@@ -28,10 +39,10 @@ public class Character : MonoBehaviour
     protected Rigidbody2D _rigidbody;
 
     // edit these to tune character movement	
-    private float walkVel = 2.5f; 	// walk speed
-    private float jumpVel = 4f; 	// jump velocity
-    private float jump2Vel = 2f; 	// double jump velocity
-    private float fallVel = 1f;		// fall velocity, gravity
+    protected float walkVel = 4f; 	// walk speed
+    protected float jumpVel = 6f; 	// jump velocity
+    protected float jump2Vel = 2f; 	// double jump velocity
+    protected float fallVel = 1f;		// fall velocity, gravity
 
     private float moveVel;
   
@@ -43,7 +54,7 @@ public class Character : MonoBehaviour
     private Vector2 physVel = new Vector2();
    
     public bool grounded = false;
-    private int groundMask = 1 << 8; // Ground layer mask
+    protected int groundMask = 1 << 8; // Ground layer mask
 
     public virtual void Awake()
     {
