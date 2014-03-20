@@ -141,10 +141,12 @@ public class SectionBuilder {
 		}
 
 		bool shouldPit = Random.Range(0f,1f) > 1-sbParams.Pittiness;
-		if (lastPitX != -1)
+
+		//TODO work up a good algorithm for increasing the chance a pit appears proporitional to the difficulty and how long it's been since we've seen a pit
+		/*if (lastPitX != -1)
 		{
 			shouldPit &= Beta(PercentChangeFromOne(lastPitX)) > Random.Range(.4f*(1-sbParams.Pittiness),1f*sbParams.Pittiness);
-		}
+		}*/
 
 		return shouldPit;
 	}
