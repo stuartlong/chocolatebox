@@ -39,19 +39,23 @@
 	<Reference Include="System.Core" />
 	<Reference Include="System.Xml.Linq" />
 	<Reference Include="UnityEngine">
-	  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
+	  <HintPath>C:/Development/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
 	</Reference>
 	<Reference Include="UnityEditor">
-	  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
+	  <HintPath>C:/Development/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
 	</Reference>
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\Character.cs" />
      <Compile Include="Assets\Scripts\CharacterAnims.cs" />
      <Compile Include="Assets\Scripts\EnemyGenerator.cs" />
-     <Compile Include="Assets\Scripts\LevelGenerator.cs" />
+     <Compile Include="Assets\Scripts\Generation\Level\EntrancePosition.cs" />
+     <Compile Include="Assets\Scripts\Generation\Level\EntrancePositions.cs" />
+     <Compile Include="Assets\Scripts\Generation\Level\LevelGenerator.cs" />
+     <Compile Include="Assets\Scripts\Generation\Level\SBParams.cs" />
+     <Compile Include="Assets\Scripts\Generation\Level\SectionBuilder.cs" />
+     <Compile Include="Assets\Scripts\Generation\PlayerAttachment.cs" />
      <Compile Include="Assets\Scripts\Player.cs" />
-     <Compile Include="Assets\Scripts\SectionBuilder.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

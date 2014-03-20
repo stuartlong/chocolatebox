@@ -46,7 +46,7 @@ public class EnemyGenerator : MonoBehaviour {
 	}
 	
 	void Update () {
-        if (!generated){
+        /*if (!generated){
             Debug.Log("Now I will generate shit!!");
             master = _level_generator.master;
             generated = true;
@@ -64,7 +64,7 @@ public class EnemyGenerator : MonoBehaviour {
             float xPerSection = sectionDims.x * xunit;
             float yPerSection = sectionDims.y * yunit;
 
-            Debug.Log("X Per Section = " + xPerSection);
+            Debug.Log("X Per Section = " + xPerSection);/
             Debug.Log("Y Per Section = " + yPerSection);
 
             int num_sections = _level_generator.NUMSECTIONS;
@@ -78,6 +78,6 @@ public class EnemyGenerator : MonoBehaviour {
                     Instantiate(EnemyBlock, new Vector3((float) nextX, (float) nextY, 0), new Quaternion());
                 }
             }
-        }
+        }*/
 	}
 }

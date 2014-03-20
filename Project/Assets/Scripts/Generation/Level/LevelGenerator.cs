@@ -11,7 +11,7 @@ using System;
 /// </summary>
 public class LevelGenerator : MonoBehaviour 
 {
-	public int seed = -1;
+	public int seed;
 	public int sectionsY;
 	public int sectionsX;
 	public Vector2 levelSize;
@@ -20,10 +20,11 @@ public class LevelGenerator : MonoBehaviour
 	public int MergeChance;
 	public bool openLevel;
 
+	[HideInInspector] public bool customSeed = false;
+
 	public void Start () 
 	{
-		//TODO a temporary fix until we work up a custom unity interface
-		if (seed == -1)
+		if (!customSeed)
 		{
 			DateTime epochStart = new System.DateTime(1970, 1, 1, 8, 0, 0, System.DateTimeKind.Utc);
 			seed = (int) (System.DateTime.UtcNow - epochStart).TotalSeconds;
