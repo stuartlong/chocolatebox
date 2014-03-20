@@ -83,8 +83,7 @@ public class SectionBuilder {
 				{
 					section[x,y] = (int) LevelGenerator.AssetTypeKey.Pit;
 				} 
-				else if (section[x,y] == (int) LevelGenerator.AssetTypeKey.None &&
-				    (y <= groundHeight || ((generator.sectionsY > 1 || !generator.openLevel) && (x == 0 || x == numberBlocksX-1 || y == numberBlocksY-1))))
+				else if (ShouldInsertGroundBlock(x,y))
 				{
 					section[x,y] = (int) LevelGenerator.AssetTypeKey.GroundBlock;
 					if (y == groundHeight)
@@ -98,6 +97,17 @@ public class SectionBuilder {
 		return section;
 	}
 
+	private bool ShouldInsertGroundBlock(int x, int y)
+	{
+		bool emptySpace = section[x,y] == (int) LevelGenerator.AssetTypeKey.None;
+		bool atOrBelowGround = y <= groundHeight;
+		bool atWall = !generator.openLevel && (x == 0 || x == numberBlocksX-1);
+		bool atCeiling = !generator.openLevel && (y == numberBlocksY-1);
+
+		return emptySpace && (atOrBelowGround || atWall || atCeiling); 
+	}
+
+	#region Pit Creation
 	//determines which columns of the sections should represent pits
 	private void DeterminePits()
 	{
@@ -150,7 +160,9 @@ public class SectionBuilder {
 
 		return shouldPit;
 	}
+	#endregion
 
+	#region Ground Height
 	//returns true if the ground height should be changed
 	private bool ShouldChangeGroundHeight(int currentX) 
 	{
@@ -163,43 +175,33 @@ public class SectionBuilder {
 		return Random.Range(0f,1f) > 1-sbParams.Hilliness;
 	}
 
-	private float PercentChangeFromOne(float x)
-	{
-		return ((float)(x - 1) / x);
-	}
-
-	//beta probilitity distribution
-	private float Beta(float x)
-	{
-		float alpha = 3;
-		float beta = 1;
-		return Mathf.Pow(x, alpha - 1)*Mathf.Pow(1-x,beta-1) / 3f;
-	}
-
 	//changes the ground height. Direction is completely random.
 	private void ChangeGroundHeightIfAble(int currentX)
 	{
 		float r = Random.Range(0f,1f);
 		bool goUp = r >= .5;
-
+		
 		int maxJump = (int) generator.player.maxJumpDistance.y;
 		//int difference = (int)((float) maxJump * Beta(Random.Range(0f,1f)));
 		int difference = Random.Range(1,maxJump);
 		if (goUp)
 		{
-			groundHeight = Mathf.Min(numberBlocksY-3, groundHeight + difference);
+			groundHeight = (int) Mathf.Min(numberBlocksY - generator.player.maxPlayerSize.y - 1, groundHeight + difference);
 		}
 		else
 		{
 			groundHeight = Mathf.Max(0, groundHeight - difference);
 		}
+
 		blocksSinceLastChange = 0;
 	}
+	#endregion
 
+	#region Entrances
 	//creates an entryway with a random height at the passed x-column and entrancePos-row
 	private void CreateEastWestEntrance(int xCoord, int entrancePos)
 	{
-		int max_height = Random.Range((int) generator.player.maxPlayerSize.y+groundHeight, numberBlocksY- 2 - groundHeight);
+		int max_height = Random.Range((int) generator.player.maxPlayerSize.y+groundHeight, numberBlocksY - 1 - groundHeight) - 1;
 		
 		for (int i = 0; i < max_height; i++)
 		{
@@ -232,6 +234,7 @@ public class SectionBuilder {
 			section[sbParams.entrancePositions.northEntrance.location + 1, numberBlocksY - 1] = (int) LevelGenerator.AssetTypeKey.Entrance;;
 		}
 	}
+	#endregion
 
 	private int ConvertToBlocksY(float unityUnitsY)
 	{
@@ -241,5 +244,18 @@ public class SectionBuilder {
 	private int ConvertToBlocksX(float unityUnitsX)
 	{
 		return (int) (unityUnitsX / (generator.groundBlock.sprite.bounds.extents.x * 2));
+	}
+
+	private float PercentChangeFromOne(float x)
+	{
+		return ((float)(x - 1) / x);
+	}
+	
+	//beta probilitity distribution
+	private float Beta(float x)
+	{
+		float alpha = 3;
+		float beta = 1;
+		return Mathf.Pow(x, alpha - 1)*Mathf.Pow(1-x,beta-1) / 3f;
 	}
 }
