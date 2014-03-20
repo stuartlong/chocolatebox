@@ -2,6 +2,13 @@
 using System.Collections;
 using System;
 
+/// <summary>
+/// The Overlord script that generates each section and combines them. This script must be
+/// attached to some GameObject in your scene and it is where you can specifiy most of the
+/// various parameters to determine the characteristics of your level. 
+/// 
+/// Primary Author(s) - Stuart Long, Frank Singel
+/// </summary>
 public class LevelGenerator : MonoBehaviour 
 {
 	public int seed = -1;

@@ -8,6 +8,8 @@ using System.Linq;
 /// sections of a level. They are characterzied both by a passed in
 /// SBParams object and the LevelGenerator
 /// associated with this SectionBuilder.
+/// 
+/// Primary Author - Stuart Long
 /// </summary>
 public class SectionBuilder {
 	//TODO should be based on player
@@ -96,6 +98,7 @@ public class SectionBuilder {
 		return section;
 	}
 
+	//determines which columns of the sections should represent pits
 	private void DeterminePits()
 	{
 		bool makingPit = false;
@@ -129,6 +132,7 @@ public class SectionBuilder {
 		}
 	}
 
+	//returns true if it's time to make a new pit
 	private bool ShouldMakePit(int currentX, int lastPitX)
 	{
 		if (currentX >= numberBlocksX - 2 || currentX - lastPitX < 2)
@@ -145,6 +149,7 @@ public class SectionBuilder {
 		return shouldPit;
 	}
 
+	//returns true if the ground height should be changed
 	private bool ShouldChangeGroundHeight(int currentX) 
 	{
 		//temporary fix so entrances line up correctly
@@ -161,6 +166,7 @@ public class SectionBuilder {
 		return ((float)(x - 1) / x);
 	}
 
+	//beta probilitity distribution
 	private float Beta(float x)
 	{
 		float alpha = 3;
@@ -168,6 +174,7 @@ public class SectionBuilder {
 		return Mathf.Pow(x, alpha - 1)*Mathf.Pow(1-x,beta-1) / 3f;
 	}
 
+	//changes the ground height. Direction is completely random.
 	private void ChangeGroundHeightIfAble(int currentX)
 	{
 		float r = Random.Range(0f,1f);
@@ -187,6 +194,7 @@ public class SectionBuilder {
 		blocksSinceLastChange = 0;
 	}
 
+	//creates an entryway with a random height at the passed x-column and entrancePos-row
 	private void CreateEastWestEntrance(int xCoord, int entrancePos)
 	{
 		int max_height = Random.Range((int) generator.player.maxPlayerSize.y+groundHeight, numberBlocksY- 2 - groundHeight);
@@ -197,6 +205,7 @@ public class SectionBuilder {
 		}
 	}
 
+	//creates all of the section entrance based on it's passed in entrancePositions
 	private void CreateEntrances()
 	{
 		if (sbParams.entrancePositions.westEntrance.location >= 0)
