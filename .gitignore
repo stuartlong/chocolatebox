@@ -9,3 +9,5 @@ Project/[Tt]emp/
 Project/[Oo]obj/
 *.suo
 *.user
+*.csproj
+/*.userprefs
