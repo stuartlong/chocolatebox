@@ -157,7 +157,7 @@ public class SectionBuilder {
 		{
 			return false;
 		}
-		float beta = Beta((float) (PercentChangeFromOne(blocksSinceLastChange)));
+
 		return Random.Range(0f,1f) > 1-sbParams.Hilliness;
 	}
 

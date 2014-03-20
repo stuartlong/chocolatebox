@@ -18,7 +18,7 @@ public class LevelGeneratorEditor : Editor
 		generator.levelSize.x = (int) floatLevelSize.x;
 		generator.levelSize.y = (int) floatLevelSize.y;
 
-		Vector2 numbSections = EditorGUILayout.Vector2Field("Number of Sections", generator.levelSize);
+		Vector2 numbSections = EditorGUILayout.Vector2Field("Number of Sections", new Vector2(generator.sectionsX, generator.sectionsY) );
 		generator.sectionsX = (int) numbSections.x;
 		generator.sectionsY = (int) numbSections.y;
 

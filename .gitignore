@@ -10,4 +10,5 @@ Project/[Oo]obj/
 *.suo
 *.user
 *.csproj
-/*.userprefs
+*.userprefs
+*.sln
