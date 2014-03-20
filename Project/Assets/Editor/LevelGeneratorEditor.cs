@@ -18,9 +18,19 @@ public class LevelGeneratorEditor : Editor
 		generator.levelSize.x = (int) floatLevelSize.x;
 		generator.levelSize.y = (int) floatLevelSize.y;
 
-		Vector2 numbSections = EditorGUILayout.Vector2Field("Number of Sections", new Vector2(generator.sectionsX, generator.sectionsY) );
+		generator.openLevel = EditorGUILayout.Toggle("Open Level (No ceiling)", generator.openLevel);
+
+		if (!generator.openLevel) {
+		Vector2 numbSections = EditorGUILayout.Vector2Field("Number of Sections", new Vector2(generator.sectionsX, generator.sectionsY));
 		generator.sectionsX = (int) numbSections.x;
 		generator.sectionsY = (int) numbSections.y;
+		}
+		else
+		{
+			Vector2 numbSections = EditorGUILayout.Vector2Field("Number of Sections", new Vector2(generator.sectionsX, 1));
+			generator.sectionsX = (int) numbSections.x;
+			generator.sectionsY = 1;
+		}
 
 		generator.groundBlock = (SpriteRenderer) EditorGUILayout.ObjectField("Ground Block", generator.groundBlock, typeof(SpriteRenderer), true);
 		generator.player = (PlayerAttachment) EditorGUILayout.ObjectField("Player", generator.player, typeof(PlayerAttachment), true);
