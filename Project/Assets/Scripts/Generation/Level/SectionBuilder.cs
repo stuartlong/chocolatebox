@@ -55,7 +55,7 @@ public class SectionBuilder {
 	/// A 2D int array representing the built section.
 	/// Uses <see cref="LevelGenerator.AssetTypeKey"/> as keys.
 	/// </returns>
-	public int[,] Build()
+	public Section Build()
 	{
 		CreateEntrances();
 		DeterminePits();
@@ -85,7 +85,7 @@ public class SectionBuilder {
 				} 
 				else if (ShouldInsertGroundBlock(x,y))
 				{
-					section[x,y] = (int) LevelGenerator.AssetTypeKey.GroundBlock;
+					section[x,y] = (int) LevelGenerator.AssetTypeKey.UndergroundBlock;
 					if (y == groundHeight)
 					{
 						blocksSinceLastChange++;
@@ -94,7 +94,7 @@ public class SectionBuilder {
 			}
 		}
 
-		return section;
+		return new Section(section);
 	}
 
 	private bool ShouldInsertGroundBlock(int x, int y)

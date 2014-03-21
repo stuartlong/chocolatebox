@@ -16,6 +16,7 @@ public class LevelGenerator : MonoBehaviour
 	public int sectionsX;
 	public Vector2 levelSize;
 	public SpriteRenderer groundBlock;
+	public SectionSprites[] sectionGroups;
 	public PlayerAttachment player;
 	public int MergeChance;
 	public bool openLevel;
@@ -31,7 +32,8 @@ public class LevelGenerator : MonoBehaviour
 		}
 		UnityEngine.Random.seed = seed;
 		//A grid of sections
-		int[,][,] master = new int[sectionsX,sectionsY][,];
+		//int[,][,] master = new int[sectionsX,sectionsY][,];
+		Section[,] master = new Section[sectionsX, sectionsY];
 
 		//build each section
 		SectionBuilder lastSection = null;
@@ -56,18 +58,18 @@ public class LevelGenerator : MonoBehaviour
 				sbParams.Hilliness = .09f;
 
 				SectionBuilder newSection = new SectionBuilder(this, sbParams);
-				int[,] section = newSection.Build();
 
 				//Store each section in master
-				master[width, height] = section;
+				master[width, height] = newSection.Build();
 				lastSection = newSection;
 			}
 		}
 
+		//TODO Section merging needs to happen before we build the actual sections
 		//merge random sections
 		//for each section border shared with another section roll a number
 		//each section border will be compared only once by going through each section and checking their top and right edges
-		for (int width = 0; width < master.GetLength(0)-1; width++)
+		/*for (int width = 0; width < master.GetLength(0)-1; width++)
 		{
 			for (int height = 0; height < master.GetLength(1); height++)
 			{
@@ -90,23 +92,23 @@ public class LevelGenerator : MonoBehaviour
 					}
 				}
 			}
-		}
+		}*/
 
 		//generate the sections using the representative arrays
 		for (int width = 0; width < master.GetLength(0); width++)
 		{
 			for (int height = 0; height < master.GetLength(1); height++)
 			{
-				for (int i = 0; i < master[width,height].GetLength(0); i++)
+				for (int i = 0; i < master[width,height].getGrid().GetLength(0); i++)
 				{
-					for (int j = 0; j < master[width,height].GetLength(1); j++)
+					for (int j = 0; j < master[width,height].getGrid().GetLength(1); j++)
 					{
-						if (master[width,height][i,j] == (int) AssetTypeKey.GroundBlock)
+						if (master[width,height].getGrid()[i,j] == (int) AssetTypeKey.UndergroundBlock)
 						{
 							float centerX = groundBlock.sprite.bounds.extents.x  * 2 * i + (
-								groundBlock.sprite.bounds.extents.y * 2 * master[width,height].GetLength(0)* width);
+								groundBlock.sprite.bounds.extents.y * 2 * master[width,height].getGrid().GetLength(0)* width);
 							float centerY = groundBlock.sprite.bounds.extents.y * 2 * j + (
-								groundBlock.sprite.bounds.extents.y * 2 * master[width,height].GetLength(1) * height);
+								groundBlock.sprite.bounds.extents.y * 2 * master[width,height].getGrid().GetLength(1) * height);
 							Instantiate(groundBlock, new Vector3(centerX,centerY,0), new Quaternion());
 						}
 					}
@@ -122,8 +124,11 @@ public class LevelGenerator : MonoBehaviour
 	public enum AssetTypeKey 
 	{
 		None = 0,
-		GroundBlock = 1,
+		UndergroundBlock = 1,
 		Entrance = 2,
-		Pit = 3
+		Pit = 3,
+		WallBlock = 4,
+		CeilingBlock = 5,
+		TopGroundBlock = 6
 	}
 }
