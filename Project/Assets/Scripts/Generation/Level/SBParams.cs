@@ -3,6 +3,7 @@ using System.Collections;
 
 /// <summary>
 /// A simple class for centralizing the parameters used in <see cref="SectionBuilder"/>.
+/// Primary Author - Stuart Long
 /// </summary>
 public class SBParams 
 {

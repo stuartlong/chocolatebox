@@ -23,13 +23,13 @@
 \begin{flushright}
 \HRule \\[0.4cm]
 { \bfseries
-{\huge EECS 395 Progress Report 1\\[1cm]}
+{\huge EECS 395 Progress Report 2\\[1cm]}
 {\Large for\\[1cm]}
 {\huge Chocolate Box\large\\[.1cm]
 A Procedural Level Generator for Unity\\[3cm]}
 {\large Prepared by\\[1cm]James Fitzpatrick\\Stuart Long\\Frank Singel\\[2cm]
-Version 1.1\\
-March 1, 2014\\
+Version 1.0\\
+March 21, 2014\\
 }}
 \end{flushright}
 \end{titlepage}
@@ -64,12 +64,19 @@ This section provides a high level overview of the features of \textit{Chocolate
 \item Level Generator
 \begin{enumerate}
 \item Section Generation
+\begin{enumerate}
+\item Multiple horizontal sections
+\item Multiple vertical sections (stretch goal)
+\end{enumerate}
 \item Transitions
 \item User Parameters
 \begin{enumerate}
 \item Pits/Spikes
 \item Elevation
 \item Difficulty
+\item Level Size
+\item Number of Sections
+\item Open Level vs Closed Level
 \end{enumerate}
 \item Decorations
 \end{enumerate}
@@ -103,6 +110,8 @@ This section provides a high level overview of the features of \textit{Chocolate
 \end{enumerate}
 \item Item Scripting
 \end{enumerate}
+
+\item{Custom Unity Editor}
 
 \item{Unity Demo Game}
 \begin{enumerate}
@@ -170,6 +179,9 @@ A constant feature in many games is the use of interactable items. These items s
 Each item will have a set of parameters that will define its behavior. Some of these parameters will include but will not be limited to \textit{Frequency, Player Benefit, Difficulty to Acquire}. The exact function of each item will be defined by the Game Developer through Unity Scripts. 
 \\
 
+\subsection{Custom Unity Editor}
+The default Unity inspector is powerful enough and easy enough to use to meet the needs of this project. However, Unity developers can write their own editors to use in place of the default Unity one. Custom editors allow developers much greater control over how users of their scripts interact with game objects and data. Therefore, creating a custom editor for \textit{Chocolate Box} will be a low priority goal.
+
 \subsection{Unity Platformer Game Demonstration}
 To utilize all of the tools that we will be generating, there will be a playable demo game for the final presentation. The demo that will be created will take many of its influences from the \textit{Megaman} style of platformer.  Player interaction will be noted with a standard side-scrolling playable character. The platformer will utilize sectionalized environments with a variety of enemy types. 
 
@@ -234,11 +246,18 @@ The final version of the project will include the \textit{Chocolate Box} library
 \centerline{\includegraphics[width=7in]{UnitySS.png}}
 \FloatBarrier
 \section{Project Progress}
-Progress on \textit{Chocolate Box} is, so far, on schedule. Most of the development has so far been focused on establishing a good base level design. The goals set for February were met, however, development will have to be ramped up in order for the March goals to be met.
+Progress on \textit{Chocolate Box} is a slightly behind schedule. While the majority of the ground work for both types of generation is complete. The more advanced features, such as generating platforms, were supposed to be implemented and simply have not been. The causes of the slower-than-expected progress were due mostly to certain areas of the project being more difficult than expected.
 \subsection{Section Generation}
-Currently, sections can be fully created using a single, user-provided "block". These sections have random gradients and pits and can merge into larger sections, depending on a user parameter. The algorithm for generating the floor and pits of each section accepts parameters that alter the overall nature of a section, such as how much the floor gradient should fluctuate or how frequent pits should be. While levels with multiple vertical layers of sections are allowed, there is no functionality yet for ensuring that vertical levels are reachable. 
+Since the last progress report, section generation has been improved so that hill and pit generation is much more seamless and generated according to a better random algorithm. Moreover, the algorithm now takes into account the attributes of the user-passed-in player. For example, entrances to a section have to be at least as big as the player so that it is guaranteed the player can fit through them. Player attributes have also been incorporated into the generation of pits and ground gradient. Sections now have a user-determined chance to "merge". That is, there is a chance that two sections will be generated as once larger section. This merging allows for a more dynamic level feel. 
 \subsection{Enemy Generation}
-Currently, enemy generation is organized by the EnemyGenerator Script. Enemies are generated relatively evenly throughout the level. These enemies, defined as Unity Prefabs that inheirit many Unity Physics2D components are spread at one per section. However, with the lastest growths in the elevation and pits from the Level generation, more sophisticated algorithms will be required to prevent unintelligent placement. In the future, the EnemyGenerator will no longer inheirit from MonoBehavior to increase Unity's performance. 
+The Enemy Generator has greatly expanded its functionality since its last project report. By our last report, enemies were spread at a roughly even spacing, with no consideration of the existence of pits directly below them. 
+
+As of this report, enemies are distributed with consideration to many factors. A script, called Enemy Attachment, adds a set of User Parameters to the Enemy GameObject for the purposes of enemy generation. This attachment script will be a functionless container class that holds many of the user parameters for the generation algorithm. The attachment does not effect the Enemy GameObject itself. These parameters, together with the shape, size, and elevations of the level factor into where enemies are generated.
+
+\subsection{Custom Unity Editor}
+While the custom unity editor was a stretch goal, the developers discovered that it is relatively easy to implement. This ease combined with the powerful flexibility and customization it lends to the UI means that it was worth pursuing immediately. Thus, significant progress has been made for constructing a custom Unity editor for the "LevelGeneration" script.
+\subsection{Issues}
+One major issue the development team has encountered was in the process of implementing the multiple vertical levels functionality. Constructing multiple vertical layers turned out to be much more difficult than anticipated, mostly due to the challenge of ensuring the player could actually reach those levels. Therefore, more than 1 vertical layer has become a stretch goal.
 
 \begin{thebibliography}{3}
 \bibitem{unity}Unity Technologies (2013). \textit{Unity Scripting Reference} [Online]. \url{http://docs.unity3d.com/Documentation/ScriptReference/index.html}
