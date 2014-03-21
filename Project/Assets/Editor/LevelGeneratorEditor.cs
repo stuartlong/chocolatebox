@@ -10,8 +10,11 @@ using UnityEditor;
 [CustomEditor(typeof(LevelGenerator))]
 public class LevelGeneratorEditor : Editor 
 {
+	private static readonly int PIXELS_PER_TAB = 20;
+	private bool blockFold = false;
 	public override void OnInspectorGUI()
 	{
+		serializedObject.Update();
 		LevelGenerator generator = (LevelGenerator) target;
 
 		Vector2 floatLevelSize = EditorGUILayout.Vector2Field("Level Size", generator.levelSize);
@@ -20,7 +23,8 @@ public class LevelGeneratorEditor : Editor
 
 		generator.openLevel = EditorGUILayout.Toggle("Open Level (No ceiling)", generator.openLevel);
 
-		if (!generator.openLevel) {
+		if (!generator.openLevel) 
+		{
 		Vector2 numbSections = EditorGUILayout.Vector2Field("Number of Sections", new Vector2(generator.sectionsX, generator.sectionsY));
 		generator.sectionsX = (int) numbSections.x;
 		generator.sectionsY = (int) numbSections.y;
@@ -30,6 +34,23 @@ public class LevelGeneratorEditor : Editor
 			Vector2 numbSections = EditorGUILayout.Vector2Field("Number of Sections", new Vector2(generator.sectionsX, 1));
 			generator.sectionsX = (int) numbSections.x;
 			generator.sectionsY = 1;
+		}
+
+		blockFold = EditorGUILayout.Foldout(blockFold, "Blocks");
+		//generator.groundBlocks = (SpriteRenderer[]) EditorGUILayout.ObjectField("Ground Blocks", generator.groundBlocks, typeof(SpriteRenderer[]), true);
+		if (blockFold) 
+		{
+			EditorGUILayout.BeginHorizontal();
+			GUILayout.Space(20);
+
+			SerializedProperty blocks = serializedObject.FindProperty("sectionGroups");
+			EditorGUI.BeginChangeCheck();
+			EditorGUILayout.PropertyField(blocks, true);
+			if (EditorGUI.EndChangeCheck())
+			{
+				serializedObject.ApplyModifiedProperties();
+			}
+			EditorGUILayout.EndHorizontal();
 		}
 
 		generator.groundBlock = (SpriteRenderer) EditorGUILayout.ObjectField("Ground Block", generator.groundBlock, typeof(SpriteRenderer), true);
