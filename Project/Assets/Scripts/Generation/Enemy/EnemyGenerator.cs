@@ -19,7 +19,7 @@ public class EnemyGenerator : MonoBehaviour
     public List<EnemyAttachment> Enemies = new List<EnemyAttachment>();
 
     public GameObject EnemyBlock;
-    private int[,][,] master;
+    private Section[,] master;
     private float xunitc;
     private float yunitc;
 
@@ -54,21 +54,18 @@ public class EnemyGenerator : MonoBehaviour
         int x = 3*minHorizontalDistance;
         int y = 0;
         int lastValidColumn = 2*minHorizontalDistance;
-
-        Debug.Log(x + " " + y + " " + lastValidColumn);
         
         for (int i = 0; i < _level_generator.sectionsX; i++)
         {
             for (int j = 0; j < _level_generator.sectionsY; j++)
             {
                 //Debug.Log("Section: i = " + i + ", j = " + j);
-                int[,] section = master[i, j];
+                Section section = master[i, j];
 
-                Debug.Log(section.GetLength(0));
                 
-                while (x < section.GetLength(0))
+                while (x < section.getWidth())
                 {
-                    if ((int)LevelGenerator.AssetTypeKey.GroundBlock == section[x, y])
+                    if ((int)LevelGenerator.AssetTypeKey.UndergroundBlock == section.get(x, y))
                     {
                         if (ValidSection(section, lastValidColumn, x, y))
                         {
@@ -92,9 +89,9 @@ public class EnemyGenerator : MonoBehaviour
                         else //We are at rock bottom. try a new column. 
                         {
                             //Find next column height
-                            while (x < section.Length)
+                            while (x < section.getWidth())
                             {
-                                if ((int)LevelGenerator.AssetTypeKey.GroundBlock == section[x, y])
+                                if ((int)LevelGenerator.AssetTypeKey.UndergroundBlock == section.get(x, y))
                                 {
                                     lastValidColumn = x;
                                     x += minHorizontalDistance;
@@ -127,13 +124,13 @@ public class EnemyGenerator : MonoBehaviour
         return distances[0];
     }
 
-    private bool ValidSection(int[,] section, int startx, int endx, int maxy)
+    private bool ValidSection(Section section, int startx, int endx, int maxy)
     {
         int checkx = (startx + endx) / 2; ; 
         int y = maxy;
         while (y >= 0 && Mathf.Abs(endx - checkx) > 1)
         {
-            if ((int) LevelGenerator.AssetTypeKey.GroundBlock == section[checkx, y])
+            if ((int) LevelGenerator.AssetTypeKey.UndergroundBlock == section.get(checkx, y))
             {
                 checkx = (endx + checkx) / 2;
             }
@@ -150,7 +147,7 @@ public class EnemyGenerator : MonoBehaviour
         return true;
     }
 
-    private void MakeEnemy(int[,] section, int x, int y)
+    private void MakeEnemy(Section section, int x, int y)
     {
         int newY = NextAvailableY(section, x,y);
         if (newY <= 0)
@@ -167,12 +164,12 @@ public class EnemyGenerator : MonoBehaviour
 
     }
 
-    private int NextAvailableY(int[,] section, int x, int y)
+    private int NextAvailableY(Section section, int x, int y)
     {
         int tempy = y + 1;
-        while (tempy < section.GetLength(1))
+        while (tempy < section.getHeight())
         {
-            if ((int)LevelGenerator.AssetTypeKey.None == section[x, y])
+            if ((int)LevelGenerator.AssetTypeKey.None == section.get(x, y))
             {
                 return y;
             }

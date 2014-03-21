@@ -21,6 +21,7 @@ public class LevelGenerator : MonoBehaviour
 	public PlayerAttachment player;
 	public Section[,] master;
 	public bool openLevel;
+    public int MergeChance;
 
 	[HideInInspector] public bool customSeed = false;
 
@@ -33,8 +34,7 @@ public class LevelGenerator : MonoBehaviour
 		}
 		UnityEngine.Random.seed = seed;
 		//A grid of sections
-		master = new int[sectionsX,sectionsY][,];
-		Section[,] master = new Section[sectionsX, sectionsY];
+		master = new Section[sectionsX, sectionsY];
 
 		//build each section
 		SectionBuilder lastSection = null;
