@@ -79,16 +79,12 @@ public class LevelGenerator : MonoBehaviour
 					//Merge to the right
 					for (int j = 0; j < master[width,height].GetLength(1); j++)
 					{
-						//Don't overwrite entrances
-						if (master[width,height][1,j] != (int) AssetTypeKey.Entrance)
-						{
-							//overwrite right most tiles with second to leftmost tiles in next section
-							master[width,height][master[width,height].GetLength(0)-1,j] = 
-								master[width+1,height][1,j];
-							//overwrite the tiles in the first section now
-							master[width+1,height][0,j] = 
-								master[width,height][master[width,height].GetLength(0)-2,j];
-						}
+						//overwrite right most tiles with second to leftmost tiles in next section
+						master[width,height][master[width,height].GetLength(0)-1,j] = 
+							master[width+1,height][1,j];
+						//overwrite the tiles in the first section now
+						master[width+1,height][0,j] = 
+							master[width,height][master[width,height].GetLength(0)-2,j];
 					}
 				}
 			}
