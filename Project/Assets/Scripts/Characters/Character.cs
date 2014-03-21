@@ -39,12 +39,12 @@ public class Character : MonoBehaviour
     protected Rigidbody2D _rigidbody;
 
     // edit these to tune character movement	
-    protected float walkVel = 4f; 	// walk speed
+    protected float walkVel = 4; 	// walk speed
     protected float jumpVel = 6f; 	// jump velocity
     protected float jump2Vel = 2f; 	// double jump velocity
     protected float fallVel = 1f;		// fall velocity, gravity
 
-    private float moveVel;
+    public float moveVel;
   
     private int jumps = 0;
     private int maxJumps = 2; 		// set to 2 for double jump
@@ -65,7 +65,7 @@ public class Character : MonoBehaviour
     // Use this for initialization
     public virtual void Start()
     {
-        moveVel = walkVel;
+        moveVel = this.walkVel;
     }
 
      // ============================== FIXEDUPDATE ============================== 

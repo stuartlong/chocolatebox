@@ -7,6 +7,7 @@ public class Player : Character
     {
         base.Start();
         characterType = Character.CharacterType.Player;
+        this.moveVel = 3.0f;
 
         spawnPos = _transform.position;
     }

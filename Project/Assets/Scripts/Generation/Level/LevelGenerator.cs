@@ -11,8 +11,9 @@ public class LevelGenerator : MonoBehaviour
 	public SpriteRenderer groundBlock;
     public bool openLevel;
 	public PlayerAttachment player;
+    public int[,][,] master;
 
-	public void Start () 
+	public void Awake () 
 	{
 		//TODO a temporary fix until we work up a custom unity interface
 		if (seed == -1)
@@ -22,7 +23,7 @@ public class LevelGenerator : MonoBehaviour
 		}
 		UnityEngine.Random.seed = seed;
 		//A grid of sections
-		int[,][,] master = new int[sectionsX,sectionsY][,];
+		master = new int[sectionsX,sectionsY][,];
 
 		SectionBuilder lastSection = null;
 		for (int width = 0; width < master.GetLength(0); width++)

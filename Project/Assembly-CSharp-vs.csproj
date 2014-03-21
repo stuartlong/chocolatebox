@@ -48,8 +48,10 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\Characters\Character.cs" />
      <Compile Include="Assets\Scripts\Characters\CharacterAnims.cs" />
+     <Compile Include="Assets\Scripts\Characters\Enemies\EnemyAttachment.cs" />
      <Compile Include="Assets\Scripts\Characters\Enemies\Goomba.cs" />
      <Compile Include="Assets\Scripts\Characters\Player\Player.cs" />
+     <Compile Include="Assets\Scripts\Generation\Enemy\EnemyGenerator.cs" />
      <Compile Include="Assets\Scripts\Generation\Level\EntrancePosition.cs" />
      <Compile Include="Assets\Scripts\Generation\Level\EntrancePositions.cs" />
      <Compile Include="Assets\Scripts\Generation\Level\LevelGenerator.cs" />
