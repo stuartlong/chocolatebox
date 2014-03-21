@@ -78,33 +78,44 @@ public class SectionBuilder {
 
 			for (int y = 0; y < numberBlocksY; y++)
 			{
+				if (!(section[x,y] == (int) LevelGenerator.AssetTypeKey.None))
+				{
+					continue;
+				}
+
+				bool belowGround = y < groundHeight;
+				bool atGround = y == groundHeight;
+				bool atWall = !generator.openLevel && (x == 0 || x == numberBlocksX-1);
+				bool atCeiling = !generator.openLevel && (y == numberBlocksY-1);
+				bool shouldPit = makingPit && y <= groundHeight;
+
 				//CreateExits(x, y);
-				if (makingPit && y <= groundHeight) 
+				if (shouldPit) 
 				{
 					section[x,y] = (int) LevelGenerator.AssetTypeKey.Pit;
-				} 
-				else if (ShouldInsertGroundBlock(x,y))
+				}
+				else if (belowGround)
 				{
 					section[x,y] = (int) LevelGenerator.AssetTypeKey.UndergroundBlock;
-					if (y == groundHeight)
-					{
-						blocksSinceLastChange++;
-					}
+
+				}
+				else if (atGround)
+				{
+					blocksSinceLastChange++;
+					section[x,y] = (int) LevelGenerator.AssetTypeKey.TopGroundBlock;
+				}
+				else if (atWall && !atCeiling)
+				{
+					section[x,y] = (int) LevelGenerator.AssetTypeKey.WallBlock;
+				}
+				else if (atCeiling)
+				{
+					section[x,y] = (int) LevelGenerator.AssetTypeKey.CeilingBlock;
 				}
 			}
 		}
 
-		return new Section(section);
-	}
-
-	private bool ShouldInsertGroundBlock(int x, int y)
-	{
-		bool emptySpace = section[x,y] == (int) LevelGenerator.AssetTypeKey.None;
-		bool atOrBelowGround = y <= groundHeight;
-		bool atWall = !generator.openLevel && (x == 0 || x == numberBlocksX-1);
-		bool atCeiling = !generator.openLevel && (y == numberBlocksY-1);
-
-		return emptySpace && (atOrBelowGround || atWall || atCeiling); 
+		return new Section(section, sbParams.sprites);
 	}
 
 	#region Pit Creation
@@ -201,11 +212,11 @@ public class SectionBuilder {
 	//creates an entryway with a random height at the passed x-column and entrancePos-row
 	private void CreateEastWestEntrance(int xCoord, int entrancePos)
 	{
-		int max_height = Random.Range((int) generator.player.maxPlayerSize.y+groundHeight, numberBlocksY - 1 - groundHeight) - 1;
+		int max_height = Random.Range((int) generator.player.maxPlayerSize.y+entrancePos, numberBlocksY - 1 - entrancePos) - 1;
 		
-		for (int i = 0; i < max_height; i++)
+		for (int i = entrancePos; i < max_height; i++)
 		{
-			section[xCoord, entrancePos+i] = (int) LevelGenerator.AssetTypeKey.Entrance;
+			section[xCoord, i] = (int) LevelGenerator.AssetTypeKey.Entrance;
 		}
 	}
 
@@ -238,12 +249,12 @@ public class SectionBuilder {
 
 	private int ConvertToBlocksY(float unityUnitsY)
 	{
-		return (int) (unityUnitsY / (generator.groundBlock.sprite.bounds.extents.y * 2));
+		return (int) (unityUnitsY / (sbParams.sprites.groundBlocks[0].sprite.bounds.extents.y * 2));
 	}
 
 	private int ConvertToBlocksX(float unityUnitsX)
 	{
-		return (int) (unityUnitsX / (generator.groundBlock.sprite.bounds.extents.x * 2));
+		return (int) (unityUnitsX / (sbParams.sprites.groundBlocks[0].sprite.bounds.extents.x * 2));
 	}
 
 	private float PercentChangeFromOne(float x)

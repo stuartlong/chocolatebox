@@ -8,14 +8,27 @@ using System.Collections;
 public class Section
 {
 	private int[,] grid;
+	private SectionSprites sprites;
 
-	public Section(int[,] sectionGrid)
+	public int[,] Grid
 	{
-		grid = sectionGrid;
+		get
+		{
+			return grid;
+		}
 	}
 
-	public int[,] getGrid()
+	public SectionSprites Sprites
 	{
-		return grid;
+		get
+		{
+			return sprites;
+		}
+	}
+
+	public Section(int[,] sectionGrid, SectionSprites sectionSprites)
+	{
+		grid = sectionGrid;
+		sprites = sectionSprites;
 	}
 }

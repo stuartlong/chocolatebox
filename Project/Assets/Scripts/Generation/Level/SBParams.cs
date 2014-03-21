@@ -20,6 +20,11 @@ public class SBParams
 	public EntrancePositions entrancePositions;
 
 	/// <summary>
+	/// The various group of sprites that comprise this section.
+	/// </summary>
+	public SectionSprites sprites;
+
+	/// <summary>
 	/// Gets or sets the hilliness which determines how often the height of the ground changes.
 	/// </summary>
 	public float Hilliness

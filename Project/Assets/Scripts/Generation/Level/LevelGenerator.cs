@@ -15,7 +15,6 @@ public class LevelGenerator : MonoBehaviour
 	public int sectionsY;
 	public int sectionsX;
 	public Vector2 levelSize;
-	public SpriteRenderer groundBlock;
 	public SectionSprites[] sectionGroups;
 	public PlayerAttachment player;
 	public int MergeChance;
@@ -56,6 +55,7 @@ public class LevelGenerator : MonoBehaviour
 				sbParams.entrancePositions = entrances;
 				sbParams.Pittiness = 0.09f;
 				sbParams.Hilliness = .09f;
+				sbParams.sprites = sectionGroups[UnityEngine.Random.Range(0, sectionGroups.GetLength(0))];
 
 				SectionBuilder newSection = new SectionBuilder(this, sbParams);
 
@@ -95,17 +95,61 @@ public class LevelGenerator : MonoBehaviour
 		{
 			for (int height = 0; height < master.GetLength(1); height++)
 			{
-				for (int i = 0; i < master[width,height].getGrid().GetLength(0); i++)
+				Section section = master[width,height];
+				SpriteRenderer baseBlock = section.Sprites.groundBlocks[0];
+
+				for (int i = 0; i < section.Grid.GetLength(0); i++)
 				{
-					for (int j = 0; j < master[width,height].getGrid().GetLength(1); j++)
+					for (int j = 0; j < section.Grid.GetLength(1); j++)
 					{
-						if (master[width,height].getGrid()[i,j] == (int) AssetTypeKey.UndergroundBlock)
+						float centerX = baseBlock.sprite.bounds.extents.x  * 2 * i + (
+							baseBlock.sprite.bounds.extents.y * 2 * section.Grid.GetLength(0)* width);
+						float centerY = baseBlock.sprite.bounds.extents.y * 2 * j + (
+							baseBlock.sprite.bounds.extents.y * 2 * section.Grid.GetLength(1) * height);
+
+						AssetTypeKey key = (AssetTypeKey) section.Grid[i,j];
+						UnityEngine.Object toInstantiate = null;
+						if (key == AssetTypeKey.UndergroundBlock)
 						{
-							float centerX = groundBlock.sprite.bounds.extents.x  * 2 * i + (
-								groundBlock.sprite.bounds.extents.y * 2 * master[width,height].getGrid().GetLength(0)* width);
-							float centerY = groundBlock.sprite.bounds.extents.y * 2 * j + (
-								groundBlock.sprite.bounds.extents.y * 2 * master[width,height].getGrid().GetLength(1) * height);
-							Instantiate(groundBlock, new Vector3(centerX,centerY,0), new Quaternion());
+							toInstantiate = section.Sprites.groundBlocks[UnityEngine.Random.Range(0, section.Sprites.groundBlocks.GetLength(0))];
+						}
+						else if (key == AssetTypeKey.TopGroundBlock)
+						{
+							if (section.Sprites.topGroundBlocks.GetLength(0) > 0)
+							{
+								toInstantiate = section.Sprites.topGroundBlocks[UnityEngine.Random.Range(0, section.Sprites.topGroundBlocks.GetLength(0))];
+							}
+							else
+							{
+								toInstantiate = section.Sprites.groundBlocks[UnityEngine.Random.Range(0, section.Sprites.groundBlocks.GetLength(0))];
+							}
+						}
+						else if (key == AssetTypeKey.WallBlock && section.Sprites.wallBlocks.GetLength(0) > 0)
+						{
+							if (section.Sprites.topGroundBlocks.GetLength(0) > 0)
+							{
+								toInstantiate = section.Sprites.wallBlocks[UnityEngine.Random.Range(0, section.Sprites.wallBlocks.GetLength(0))];
+							}
+							else
+							{
+								toInstantiate = section.Sprites.wallBlocks[UnityEngine.Random.Range(0, section.Sprites.wallBlocks.GetLength(0))];
+							}
+						}
+						else if (key == AssetTypeKey.CeilingBlock && section.Sprites.ceilingBlocks.GetLength(0) > 0)
+						{
+							if (section.Sprites.ceilingBlocks.GetLength(0) > 0)
+							{
+								toInstantiate = section.Sprites.ceilingBlocks[UnityEngine.Random.Range(0, section.Sprites.ceilingBlocks.GetLength(0))];
+							}
+							else
+							{
+								toInstantiate = section.Sprites.groundBlocks[UnityEngine.Random.Range(0, section.Sprites.groundBlocks.GetLength(0))];
+							}
+						}
+
+						if (toInstantiate != null)
+						{
+							Instantiate(toInstantiate, new Vector3(centerX,centerY,0), new Quaternion());
 						}
 					}
 				}
