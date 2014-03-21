@@ -122,6 +122,11 @@ public class SectionBuilder {
 	//determines which columns of the sections should represent pits
 	private void DeterminePits()
 	{
+		if (!sbParams.allowPits)
+		{
+			return;
+		}
+
 		bool makingPit = false;
 		int numberPits = 0;
 		int pitLength = 0;
@@ -190,7 +195,7 @@ public class SectionBuilder {
 	private void ChangeGroundHeightIfAble(int currentX)
 	{
 		float r = Random.Range(0f,1f);
-		bool goUp = r >= .5;
+		bool goUp = sbParams.OnlyGoesUp || r >= .5;
 		
 		int maxJump = (int) generator.player.maxJumpDistance.y;
 		//int difference = (int)((float) maxJump * Beta(Random.Range(0f,1f)));

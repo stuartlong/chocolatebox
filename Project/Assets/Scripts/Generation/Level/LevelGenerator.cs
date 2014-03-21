@@ -30,8 +30,8 @@ public class LevelGenerator : MonoBehaviour
 			seed = (int) (System.DateTime.UtcNow - epochStart).TotalSeconds;
 		}
 		UnityEngine.Random.seed = seed;
+
 		//A grid of sections
-		//int[,][,] master = new int[sectionsX,sectionsY][,];
 		Section[,] master = new Section[sectionsX, sectionsY];
 
 		//build each section
@@ -56,6 +56,25 @@ public class LevelGenerator : MonoBehaviour
 				sbParams.Pittiness = 0.09f;
 				sbParams.Hilliness = .09f;
 				sbParams.sprites = sectionGroups[UnityEngine.Random.Range(0, sectionGroups.GetLength(0))];
+
+				if (UnityEngine.Random.Range(0f, 1f) > .9f)
+				{
+					if (UnityEngine.Random.Range(0f, 1f) > .5f)
+					{
+						sbParams.OnlyGoesUp = true;
+					}
+					else
+					{
+						sbParams.OnlyGoesDown = true;
+					}
+				}
+
+
+				//TODO should be based on difficulty and the pittiness
+				if (UnityEngine.Random.Range(0f, 1f) > .9f)
+				{
+					sbParams.allowPits = false;
+				}
 
 				SectionBuilder newSection = new SectionBuilder(this, sbParams);
 
@@ -124,7 +143,7 @@ public class LevelGenerator : MonoBehaviour
 								toInstantiate = section.Sprites.groundBlocks[UnityEngine.Random.Range(0, section.Sprites.groundBlocks.GetLength(0))];
 							}
 						}
-						else if (key == AssetTypeKey.WallBlock && section.Sprites.wallBlocks.GetLength(0) > 0)
+						else if (key == AssetTypeKey.WallBlock)
 						{
 							if (section.Sprites.topGroundBlocks.GetLength(0) > 0)
 							{
@@ -135,7 +154,7 @@ public class LevelGenerator : MonoBehaviour
 								toInstantiate = section.Sprites.wallBlocks[UnityEngine.Random.Range(0, section.Sprites.wallBlocks.GetLength(0))];
 							}
 						}
-						else if (key == AssetTypeKey.CeilingBlock && section.Sprites.ceilingBlocks.GetLength(0) > 0)
+						else if (key == AssetTypeKey.CeilingBlock)
 						{
 							if (section.Sprites.ceilingBlocks.GetLength(0) > 0)
 							{

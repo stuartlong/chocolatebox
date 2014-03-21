@@ -25,6 +25,56 @@ public class SBParams
 	public SectionSprites sprites;
 
 	/// <summary>
+	/// Whether or not pits will be created in this section.
+	/// </summary>
+	public bool allowPits = true;
+
+	/// <summary>
+	/// Gets or sets a value indicating whether this <see cref="Section"/> should be monotonically increasing.
+	/// </summary>
+	/// <value><c>true</c> if only goes up; otherwise, <c>false</c>.</value>
+	public bool OnlyGoesUp
+	{
+		get
+		{
+			return onlyUp;
+		}
+
+		set
+		{
+			onlyUp = value;
+			if (value) 
+			{
+				onlyDown = false;
+			}
+		}
+	}
+
+
+	/// <summary>
+	/// Gets or sets a value indicating whether this <see cref="SBParams"/> only down.
+	/// </summary>
+	/// <value><c>true</c> if only goes down; otherwise, <c>false</c>.</value>
+	public bool OnlyGoesDown
+	{
+		get
+		{
+			return onlyDown;
+		}
+		set
+		{
+			onlyDown = value;
+			if (value)
+			{
+				onlyUp = false;
+			}
+		}
+	}
+
+	private bool onlyDown = false;
+	private bool onlyUp = false;
+
+	/// <summary>
 	/// Gets or sets the hilliness which determines how often the height of the ground changes.
 	/// </summary>
 	public float Hilliness
