@@ -31,4 +31,19 @@ public class Section
 		grid = sectionGrid;
 		sprites = sectionSprites;
 	}
+
+    public int getWidth()
+    {
+        return grid.GetLength(0);
+    }
+
+    public int getHeight()
+    {
+        return grid.GetLength(1);
+    }
+
+    public int get(int x, int y)
+    {
+        return grid[x, y];
+    }
 }

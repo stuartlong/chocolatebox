@@ -16,13 +16,15 @@ public class LevelGenerator : MonoBehaviour
 	public int sectionsX;
 	public Vector2 levelSize;
 	public SectionSprites[] sectionGroups;
+    	public int MergeChange;
 	public PlayerAttachment player;
-	public int MergeChance;
+	public Section[,] master;
 	public bool openLevel;
+    public int MergeChance;
 
 	[HideInInspector] public bool customSeed = false;
 
-	public void Start () 
+	public void Awake () 
 	{
 		if (!customSeed)
 		{
@@ -32,7 +34,7 @@ public class LevelGenerator : MonoBehaviour
 		UnityEngine.Random.seed = seed;
 
 		//A grid of sections
-		Section[,] master = new Section[sectionsX, sectionsY];
+		master = new Section[sectionsX, sectionsY];
 
 		//build each section
 		SectionBuilder lastSection = null;
