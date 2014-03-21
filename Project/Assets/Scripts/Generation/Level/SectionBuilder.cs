@@ -197,7 +197,7 @@ public class SectionBuilder {
 		int difference = Random.Range(1,maxJump);
 		if (goUp)
 		{
-			groundHeight = (int) Mathf.Min(numberBlocksY - generator.player.maxPlayerSize.y - 1, groundHeight + difference);
+			groundHeight = Mathf.Min((int) (numberBlocksY - (generator.player.maxPlayerSize.y + 1) - 1), (int) (groundHeight + difference));
 		}
 		else
 		{
@@ -212,7 +212,14 @@ public class SectionBuilder {
 	//creates an entryway with a random height at the passed x-column and entrancePos-row
 	private void CreateEastWestEntrance(int xCoord, int entrancePos)
 	{
-		int max_height = Random.Range((int) generator.player.maxPlayerSize.y+entrancePos, numberBlocksY - 1 - entrancePos) - 1;
+		int min = (int) generator.player.maxPlayerSize.y+entrancePos;
+		int max = numberBlocksY - 1;
+		int max_height = Random.Range(min, max);
+
+		if (max < min)
+		{
+			Debug.Log (min + ", " + max);
+		}
 		
 		for (int i = entrancePos; i < max_height; i++)
 		{
