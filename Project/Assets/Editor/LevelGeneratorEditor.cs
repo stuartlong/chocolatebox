@@ -54,6 +54,14 @@ public class LevelGeneratorEditor : Editor
 			EditorGUILayout.BeginVertical();
 			EditorGUILayout.LabelField("The sprites to use for you level. These should be prefabs.");
 
+			SerializedProperty globablSprites = serializedObject.FindProperty("globalSprites");
+			EditorGUI.BeginChangeCheck();
+			EditorGUILayout.PropertyField(globablSprites, true);
+			if (EditorGUI.EndChangeCheck())
+			{
+				serializedObject.ApplyModifiedProperties();
+			}
+
 			SerializedProperty blocks = serializedObject.FindProperty("sectionGroups");
 			EditorGUI.BeginChangeCheck();
 			EditorGUILayout.PropertyField(blocks, true);

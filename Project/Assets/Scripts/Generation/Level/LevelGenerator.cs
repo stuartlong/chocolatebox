@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 /// <summary>
 /// The Overlord script that generates each section and combines them. This script must be
@@ -19,8 +21,8 @@ public class LevelGenerator : MonoBehaviour
 	public PlayerAttachment player;
 	public int MergeChance;
 	public bool openLevel;
-
-	[HideInInspector] public bool customSeed = false;
+	public SectionSprites globalSprites;
+	public bool customSeed = false;
 
 	public void Start () 
 	{
@@ -127,44 +129,7 @@ public class LevelGenerator : MonoBehaviour
 							baseBlock.sprite.bounds.extents.y * 2 * section.Grid.GetLength(1) * height);
 
 						AssetTypeKey key = (AssetTypeKey) section.Grid[i,j];
-						UnityEngine.Object toInstantiate = null;
-						if (key == AssetTypeKey.UndergroundBlock)
-						{
-							toInstantiate = section.Sprites.groundBlocks[UnityEngine.Random.Range(0, section.Sprites.groundBlocks.GetLength(0))];
-						}
-						else if (key == AssetTypeKey.TopGroundBlock)
-						{
-							if (section.Sprites.topGroundBlocks.GetLength(0) > 0)
-							{
-								toInstantiate = section.Sprites.topGroundBlocks[UnityEngine.Random.Range(0, section.Sprites.topGroundBlocks.GetLength(0))];
-							}
-							else
-							{
-								toInstantiate = section.Sprites.groundBlocks[UnityEngine.Random.Range(0, section.Sprites.groundBlocks.GetLength(0))];
-							}
-						}
-						else if (key == AssetTypeKey.WallBlock)
-						{
-							if (section.Sprites.topGroundBlocks.GetLength(0) > 0)
-							{
-								toInstantiate = section.Sprites.wallBlocks[UnityEngine.Random.Range(0, section.Sprites.wallBlocks.GetLength(0))];
-							}
-							else
-							{
-								toInstantiate = section.Sprites.wallBlocks[UnityEngine.Random.Range(0, section.Sprites.wallBlocks.GetLength(0))];
-							}
-						}
-						else if (key == AssetTypeKey.CeilingBlock)
-						{
-							if (section.Sprites.ceilingBlocks.GetLength(0) > 0)
-							{
-								toInstantiate = section.Sprites.ceilingBlocks[UnityEngine.Random.Range(0, section.Sprites.ceilingBlocks.GetLength(0))];
-							}
-							else
-							{
-								toInstantiate = section.Sprites.groundBlocks[UnityEngine.Random.Range(0, section.Sprites.groundBlocks.GetLength(0))];
-							}
-						}
+						UnityEngine.Object toInstantiate = GetBlockOfTypeForSection(key, section);
 
 						if (toInstantiate != null)
 						{
@@ -174,6 +139,40 @@ public class LevelGenerator : MonoBehaviour
 				}
 			}
 		}
+	}
+
+	private UnityEngine.Object GetBlockOfTypeForSection(AssetTypeKey type, Section s)
+	{
+		switch (type)
+		{
+		case AssetTypeKey.UndergroundBlock:
+			return GetBlockFromArrays(globalSprites.groundBlocks, s.Sprites.groundBlocks);
+		case AssetTypeKey.TopGroundBlock:
+			return GetBlockFromArrays(globalSprites.topGroundBlocks, s.Sprites.topGroundBlocks);
+		case AssetTypeKey.WallBlock:
+			return GetBlockFromArrays(globalSprites.wallBlocks, s.Sprites.wallBlocks);
+		case AssetTypeKey.CeilingBlock:
+
+			return GetBlockFromArrays(globalSprites.ceilingBlocks, s.Sprites.ceilingBlocks);
+		default:
+			return null;
+		}
+	}
+
+	private UnityEngine.Object GetBlockFromArrays(params SpriteRenderer[][] arrays)
+	{
+		List<SpriteRenderer> allSprites = new List<SpriteRenderer>();
+		int totalSize = 0;
+		for (int i = 0; i < arrays.GetLength(0); i++)
+		{
+			for (int j = 0; j < ((SpriteRenderer[]) arrays[i]).GetLength(0); j++)
+			{
+				allSprites.Add(((SpriteRenderer[]) arrays[i])[j]);
+			}
+		}
+		
+		int randomIndex = UnityEngine.Random.Range(0, allSprites.Count);
+		return allSprites.ElementAt(randomIndex);
 	}
 
 	/// <summary>
