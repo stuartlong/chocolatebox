@@ -18,7 +18,7 @@ public class LevelGenerator : MonoBehaviour
 	public int sectionsX;
 	public Vector2 levelSize;
 	public SectionSprites[] sectionGroups;
-    public int MergeChange;
+    public int MergeChance;
 	public PlayerAttachment player;
 	public Section[,] master;
 	public bool openLevel;
@@ -157,6 +157,18 @@ public class LevelGenerator : MonoBehaviour
 			return GetBlockFromArrays(globalSprites.ceilingBlocks, s.Sprites.ceilingBlocks);
 		default:
 			return null;
+		}
+	}
+
+	public SpriteRenderer GetBaseBlock()
+	{
+		if (globalSprites.groundBlocks.GetLength(0) > 0)
+		{
+			return globalSprites.groundBlocks[0];
+		}
+		else
+		{
+			return sectionGroups[0].groundBlocks[0];
 		}
 	}
 

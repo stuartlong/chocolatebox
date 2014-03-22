@@ -29,8 +29,8 @@ public class EnemyGenerator : MonoBehaviour
         master = _level_generator.master;
 
         //Converting from tiles to coordinates
-        xunitc = 2 * _level_generator.groundBlock.sprite.bounds.extents.x;
-        yunitc = 2 * _level_generator.groundBlock.sprite.bounds.extents.y;
+        xunitc = 2 * _level_generator.GetBaseBlock().sprite.bounds.extents.x;
+		yunitc = 2 * _level_generator.GetBaseBlock().sprite.bounds.extents.y;
 
 
         //0,0 is the bottom left tile of a section/level

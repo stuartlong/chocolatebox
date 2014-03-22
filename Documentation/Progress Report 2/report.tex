@@ -77,6 +77,8 @@ This section provides a high level overview of the features of \textit{Chocolate
 \item Level Size
 \item Number of Sections
 \item Open Level vs Closed Level
+\item Sprites to use
+\item Sprite groups
 \end{enumerate}
 \item Decorations
 \end{enumerate}
@@ -248,7 +250,7 @@ The final version of the project will include the \textit{Chocolate Box} library
 \section{Project Progress}
 Progress on \textit{Chocolate Box} is a slightly behind schedule. While the majority of the ground work for both types of generation is complete. The more advanced features, such as generating platforms, were supposed to be implemented and simply have not been. The causes of the slower-than-expected progress were due mostly to certain areas of the project being more difficult than expected.
 \subsection{Section Generation}
-Since the last progress report, section generation has been improved so that hill and pit generation is much more seamless and generated according to a better random algorithm. Moreover, the algorithm now takes into account the attributes of the user-passed-in player. For example, entrances to a section have to be at least as big as the player so that it is guaranteed the player can fit through them. Player attributes have also been incorporated into the generation of pits and ground gradient. Sections now have a user-determined chance to "merge". That is, there is a chance that two sections will be generated as once larger section. This merging allows for a more dynamic level feel. 
+Since the last progress report, section generation has been improved so that hill and pit generation is much more seamless and generated according to a better random algorithm. Moreover, the algorithm now takes into account the attributes of the user-passed-in player. For example, entrances to a section have to be at least as big as the player so that it is guaranteed the player can fit through them. Player attributes have also been incorporated into the generation of pits and ground gradient. Users can now specify various types of blocks to populate their level. For example, they can specify certain blocks to be ceiling blocks or certain ones to be wall blocks. Then the generator will populate the walls and ceilings only with the blocks specified to be wall and ceiling blocks respectively. Furthermore, the user can create "groups" of sprites. If the user does so, then each section will be paired with a certain sprite group from which it will draw the sprites to populate the section. 
 \subsection{Enemy Generation}
 The Enemy Generator has greatly expanded its functionality since its last project report. By our last report, enemies were spread at a roughly even spacing, with no consideration of the existence of pits directly below them. 
 
