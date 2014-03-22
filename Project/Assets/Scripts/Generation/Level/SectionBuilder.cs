@@ -12,9 +12,6 @@ using System.Linq;
 /// Primary Author - Stuart Long
 /// </summary>
 public class SectionBuilder {
-	//TODO should be based on player
-	private static int MAX_PIT_LENGTH = 10;
-
 	//TODO determined by difficulty?
 	private static int MIN_PIT_LENGTH = 3;
 	private static int MAX_PITS = 3;
