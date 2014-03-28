@@ -30,6 +30,11 @@ public class SBParams
 	public bool allowPits = true;
 
 	/// <summary>
+	/// Indicates that this will be where the current level ends.
+	/// </summary>
+	public bool lastSection = false;
+
+	/// <summary>
 	/// Gets or sets a value indicating whether this <see cref="Section"/> should be monotonically increasing.
 	/// </summary>
 	/// <value><c>true</c> if only goes up; otherwise, <c>false</c>.</value>

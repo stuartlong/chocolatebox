@@ -82,6 +82,10 @@ public class LevelGeneratorEditor : Editor
 		EditorGUILayout.LabelField("The player object");
 		GUILayout.Space(VERTICAL_TAB);
 
+		generator.levelEnd = (SpriteRenderer) EditorGUILayout.ObjectField("Level End", generator.levelEnd, typeof(SpriteRenderer), true);
+		EditorGUILayout.LabelField("The object to appear at the end of the level.");
+		GUILayout.Space(VERTICAL_TAB);
+
 		generator.MergeChance = EditorGUILayout.IntSlider("Section Merge Chance", generator.MergeChance, 0, 100);
 		EditorGUILayout.LabelField("The chance that one or more of your sections will merge to form a single large section.");
 		GUILayout.Space(VERTICAL_TAB);

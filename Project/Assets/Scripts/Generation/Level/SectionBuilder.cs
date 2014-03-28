@@ -68,8 +68,20 @@ public class SectionBuilder {
 
 			if (x == numberBlocksX-1)
 			{
-				CreateEastWestEntrance(x, groundHeight+1);
-				finalEntrancePositions.eastEntrance.location = groundHeight + 1;
+				if (sbParams.lastSection)
+				{
+					for (int i = groundHeight + 1; i < Mathf.Min(numberBlocksY, (int) (groundHeight + ConvertToBlocksY(generator.levelEnd.bounds.size.y))); i++)
+					{
+						section[x, i] = (int) LevelGenerator.AssetTypeKey.Empty;
+					}
+
+					section[x, (int) (groundHeight + 1 + ConvertToBlocksY(generator.levelEnd.bounds.extents.y))] = (int) LevelGenerator.AssetTypeKey.LevelEnd;
+				}
+				else
+				{
+					CreateEastWestEntrance(x, groundHeight+1);
+					finalEntrancePositions.eastEntrance.location = groundHeight + 1;
+				}
 			}
 
 
@@ -258,12 +270,12 @@ public class SectionBuilder {
 
 	private int ConvertToBlocksY(float unityUnitsY)
 	{
-		return (int) (unityUnitsY / (sbParams.sprites.belowGroundBlocks[0].sprite.bounds.extents.y * 2));
+		return (int) (unityUnitsY / (generator.GetBaseBlock().sprite.bounds.extents.y * 2));
 	}
 
 	private int ConvertToBlocksX(float unityUnitsX)
 	{
-		return (int) (unityUnitsX / (sbParams.sprites.belowGroundBlocks[0].sprite.bounds.extents.x * 2));
+		return (int) (unityUnitsX / (generator.GetBaseBlock().sprite.bounds.extents.x * 2));
 	}
 
 	private float PercentChangeFromOne(float x)

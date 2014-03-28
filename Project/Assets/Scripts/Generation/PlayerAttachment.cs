@@ -9,5 +9,4 @@ public class PlayerAttachment : MonoBehaviour
 	//certain really huge states/animations that we can't detect
 	public Vector2	maxPlayerSize;
 
-
 }

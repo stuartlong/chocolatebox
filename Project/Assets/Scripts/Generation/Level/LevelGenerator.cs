@@ -20,6 +20,7 @@ public class LevelGenerator : MonoBehaviour
 	public SectionSprites[] sectionGroups;
     public int MergeChance;
 	public PlayerAttachment player;
+	public SpriteRenderer levelEnd;
 	public Section[,] master;
 	public bool openLevel;
 	public SectionSprites globalSprites;
@@ -58,7 +59,15 @@ public class LevelGenerator : MonoBehaviour
 				sbParams.entrancePositions = entrances;
 				sbParams.Pittiness = 0.09f;
 				sbParams.Hilliness = .09f;
-				sbParams.sprites = sectionGroups[UnityEngine.Random.Range(0, sectionGroups.GetLength(0))];
+
+				if (sectionGroups.GetLength(0) > 0)
+				{
+					sbParams.sprites = sectionGroups[UnityEngine.Random.Range(0, sectionGroups.GetLength(0))];
+				}
+				else
+				{
+					sbParams.sprites = globalSprites;
+				}
 
 				if (UnityEngine.Random.Range(0f, 1f) > .9f)
 				{
@@ -70,6 +79,11 @@ public class LevelGenerator : MonoBehaviour
 					{
 						sbParams.OnlyGoesDown = true;
 					}
+				}
+
+				if (width == master.GetLength(0) - 1 && height == master.GetLength(1) - 1)
+				{
+					sbParams.lastSection = true;
 				}
 
 
@@ -153,8 +167,9 @@ public class LevelGenerator : MonoBehaviour
 		case AssetTypeKey.WallBlock:
 			return GetBlockFromArrays(globalSprites.wallBlocks, s.Sprites.wallBlocks);
 		case AssetTypeKey.CeilingBlock:
-
 			return GetBlockFromArrays(globalSprites.ceilingBlocks, s.Sprites.ceilingBlocks);
+		case AssetTypeKey.LevelEnd:
+			return levelEnd;
 		default:
 			return null;
 		}
@@ -200,6 +215,8 @@ public class LevelGenerator : MonoBehaviour
 		Pit = 3,
 		WallBlock = 4,
 		CeilingBlock = 5,
-		TopGroundBlock = 6
+		TopGroundBlock = 6,
+		LevelEnd = 7,
+		Empty = 8
 	}
 }

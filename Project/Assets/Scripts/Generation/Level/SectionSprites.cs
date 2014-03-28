@@ -11,6 +11,11 @@ public class SectionSprites
 	public string name;
 
 	/// <summary>
+	/// The sprites that will be placed at the bottom of pits.
+	/// </summary>
+	public SpriteRenderer[] pitObjects;
+
+	/// <summary>
 	/// The sprites to use for ground blocks. These act as the default blocks that make up
 	/// your level. All block sprites must be the same size.
 	/// </summary>
