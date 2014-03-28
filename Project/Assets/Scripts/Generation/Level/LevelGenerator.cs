@@ -118,7 +118,7 @@ public class LevelGenerator : MonoBehaviour
 			for (int height = 0; height < master.GetLength(1); height++)
 			{
 				Section section = master[width,height];
-				SpriteRenderer baseBlock = section.Sprites.groundBlocks[0];
+				SpriteRenderer baseBlock = section.Sprites.belowGroundBlocks[0];
 
 				for (int i = 0; i < section.Grid.GetLength(0); i++)
 				{
@@ -147,7 +147,7 @@ public class LevelGenerator : MonoBehaviour
 		switch (type)
 		{
 		case AssetTypeKey.UndergroundBlock:
-			return GetBlockFromArrays(globalSprites.groundBlocks, s.Sprites.groundBlocks);
+			return GetBlockFromArrays(globalSprites.belowGroundBlocks, s.Sprites.belowGroundBlocks);
 		case AssetTypeKey.TopGroundBlock:
 			return GetBlockFromArrays(globalSprites.topGroundBlocks, s.Sprites.topGroundBlocks);
 		case AssetTypeKey.WallBlock:
@@ -162,13 +162,13 @@ public class LevelGenerator : MonoBehaviour
 
 	public SpriteRenderer GetBaseBlock()
 	{
-		if (globalSprites.groundBlocks.GetLength(0) > 0)
+		if (globalSprites.belowGroundBlocks.GetLength(0) > 0)
 		{
-			return globalSprites.groundBlocks[0];
+			return globalSprites.belowGroundBlocks[0];
 		}
 		else
 		{
-			return sectionGroups[0].groundBlocks[0];
+			return sectionGroups[0].belowGroundBlocks[0];
 		}
 	}
 

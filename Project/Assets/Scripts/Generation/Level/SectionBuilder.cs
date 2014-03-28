@@ -258,12 +258,12 @@ public class SectionBuilder {
 
 	private int ConvertToBlocksY(float unityUnitsY)
 	{
-		return (int) (unityUnitsY / (sbParams.sprites.groundBlocks[0].sprite.bounds.extents.y * 2));
+		return (int) (unityUnitsY / (sbParams.sprites.belowGroundBlocks[0].sprite.bounds.extents.y * 2));
 	}
 
 	private int ConvertToBlocksX(float unityUnitsX)
 	{
-		return (int) (unityUnitsX / (sbParams.sprites.groundBlocks[0].sprite.bounds.extents.x * 2));
+		return (int) (unityUnitsX / (sbParams.sprites.belowGroundBlocks[0].sprite.bounds.extents.x * 2));
 	}
 
 	private float PercentChangeFromOne(float x)
