@@ -35,6 +35,40 @@ public class LevelGenerator : MonoBehaviour
 		}
 		UnityEngine.Random.seed = seed;
 
+		//determine premerge section sizes
+		float xSize = levelSize.x / sectionsX;
+		float ySize = levelSize.y / sectionsY;
+
+		//List of which sections merge left
+		List<int> merges = new List<int>();
+
+
+		//Determine which sections to merge
+		for(int section = sectionsX; section > 1; section--)
+		{
+			//Determine if you want to merge right
+			if (UnityEngine.Random.Range(0,100) < MergeChance)
+			{
+				merges.Add(section-1);
+				sectionsX--;
+			}
+		}
+
+		//total how many sections belong in each multi-section
+		float[] sectionMultiplier = new float[sectionsX];
+		int focusIndex = 1;
+		for(int x = 0; x < sectionsX; x++)
+		{
+			sectionMultiplier[x] = 1;
+			while(merges.Contains(focusIndex))
+			{
+				sectionMultiplier[x]++;
+				focusIndex++;
+			}
+			focusIndex++;
+		}
+
+
 		//A grid of sections
 		master = new Section[sectionsX, sectionsY];
 
@@ -53,7 +87,7 @@ public class LevelGenerator : MonoBehaviour
 				{
 					entrances = new EntrancePositions(lastSection.finalEntrancePositions.eastEntrance, new EntrancePosition(), new EntrancePosition(), new EntrancePosition());
 				}
-				Vector2 scaleNewSection = new Vector2(levelSize.x/sectionsX, levelSize.y/sectionsY);
+				Vector2 scaleNewSection = new Vector2(xSize*sectionMultiplier[width], ySize);
 				SBParams sbParams = new SBParams();
 				sbParams.size = scaleNewSection;
 				sbParams.entrancePositions = entrances;
@@ -101,32 +135,8 @@ public class LevelGenerator : MonoBehaviour
 			}
 		}
 
-		//TODO Section merging needs to happen before we build the actual sections
-		//merge random sections
-		//for each section border shared with another section roll a number
-		//each section border will be compared only once by going through each section and checking their top and right edges
-		/*for (int width = 0; width < master.GetLength(0)-1; width++)
-		{
-			for (int height = 0; height < master.GetLength(1); height++)
-			{
-				//Determine if you want to merge right
-				if (UnityEngine.Random.Range(0,100) < MergeChance)
-				{
-					//Merge to the right
-					for (int j = 0; j < master[width,height].GetLength(1); j++)
-					{
-						//overwrite right most tiles with second to leftmost tiles in next section
-						master[width,height][master[width,height].GetLength(0)-1,j] = 
-							master[width+1,height][1,j];
-						//overwrite the tiles in the first section now
-						master[width+1,height][0,j] = 
-							master[width,height][master[width,height].GetLength(0)-2,j];
-					}
-				}
-			}
-		}*/
-
 		//generate the sections using the representative arrays
+		float widthOffset = 0;
 		for (int width = 0; width < master.GetLength(0); width++)
 		{
 			for (int height = 0; height < master.GetLength(1); height++)
@@ -138,8 +148,7 @@ public class LevelGenerator : MonoBehaviour
 				{
 					for (int j = 0; j < section.Grid.GetLength(1); j++)
 					{
-						float centerX = baseBlock.sprite.bounds.extents.x  * 2 * i + (
-							baseBlock.sprite.bounds.extents.y * 2 * section.Grid.GetLength(0)* width);
+						float centerX = baseBlock.sprite.bounds.extents.x  * 2 * i + widthOffset;
 						float centerY = baseBlock.sprite.bounds.extents.y * 2 * j + (
 							baseBlock.sprite.bounds.extents.y * 2 * section.Grid.GetLength(1) * height);
 
@@ -152,6 +161,8 @@ public class LevelGenerator : MonoBehaviour
 						}
 					}
 				}
+				widthOffset += baseBlock.sprite.bounds.extents.x  * 2 * section.Grid.GetLength(0);
+				//widthOffset += baseBlock.sprite.bounds.extents.y * 2 * section.Grid.GetLength(0)* width * sectionMultiplier[width];
 			}
 		}
 	}
