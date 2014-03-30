@@ -34,6 +34,8 @@ public class SBParams
 	/// </summary>
 	public bool lastSection = false;
 
+	public int ceilingHeight = -1;
+
 	/// <summary>
 	/// Gets or sets a value indicating whether this <see cref="Section"/> should be monotonically increasing.
 	/// </summary>

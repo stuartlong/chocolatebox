@@ -21,11 +21,14 @@ public class SectionBuilder {
 	/// </summary>
 	public EntrancePositions finalEntrancePositions;
 
+	public int finalCeilingHeight;
+
 	private LevelGenerator generator;
 	private int numberBlocksX;
 	private int numberBlocksY;
 	private int[,] section;
 	private int groundHeight;
+	private int ceilingHeight;
 	private int blocksSinceLastChange;
 	private List<int> pits;
 	private SBParams sbParams;
@@ -43,6 +46,8 @@ public class SectionBuilder {
 		numberBlocksY = ConvertToBlocksY(sbParams.size.y);
 		section = new int[numberBlocksX,numberBlocksY];
 		groundHeight = sbParams.entrancePositions.westEntrance.location - 1;
+		ceilingHeight = sbParams.ceilingHeight;
+
 		blocksSinceLastChange = 0;
 		finalEntrancePositions = new EntrancePositions(sbParams.entrancePositions);
 		pits = new List<int>();
@@ -64,6 +69,11 @@ public class SectionBuilder {
 			if (!makingPit && ShouldChangeGroundHeight(x)) 
 			{
 				ChangeGroundHeightIfAble(x);
+			}
+
+			if (ShouldChangeCeilingHeight(x))
+			{
+				ChangeCeilingHeightIfAble(x);
 			}
 
 			if (x == numberBlocksX-1)
@@ -95,7 +105,7 @@ public class SectionBuilder {
 				bool belowGround = y < groundHeight;
 				bool atGround = y == groundHeight;
 				bool atWall = !generator.openLevel && (x == 0 || x == numberBlocksX-1);
-				bool atCeiling = !generator.openLevel && (y == numberBlocksY-1);
+				bool atCeiling = !generator.openLevel && (y >= ceilingHeight);
 				bool shouldPit = makingPit && y <= groundHeight;
 
 				//CreateExits(x, y);
@@ -113,16 +123,18 @@ public class SectionBuilder {
 					blocksSinceLastChange++;
 					section[x,y] = (int) LevelGenerator.AssetTypeKey.TopGroundBlock;
 				}
-				else if (atWall && !atCeiling)
+				/*else if (atWall && !atCeiling)
 				{
 					section[x,y] = (int) LevelGenerator.AssetTypeKey.WallBlock;
-				}
+				}*/
 				else if (atCeiling)
 				{
 					section[x,y] = (int) LevelGenerator.AssetTypeKey.CeilingBlock;
 				}
 			}
 		}
+
+		finalCeilingHeight = ceilingHeight;
 
 		return new Section(section, sbParams.sprites);
 	}
@@ -187,11 +199,32 @@ public class SectionBuilder {
 	}
 	#endregion
 
+	#region Ceiling Height
+	private bool ShouldChangeCeilingHeight(int currentX)
+	{
+		return Random.Range(0f, 1f) > 1 - sbParams.Hilliness || ceilingHeight < (int) (groundHeight + 2 + generator.player.maxPlayerSize.y);
+	}
+
+	private void ChangeCeilingHeightIfAble(int currentX)
+	{
+		int minVal = (int) (groundHeight + 2 + generator.player.maxPlayerSize.y);
+		bool goUp = Random.Range(0f, 1f) > 0.5f || ceilingHeight < (int) (groundHeight + 2 + generator.player.maxPlayerSize.y);
+
+		if (goUp)
+		{
+			ceilingHeight = Mathf.Min(ceilingHeight + 1, numberBlocksY - 1);
+		}
+		else
+		{
+			ceilingHeight = Mathf.Max(ceilingHeight - 1, minVal);
+		}
+	}
+	#endregion
+
 	#region Ground Height
 	//returns true if the ground height should be changed
 	private bool ShouldChangeGroundHeight(int currentX) 
 	{
-		//temporary fix so entrances line up correctly
 		if (currentX <= 1 || currentX >= numberBlocksX - 2)
 		{
 			return false;
@@ -208,6 +241,11 @@ public class SectionBuilder {
 		
 		int maxJump = (int) generator.player.maxJumpDistance.y;
 		//int difference = (int)((float) maxJump * Beta(Random.Range(0f,1f)));
+		if ((int) (ceilingHeight - groundHeight - generator.player.maxPlayerSize.y - 1) <= 0)
+		{
+			goUp = false;
+		}
+
 		int difference = Random.Range(1,maxJump);
 		if (goUp)
 		{
@@ -226,16 +264,7 @@ public class SectionBuilder {
 	//creates an entryway with a random height at the passed x-column and entrancePos-row
 	private void CreateEastWestEntrance(int xCoord, int entrancePos)
 	{
-		int min = (int) generator.player.maxPlayerSize.y+entrancePos;
-		int max = numberBlocksY - 1;
-		int max_height = Random.Range(min, max);
-
-		if (max < min)
-		{
-			Debug.Log (min + ", " + max);
-		}
-		
-		for (int i = entrancePos; i < max_height; i++)
+		for (int i = entrancePos; i < ceilingHeight; i++)
 		{
 			section[xCoord, i] = (int) LevelGenerator.AssetTypeKey.Entrance;
 		}

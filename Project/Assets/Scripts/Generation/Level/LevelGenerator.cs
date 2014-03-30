@@ -78,17 +78,25 @@ public class LevelGenerator : MonoBehaviour
 		{
 			for (int height = 0; height < master.GetLength(1); height++)
 			{
+				SBParams sbParams = new SBParams();
 				EntrancePositions entrances;
 				if (lastSection == null) 
 				{
-					entrances = new EntrancePositions(new EntrancePosition(UnityEngine.Random.Range(1,(int) (levelSize.y/sectionsY)),2),new EntrancePosition(),new EntrancePosition(),new EntrancePosition());
+					int initialGroundHeight = UnityEngine.Random.Range(1,(int) (levelSize.y/sectionsY));
+					entrances = new EntrancePositions(new EntrancePosition(initialGroundHeight,2),new EntrancePosition(),new EntrancePosition(),new EntrancePosition());
+					int min = (int) (player.maxPlayerSize.y + initialGroundHeight + 1);
+					int max = (int) (levelSize.y - 1);
+					sbParams.ceilingHeight = UnityEngine.Random.Range(min, max);
+	
 				}
 				else
 				{
 					entrances = new EntrancePositions(lastSection.finalEntrancePositions.eastEntrance, new EntrancePosition(), new EntrancePosition(), new EntrancePosition());
+					sbParams.ceilingHeight = lastSection.finalCeilingHeight;
 				}
+
 				Vector2 scaleNewSection = new Vector2(xSize*sectionMultiplier[width], ySize);
-				SBParams sbParams = new SBParams();
+
 				sbParams.size = scaleNewSection;
 				sbParams.entrancePositions = entrances;
 				sbParams.Pittiness = 0.09f;
@@ -175,8 +183,8 @@ public class LevelGenerator : MonoBehaviour
 			return GetBlockFromArrays(globalSprites.belowGroundBlocks, s.Sprites.belowGroundBlocks);
 		case AssetTypeKey.TopGroundBlock:
 			return GetBlockFromArrays(globalSprites.topGroundBlocks, s.Sprites.topGroundBlocks);
-		case AssetTypeKey.WallBlock:
-			return GetBlockFromArrays(globalSprites.wallBlocks, s.Sprites.wallBlocks);
+		/*case AssetTypeKey.WallBlock:
+			return GetBlockFromArrays(globalSprites.wallBlocks, s.Sprites.wallBlocks);*/
 		case AssetTypeKey.CeilingBlock:
 			return GetBlockFromArrays(globalSprites.ceilingBlocks, s.Sprites.ceilingBlocks);
 		case AssetTypeKey.LevelEnd:
@@ -224,7 +232,7 @@ public class LevelGenerator : MonoBehaviour
 		UndergroundBlock = 1,
 		Entrance = 2,
 		Pit = 3,
-		WallBlock = 4,
+		//WallBlock = 4,
 		CeilingBlock = 5,
 		TopGroundBlock = 6,
 		LevelEnd = 7,

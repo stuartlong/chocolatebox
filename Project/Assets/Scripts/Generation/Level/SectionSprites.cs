@@ -27,11 +27,11 @@ public class SectionSprites
 	/// </summary>
 	public SpriteRenderer[] topGroundBlocks;
 
-	/// <summary>
+	/*/// <summary>
 	/// The sprites to use for ceiling blocks. If empty, ceiling blocks will default to ground blocks.
 	/// All block sprites must be the same size.
 	/// </summary>
-	public SpriteRenderer[] wallBlocks;
+	public SpriteRenderer[] wallBlocks;*/
 
 	/// <summary>
 	/// The sprites to use for ceiling blocks. If empty, ceiling blocks will default to ground blocks.
