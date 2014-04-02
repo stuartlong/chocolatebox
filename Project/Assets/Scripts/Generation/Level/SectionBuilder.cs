@@ -12,9 +12,9 @@ using System.Linq;
 /// Primary Author - Stuart Long
 /// </summary>
 public class SectionBuilder {
-	//TODO determined by difficulty?
-	private static int MIN_PIT_LENGTH = 3;
-	private static int MAX_PITS = 3;
+	//These are later changed ONCE in constructor to account for difficulty since appropriate scope is required
+	private int MIN_PIT_LENGTH = 3;
+	private int MAX_PITS = 3;
 
 	/// <summary>
 	/// The final entrance positions after building.
@@ -51,6 +51,9 @@ public class SectionBuilder {
 		blocksSinceLastChange = 0;
 		finalEntrancePositions = new EntrancePositions(sbParams.entrancePositions);
 		pits = new List<int>();
+
+		MAX_PITS = (int)(2 + 4 * sbParams.difficulty);
+		MIN_PIT_LENGTH = (int)(2 + 3 * sbParams.difficulty);
 	}
 
 	/// <returns>
@@ -151,7 +154,7 @@ public class SectionBuilder {
 		bool makingPit = false;
 		int numberPits = 0;
 		int pitLength = 0;
-		int firstPit = Random.Range(2,(int)sbParams.size.x);
+		int firstPit = Random.Range(2,(int)(sbParams.size.x * (1-.75f * sbParams.difficulty)));
 		int currentMaxPitLength = 0;
 
 		for (int x = 0; x < numberBlocksX; x++) 
@@ -187,7 +190,7 @@ public class SectionBuilder {
 			return false;
 		}
 
-		bool shouldPit = (Random.Range(0f,1f) + sbParams.difficulty/5f) > 1-sbParams.Pittiness;
+		bool shouldPit = (Random.Range(0f,1f) + (sbParams.difficulty-.3f)/4f) > 1-sbParams.Pittiness;
 
 		//TODO work up a good algorithm for increasing the chance a pit appears proporitional to the difficulty and how long it's been since we've seen a pit
 		/*if (lastPitX != -1)

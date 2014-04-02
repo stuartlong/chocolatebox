@@ -26,7 +26,6 @@ public class LevelGenerator : MonoBehaviour
 	public SectionSprites globalSprites;
 	public bool customSeed = false;
 	public float difficulty;
-	public Vector2 jumpDistance; //TODO: Use this to measure what constitutes a possible jump.
 
 	public void Awake () 
 	{

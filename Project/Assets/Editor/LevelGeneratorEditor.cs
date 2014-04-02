@@ -94,12 +94,6 @@ public class LevelGeneratorEditor : Editor
 		EditorGUILayout.LabelField("The general difficulty of the level to be generated.");
 		GUILayout.Space(VERTICAL_TAB);
 
-		//TODO: Use this to measure what constitutes a possible jump.
-		Vector2 jumpDistance = EditorGUILayout.Vector2Field("Jumping Distance", generator.jumpDistance);
-		generator.jumpDistance.x = (int) jumpDistance.x;
-		generator.jumpDistance.y = (int) jumpDistance.y;
-		EditorGUILayout.LabelField("The highest and farthest the player can jump. [CURRENTLY DOES NOTHING]");
-
 		generator.customSeed = EditorGUILayout.BeginToggleGroup("Set Custom Seed", generator.customSeed);
 		generator.seed = EditorGUILayout.IntField("Seed", generator.seed);
 		EditorGUILayout.EndToggleGroup();
