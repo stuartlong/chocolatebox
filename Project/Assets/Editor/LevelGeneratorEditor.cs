@@ -90,6 +90,10 @@ public class LevelGeneratorEditor : Editor
 		EditorGUILayout.LabelField("The chance that one or more of your sections will merge to form a single large section.");
 		GUILayout.Space(VERTICAL_TAB);
 
+		generator.difficulty = EditorGUILayout.Slider("Difficulty", generator.difficulty, 0, 1);
+		EditorGUILayout.LabelField("The general difficulty of the level to be generated.");
+		GUILayout.Space(VERTICAL_TAB);
+
 		generator.customSeed = EditorGUILayout.BeginToggleGroup("Set Custom Seed", generator.customSeed);
 		generator.seed = EditorGUILayout.IntField("Seed", generator.seed);
 		EditorGUILayout.EndToggleGroup();

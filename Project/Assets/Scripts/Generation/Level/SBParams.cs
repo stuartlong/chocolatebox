@@ -36,6 +36,12 @@ public class SBParams
 
 	public int ceilingHeight = -1;
 
+	
+	/// <summary>
+	/// A float to be used as a generic level of difficulty
+	/// </summary>
+	public float difficulty;
+
 	/// <summary>
 	/// Gets or sets a value indicating whether this <see cref="Section"/> should be monotonically increasing.
 	/// </summary>
