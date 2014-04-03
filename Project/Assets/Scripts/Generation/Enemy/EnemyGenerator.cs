@@ -65,7 +65,11 @@ public class EnemyGenerator : MonoBehaviour
                 
                 while (x < section.getWidth())
                 {
-                    if ((int)LevelGenerator.AssetTypeKey.UndergroundBlock == section.get(x, y))
+                    if ((int)LevelGenerator.AssetTypeKey.UndergroundBlock == section.get(x, y) ||
+                        (int)LevelGenerator.AssetTypeKey.TopGroundBlock == section.get(x, y)
+                        
+                        
+                        )
                     {
                         if (ValidSection(section, lastValidColumn, x, y))
                         {
@@ -159,8 +163,6 @@ public class EnemyGenerator : MonoBehaviour
 
         //Should have a better random algorithm. Generation for now is ok. 
         Instantiate(Enemies[0].gameObject, new Vector3(xunitc * x, yunitc * newY, 0), Quaternion.identity);
-
-        Debug.Log("GOT THERE!!!");
 
     }
 

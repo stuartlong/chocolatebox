@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Goomba : Character
+public class Goomba : Enemy
 {
 
     public override void Start()
@@ -20,6 +20,7 @@ public class Goomba : Character
             Destroy(this.gameObject);
         }
     }
+
 
     public void FixedUpdate()
     {
