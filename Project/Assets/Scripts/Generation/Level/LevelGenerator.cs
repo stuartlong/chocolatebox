@@ -26,6 +26,9 @@ public class LevelGenerator : MonoBehaviour
 	public SectionSprites globalSprites;
 	public bool customSeed = false;
 	public float difficulty;
+	public float openness;
+	public float hilliness;
+	public float pittiness;
 
 	public void Awake () 
 	{
@@ -100,8 +103,9 @@ public class LevelGenerator : MonoBehaviour
 
 				sbParams.size = scaleNewSection;
 				sbParams.entrancePositions = entrances;
-				sbParams.Pittiness = 0.09f;
-				sbParams.Hilliness = .09f;
+				sbParams.Pittiness = pittiness;
+				sbParams.Hilliness = hilliness;
+				sbParams.Caviness = 1.0f - openness;
 				sbParams.difficulty = difficulty;
 
 				if (sectionGroups.GetLength(0) > 0)

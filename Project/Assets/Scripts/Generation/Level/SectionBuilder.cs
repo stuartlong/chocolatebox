@@ -211,7 +211,7 @@ public class SectionBuilder {
 	private void ChangeCeilingHeightIfAble(int currentX)
 	{
 		int minVal = (int) (groundHeight + 2 + generator.player.maxPlayerSize.y);
-		bool goUp = Random.Range(0f, 1f) > 0.5f || ceilingHeight < (int) (groundHeight + 2 + generator.player.maxPlayerSize.y);
+		bool goUp = Random.Range(0f, 1f) > sbParams.Caviness || ceilingHeight < (int) minVal;
 
 		if (goUp)
 		{

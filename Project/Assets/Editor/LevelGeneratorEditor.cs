@@ -94,6 +94,18 @@ public class LevelGeneratorEditor : Editor
 		EditorGUILayout.LabelField("The general difficulty of the level to be generated.");
 		GUILayout.Space(VERTICAL_TAB);
 
+		generator.openness = EditorGUILayout.Slider("Section Openness", generator.openness, 0, 1);
+		EditorGUILayout.LabelField("Determines approximately how far apart the ceiling and floor of sections should be.");
+		GUILayout.Space(VERTICAL_TAB);
+
+		generator.hilliness = EditorGUILayout.Slider("Section Gradient", generator.hilliness, 0, 1);
+		EditorGUILayout.LabelField("Determines how often the height of the floor should go up or down.");
+		GUILayout.Space(VERTICAL_TAB);
+
+		generator.pittiness = EditorGUILayout.Slider("Pit Frequency", generator.pittiness, 0, 1);
+		EditorGUILayout.LabelField("Determines approximately how often pits should appear.");
+		GUILayout.Space(VERTICAL_TAB);
+
 		generator.customSeed = EditorGUILayout.BeginToggleGroup("Set Custom Seed", generator.customSeed);
 		generator.seed = EditorGUILayout.IntField("Seed", generator.seed);
 		EditorGUILayout.EndToggleGroup();

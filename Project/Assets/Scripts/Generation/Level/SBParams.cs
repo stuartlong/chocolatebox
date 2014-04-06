@@ -117,6 +117,19 @@ public class SBParams
 		}
 	}
 
+	public float Caviness
+	{
+		get
+		{
+			return caviness;
+		}
+		set
+		{
+			caviness = value < 0 ? SMALLEST_PARAM : Mathf.Min(1.0f, value);
+		}
+	}
+
 	private float hilliness;
 	private float pittiness;
+	private float caviness;
 }
