@@ -17,18 +17,15 @@ public class LevelGenerator : MonoBehaviour
 	public int sectionsY;
 	public int sectionsX;
 	public Vector2 levelSize;
-	public SectionSprites[] sectionGroups;
+	public SectionAttributes[] sectionAttributes;
     public int MergeChance;
 	public PlayerAttachment player;
 	public SpriteRenderer levelEnd;
 	public Section[,] master;
 	public bool openLevel;
-	public SectionSprites globalSprites;
+	public SectionAttributes globalAttributes;
 	public bool customSeed = false;
 	public float difficulty;
-	public float openness;
-	public float hilliness;
-	public float pittiness;
 
 	public void Awake () 
 	{
@@ -103,18 +100,64 @@ public class LevelGenerator : MonoBehaviour
 
 				sbParams.size = scaleNewSection;
 				sbParams.entrancePositions = entrances;
-				sbParams.Pittiness = pittiness;
-				sbParams.Hilliness = hilliness;
-				sbParams.Caviness = 1.0f - openness;
+
 				sbParams.difficulty = difficulty;
 
-				if (sectionGroups.GetLength(0) > 0)
+				if (sectionAttributes.GetLength(0) > 0)
 				{
-					sbParams.sprites = sectionGroups[UnityEngine.Random.Range(0, sectionGroups.GetLength(0))];
+					sbParams.sprites = sectionAttributes[UnityEngine.Random.Range(0, sectionAttributes.GetLength(0))];
 				}
 				else
 				{
-					sbParams.sprites = globalSprites;
+					sbParams.sprites = globalAttributes;
+				}
+
+				if (sbParams.sprites.hasCustomOpennessParameter)
+				{
+					sbParams.Caviness = 1.0f - sbParams.sprites.opennessParameter;
+				}
+				else
+				{
+					if (globalAttributes.hasCustomOpennessParameter)
+					{
+						sbParams.Caviness = 1.0f - globalAttributes.opennessParameter;
+					}
+					else
+					{
+						sbParams.Caviness = UnityEngine.Random.Range(0f, 1f);
+					}
+				}
+
+				if (sbParams.sprites.hasCustomHillParameter)
+				{
+					sbParams.Hilliness = sbParams.sprites.hillParameter;
+				}
+				else
+				{
+					if (globalAttributes.hasCustomHillParameter)
+					{
+						sbParams.Hilliness = globalAttributes.hillParameter;
+					}
+					else
+					{
+						sbParams.Hilliness = UnityEngine.Random.Range(0f, 1f);
+					}
+				}
+
+				if (sbParams.sprites.hasCustomPitParameter)
+				{
+					sbParams.Pittiness = sbParams.sprites.pitParameter;
+				}
+				else
+				{
+					if (globalAttributes.hasCustomPitParameter)
+					{
+						sbParams.Pittiness = globalAttributes.pitParameter;
+					}
+					else
+					{
+						sbParams.Pittiness = UnityEngine.Random.Range(0f, 1f);
+					}
 				}
 
 				if (UnityEngine.Random.Range(0f, 1f) > .9f)
@@ -186,13 +229,13 @@ public class LevelGenerator : MonoBehaviour
 		switch (type)
 		{
 		case AssetTypeKey.UndergroundBlock:
-			return GetBlockFromArrays(globalSprites.belowGroundBlocks, s.Sprites.belowGroundBlocks);
+			return GetBlockFromArrays(globalAttributes.belowGroundBlocks, s.Sprites.belowGroundBlocks);
 		case AssetTypeKey.TopGroundBlock:
-			return GetBlockFromArrays(globalSprites.topGroundBlocks, s.Sprites.topGroundBlocks);
+			return GetBlockFromArrays(globalAttributes.topGroundBlocks, s.Sprites.topGroundBlocks);
 		/*case AssetTypeKey.WallBlock:
 			return GetBlockFromArrays(globalSprites.wallBlocks, s.Sprites.wallBlocks);*/
 		case AssetTypeKey.CeilingBlock:
-			return GetBlockFromArrays(globalSprites.ceilingBlocks, s.Sprites.ceilingBlocks);
+			return GetBlockFromArrays(globalAttributes.ceilingBlocks, s.Sprites.ceilingBlocks);
 		case AssetTypeKey.LevelEnd:
 			return levelEnd;
 		default:
@@ -202,13 +245,13 @@ public class LevelGenerator : MonoBehaviour
 
 	public SpriteRenderer GetBaseBlock()
 	{
-		if (globalSprites.belowGroundBlocks.GetLength(0) > 0)
+		if (globalAttributes.belowGroundBlocks.GetLength(0) > 0)
 		{
-			return globalSprites.belowGroundBlocks[0];
+			return globalAttributes.belowGroundBlocks[0];
 		}
 		else
 		{
-			return sectionGroups[0].belowGroundBlocks[0];
+			return sectionAttributes[0].belowGroundBlocks[0];
 		}
 	}
 
@@ -238,7 +281,6 @@ public class LevelGenerator : MonoBehaviour
 		UndergroundBlock = 1,
 		Entrance = 2,
 		Pit = 3,
-		//WallBlock = 4,
 		CeilingBlock = 5,
 		TopGroundBlock = 6,
 		LevelEnd = 7,

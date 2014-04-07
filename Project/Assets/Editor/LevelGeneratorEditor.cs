@@ -10,7 +10,7 @@ using UnityEditor;
 [CustomEditor(typeof(LevelGenerator))]
 public class LevelGeneratorEditor : Editor 
 {
-	private static readonly int VERTICAL_TAB = 10;
+	public static readonly int VERTICAL_TAB = 10;
 	private bool blockFold = false;
 	public override void OnInspectorGUI()
 	{
@@ -44,7 +44,7 @@ public class LevelGeneratorEditor : Editor
 		EditorGUILayout.LabelField("The number of sections that will comprise your level.");
 		GUILayout.Space(VERTICAL_TAB);
 
-		blockFold = EditorGUILayout.Foldout(blockFold, "Sprites");
+		blockFold = EditorGUILayout.Foldout(blockFold, "Section Attributes");
 		//generator.groundBlocks = (SpriteRenderer[]) EditorGUILayout.ObjectField("Ground Blocks", generator.groundBlocks, typeof(SpriteRenderer[]), true);
 		if (blockFold) 
 		{
@@ -52,17 +52,11 @@ public class LevelGeneratorEditor : Editor
 			GUILayout.Space(20);
 
 			EditorGUILayout.BeginVertical();
-			EditorGUILayout.LabelField("The sprites to use for you level. These should be prefabs.");
+			EditorGUILayout.LabelField("The attributes that will characterize the sections of your level.");
 
-			SerializedProperty globablSprites = serializedObject.FindProperty("globalSprites");
-			EditorGUI.BeginChangeCheck();
-			EditorGUILayout.PropertyField(globablSprites, true);
-			if (EditorGUI.EndChangeCheck())
-			{
-				serializedObject.ApplyModifiedProperties();
-			}
+			generator.globalAttributes = (SectionAttributes) EditorGUILayout.ObjectField("Default Attributes", generator.globalAttributes, typeof(SectionAttributes), true);
 
-			SerializedProperty blocks = serializedObject.FindProperty("sectionGroups");
+			SerializedProperty blocks = serializedObject.FindProperty("sectionAttributes");
 			EditorGUI.BeginChangeCheck();
 			EditorGUILayout.PropertyField(blocks, true);
 			if (EditorGUI.EndChangeCheck())
@@ -74,7 +68,7 @@ public class LevelGeneratorEditor : Editor
 		}
 		else
 		{
-			EditorGUILayout.LabelField("The sprites to use for you level. These should be prefabs.");
+			EditorGUILayout.LabelField("The attributes that will characterize the sections of your level.");
 		}
 		GUILayout.Space(VERTICAL_TAB);
 
@@ -92,18 +86,6 @@ public class LevelGeneratorEditor : Editor
 
 		generator.difficulty = EditorGUILayout.Slider("Difficulty", generator.difficulty, 0, 1);
 		EditorGUILayout.LabelField("The general difficulty of the level to be generated.");
-		GUILayout.Space(VERTICAL_TAB);
-
-		generator.openness = EditorGUILayout.Slider("Section Openness", generator.openness, 0, 1);
-		EditorGUILayout.LabelField("Determines approximately how far apart the ceiling and floor of sections should be.");
-		GUILayout.Space(VERTICAL_TAB);
-
-		generator.hilliness = EditorGUILayout.Slider("Section Gradient", generator.hilliness, 0, 1);
-		EditorGUILayout.LabelField("Determines how often the height of the floor should go up or down.");
-		GUILayout.Space(VERTICAL_TAB);
-
-		generator.pittiness = EditorGUILayout.Slider("Pit Frequency", generator.pittiness, 0, 1);
-		EditorGUILayout.LabelField("Determines approximately how often pits should appear.");
 		GUILayout.Space(VERTICAL_TAB);
 
 		generator.customSeed = EditorGUILayout.BeginToggleGroup("Set Custom Seed", generator.customSeed);

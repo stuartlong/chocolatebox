@@ -1,0 +1,110 @@
+﻿using UnityEngine;
+using System.Collections;
+using UnityEditor;
+
+/// <summary>
+/// Custom Section Attributes Unity editor.
+/// 
+/// Primary Author - Stuart Long
+/// </summary>
+[CustomEditor(typeof(SectionAttributes))]
+public class SectionAttributesEditor : Editor 
+{
+
+	private static readonly int VERTICAL_TAB = LevelGeneratorEditor.VERTICAL_TAB;
+	private bool blockFold = false;
+	public override void OnInspectorGUI()
+	{
+		
+		serializedObject.Update();
+		SectionAttributes characteristics = (SectionAttributes) target;
+
+		EditorGUILayout.BeginVertical();
+
+		blockFold = EditorGUILayout.Foldout(blockFold, "Sprites");
+		//generator.groundBlocks = (SpriteRenderer[]) EditorGUILayout.ObjectField("Ground Blocks", generator.groundBlocks, typeof(SpriteRenderer[]), true);
+		if (blockFold) 
+		{
+			EditorGUILayout.BeginHorizontal();
+			GUILayout.Space(20);
+			
+			EditorGUILayout.BeginVertical();
+		EditorGUILayout.LabelField("The sprites to use for you level. These should be prefabs.");
+		SerializedProperty pitsObjects = serializedObject.FindProperty("pitObjects");
+		EditorGUI.BeginChangeCheck();
+		EditorGUILayout.PropertyField(pitsObjects, true);
+		if (EditorGUI.EndChangeCheck())
+		{
+			serializedObject.ApplyModifiedProperties();
+		}
+		
+		SerializedProperty belowGroundBlocks = serializedObject.FindProperty("belowGroundBlocks");
+		EditorGUI.BeginChangeCheck();
+		EditorGUILayout.PropertyField(belowGroundBlocks, true);
+		if (EditorGUI.EndChangeCheck())
+		{
+			serializedObject.ApplyModifiedProperties();
+		}
+
+		SerializedProperty topGroundBlocks = serializedObject.FindProperty("topGroundBlocks");
+		EditorGUI.BeginChangeCheck();
+		EditorGUILayout.PropertyField(topGroundBlocks, true);
+		if (EditorGUI.EndChangeCheck())
+		{
+			serializedObject.ApplyModifiedProperties();
+		}
+
+		SerializedProperty ceilingBlocks = serializedObject.FindProperty("ceilingBlocks");
+		EditorGUI.BeginChangeCheck();
+		EditorGUILayout.PropertyField(ceilingBlocks, true);
+		if (EditorGUI.EndChangeCheck())
+		{
+			serializedObject.ApplyModifiedProperties();
+		}
+		}
+		else
+		{
+			EditorGUILayout.LabelField("The sprites to use for you level. These should be prefabs.");
+		}
+		GUILayout.Space(VERTICAL_TAB);
+
+		characteristics.hasCustomOpennessParameter = EditorGUILayout.ToggleLeft("Set Custom Openness", characteristics.hasCustomOpennessParameter);
+		if (characteristics.hasCustomOpennessParameter)
+			{
+			characteristics.opennessParameter = EditorGUILayout.Slider("Section Openness", characteristics.opennessParameter, 0, 1);
+				EditorGUILayout.LabelField("Determines approximately how far apart the ceiling and floor of this section should be.");
+				GUILayout.Space(VERTICAL_TAB);
+			}
+			else
+			{
+				EditorGUILayout.LabelField("If not checked, this section will have a random parameter determining how \"open\" it is");
+				GUILayout.Space(VERTICAL_TAB);
+			}
+		
+		characteristics.hasCustomHillParameter = EditorGUILayout.ToggleLeft("Set Custom Gradient Parameter", characteristics.hasCustomHillParameter);
+		if (characteristics.hasCustomHillParameter)
+		{
+			characteristics.hillParameter = EditorGUILayout.Slider("Section Gradient", characteristics.hillParameter, 0, 1);
+			EditorGUILayout.LabelField("Determines how often the height of the floor should go up or down.");
+			GUILayout.Space(VERTICAL_TAB);
+		}
+		else
+		{
+			EditorGUILayout.LabelField("If not checked, this section will have a random parameter determining how often the ground gradient should change");
+			GUILayout.Space(VERTICAL_TAB);
+		}
+		
+		characteristics.hasCustomPitParameter = EditorGUILayout.ToggleLeft("Set Custom Pit Frequency Parameter", characteristics.hasCustomPitParameter);
+		if (characteristics.hasCustomPitParameter)
+		{
+			characteristics.pitParameter = EditorGUILayout.Slider("Pit Frequency", characteristics.pitParameter, 0, 1);
+			EditorGUILayout.LabelField("Determines approximately how often pits should appear.");
+			GUILayout.Space(VERTICAL_TAB);
+		}
+		else
+		{
+			EditorGUILayout.LabelField("If not checked, this section will have a random parameter determining how frequently pits should spawn");
+			GUILayout.Space(VERTICAL_TAB);
+		}
+	}
+}
