@@ -7,7 +7,7 @@ using System.Collections;
 /// </summary>
 public class SBParams 
 {
-	private static float SMALLEST_PARAM = 0.0000001f;
+	private static float SMALLEST_PARAM = 0.1f;
 
 	/// <summary>
 	/// The size of the section. The units here are Unity units, not the desired number of blocks.

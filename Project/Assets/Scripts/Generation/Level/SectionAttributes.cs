@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 /// <summary>
 /// Specifies the various sprites to use in a given section. The sprites for all of the BLOCKS
@@ -30,6 +32,8 @@ public class SectionAttributes : MonoBehaviour
 	/// </summary>
 	public SpriteRenderer[] ceilingBlocks;
 
+	public DecorationAttachment[] decorations;
+
 	public bool hasCustomHillParameter = false;
 	public float hillParameter;
 
@@ -38,4 +42,51 @@ public class SectionAttributes : MonoBehaviour
 
 	public bool hasCustomOpennessParameter = false;
 	public float opennessParameter;
+
+	public bool hasCustomDecorativeParameter = false;
+	public float decorativeParameter;
+
+	private bool decorationDistributionPopulated = false;
+
+	public DecorationAttachment GetRandomDecoration()
+	{
+		if (!decorationDistributionPopulated)
+		{
+			BuildDecorationDistribution();
+		}
+
+		float rand = Random.Range(0f,1f);
+		for (int i = 0; i < probs.Count - 1; i++)
+		{
+			if (probs.ElementAt(i) <= rand && (i == probs.Count - 1 || rand < probs.ElementAt(i + 1)))
+			{
+				return decMap[(int) (probs.ElementAt(i + 1)*100)];
+			}
+		}
+	}
+
+	private List<float> probs;
+	private Dictionary<int, DecorationAttachment> decMap;
+	private void BuildDecorationDistribution()
+	{
+		float normalize = 0f;
+		probs = new List<float>();
+		decMap = new Dictionary<int, DecorationAttachment>();
+		foreach (DecorationAttachment dec in decorations)
+		{
+			normalize += dec.frequency;
+		}
+		
+		float sum = 0f;
+		probs.Add(0f);
+		foreach (DecorationAttachment dec in decorations)
+		{
+			float cdfVal = (dec.frequency / normalize) + sum;
+			probs.Add(cdfVal);
+			decMap.Add((int) (cdfVal*100), dec);
+		}
+		probs.Add(1.0f);
+		
+		probs.Sort();
+	}
 }

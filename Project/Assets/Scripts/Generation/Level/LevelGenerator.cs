@@ -26,6 +26,7 @@ public class LevelGenerator : MonoBehaviour
 	public SectionAttributes globalAttributes;
 	public bool customSeed = false;
 	public float difficulty;
+	public int maxNumberOfDecorations;
 
 	public void Awake () 
 	{
@@ -42,7 +43,6 @@ public class LevelGenerator : MonoBehaviour
 
 		//List of which sections merge left
 		List<int> merges = new List<int>();
-
 
 		//Determine which sections to merge
 		for(int section = sectionsX; section > 1; section--)
@@ -160,7 +160,7 @@ public class LevelGenerator : MonoBehaviour
 					}
 				}
 
-				if (UnityEngine.Random.Range(0f, 1f) > .9f)
+				if (UnityEngine.Random.Range(0f, 1f) > .75f)
 				{
 					if (UnityEngine.Random.Range(0f, 1f) > .5f)
 					{
@@ -199,7 +199,7 @@ public class LevelGenerator : MonoBehaviour
 			for (int height = 0; height < master.GetLength(1); height++)
 			{
 				Section section = master[width,height];
-				SpriteRenderer baseBlock = section.Sprites.belowGroundBlocks[0];
+				SpriteRenderer baseBlock = GetBaseBlock();
 
 				for (int i = 0; i < section.Grid.GetLength(0); i++)
 				{
@@ -220,6 +220,33 @@ public class LevelGenerator : MonoBehaviour
 				}
 				widthOffset += baseBlock.sprite.bounds.extents.x  * 2 * section.Grid.GetLength(0);
 				//widthOffset += baseBlock.sprite.bounds.extents.y * 2 * section.Grid.GetLength(0)* width * sectionMultiplier[width];
+			}
+		}
+	}
+
+	private void Decorate()
+	{
+		SpriteRenderer baseBlock = GetBaseBlock();
+		float widthOffset = 0;
+		for (int width = 0; width < master.GetLength(0); width++)
+		{
+			for (int height = 0; height < master.GetLength(1); height++)
+			{
+				Section section = master[width,height];
+
+				int numbDecorations = (int) (section.Sprites.decorativeParameter * maxNumberOfDecorations);
+				for (int d = 0; d < numbDecorations; d++)
+				{
+					//section.Sprites.decorations;
+				}
+
+				for (int i = 0; i < section.Grid.GetLength(0); i++)
+				{
+					for (int j = 0; j < section.Grid.GetLength(1); j++)
+					{
+
+					}
+				}
 			}
 		}
 	}

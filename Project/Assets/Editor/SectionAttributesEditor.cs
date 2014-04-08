@@ -17,7 +17,7 @@ public class SectionAttributesEditor : Editor
 	{
 		
 		serializedObject.Update();
-		SectionAttributes characteristics = (SectionAttributes) target;
+		SectionAttributes attributes = (SectionAttributes) target;
 
 		EditorGUILayout.BeginVertical();
 
@@ -68,10 +68,10 @@ public class SectionAttributesEditor : Editor
 		}
 		GUILayout.Space(VERTICAL_TAB);
 
-		characteristics.hasCustomOpennessParameter = EditorGUILayout.ToggleLeft("Set Custom Openness", characteristics.hasCustomOpennessParameter);
-		if (characteristics.hasCustomOpennessParameter)
+		attributes.hasCustomOpennessParameter = EditorGUILayout.ToggleLeft("Set Custom Openness", attributes.hasCustomOpennessParameter);
+		if (attributes.hasCustomOpennessParameter)
 			{
-			characteristics.opennessParameter = EditorGUILayout.Slider("Section Openness", characteristics.opennessParameter, 0, 1);
+			attributes.opennessParameter = EditorGUILayout.Slider("Section Openness", attributes.opennessParameter, 0, 1);
 				EditorGUILayout.LabelField("Determines approximately how far apart the ceiling and floor of this section should be.");
 				GUILayout.Space(VERTICAL_TAB);
 			}
@@ -81,10 +81,10 @@ public class SectionAttributesEditor : Editor
 				GUILayout.Space(VERTICAL_TAB);
 			}
 		
-		characteristics.hasCustomHillParameter = EditorGUILayout.ToggleLeft("Set Custom Gradient Parameter", characteristics.hasCustomHillParameter);
-		if (characteristics.hasCustomHillParameter)
+		attributes.hasCustomHillParameter = EditorGUILayout.ToggleLeft("Set Custom Gradient Parameter", attributes.hasCustomHillParameter);
+		if (attributes.hasCustomHillParameter)
 		{
-			characteristics.hillParameter = EditorGUILayout.Slider("Section Gradient", characteristics.hillParameter, 0, 1);
+			attributes.hillParameter = EditorGUILayout.Slider("Section Gradient", attributes.hillParameter, 0, 1);
 			EditorGUILayout.LabelField("Determines how often the height of the floor should go up or down.");
 			GUILayout.Space(VERTICAL_TAB);
 		}
@@ -94,10 +94,10 @@ public class SectionAttributesEditor : Editor
 			GUILayout.Space(VERTICAL_TAB);
 		}
 		
-		characteristics.hasCustomPitParameter = EditorGUILayout.ToggleLeft("Set Custom Pit Frequency Parameter", characteristics.hasCustomPitParameter);
-		if (characteristics.hasCustomPitParameter)
+		attributes.hasCustomPitParameter = EditorGUILayout.ToggleLeft("Set Custom Pit Frequency Parameter", attributes.hasCustomPitParameter);
+		if (attributes.hasCustomPitParameter)
 		{
-			characteristics.pitParameter = EditorGUILayout.Slider("Pit Frequency", characteristics.pitParameter, 0, 1);
+			attributes.pitParameter = EditorGUILayout.Slider("Pit Frequency", attributes.pitParameter, 0, 1);
 			EditorGUILayout.LabelField("Determines approximately how often pits should appear.");
 			GUILayout.Space(VERTICAL_TAB);
 		}
