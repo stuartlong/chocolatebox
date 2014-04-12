@@ -7,7 +7,8 @@ public class Character : MonoBehaviour
     {
         Null, 
         Player,
-        Goomba
+        Goomba,
+        Koopa
     }
 
     public CharacterType characterType;
