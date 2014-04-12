@@ -52,8 +52,8 @@ public class SectionBuilder {
 		finalEntrancePositions = new EntrancePositions(sbParams.entrancePositions);
 		pits = new List<int>();
 
-		MAX_PITS = (int)(2 + 4 * sbParams.difficulty);
-		MIN_PIT_LENGTH = (int)(2 + 3 * sbParams.difficulty);
+		MAX_PITS = (int)(1 + 3 * sbParams.difficulty);
+		MIN_PIT_LENGTH = (int)(2 + 2 * sbParams.difficulty);
 	}
 
 	/// <returns>
@@ -154,7 +154,7 @@ public class SectionBuilder {
 		bool makingPit = false;
 		int numberPits = 0;
 		int pitLength = 0;
-		int firstPit = Random.Range(2,(int)(sbParams.size.x * (1-.75f * sbParams.difficulty)));
+		int firstPit = Random.Range(2,(int)(sbParams.size.x * (1-.5f * sbParams.difficulty)));
 		int currentMaxPitLength = 0;
 
 		for (int x = 0; x < numberBlocksX; x++) 
@@ -176,7 +176,7 @@ public class SectionBuilder {
 			if (ShouldMakePit(x, lastPit))
 			{
 				int maxLength = ConvertToBlocksX(generator.player.maxJumpDistance.x);
-				currentMaxPitLength = Random.Range(MIN_PIT_LENGTH, Mathf.Min(maxLength+1, numberBlocksX - 1 - x));
+				currentMaxPitLength = Random.Range(MIN_PIT_LENGTH, Mathf.Min((int)((maxLength+1)*(sbParams.difficulty/4f + .75)), (numberBlocksX - 1 - x)));
 				pitLength = 0;
 			}
 		}
@@ -190,7 +190,7 @@ public class SectionBuilder {
 			return false;
 		}
 
-		bool shouldPit = (Random.Range(0f,1f) + (sbParams.difficulty-.3f)/4f) > 1-sbParams.Pittiness;
+		bool shouldPit = (Random.Range(0f,1f) + (sbParams.difficulty-.5f)/4f) > 1-sbParams.Pittiness;
 
 		//TODO work up a good algorithm for increasing the chance a pit appears proporitional to the difficulty and how long it's been since we've seen a pit
 		/*if (lastPitX != -1)
@@ -211,7 +211,7 @@ public class SectionBuilder {
 	private void ChangeCeilingHeightIfAble(int currentX)
 	{
 		int minVal = (int) (groundHeight + 2 + generator.player.maxPlayerSize.y);
-		bool goUp = Random.Range(0f, 1f) > 0.5f || ceilingHeight < (int) (groundHeight + 2 + generator.player.maxPlayerSize.y);
+		bool goUp = Random.Range(0f, 1f) > sbParams.Caviness || ceilingHeight < (int) minVal;
 
 		if (goUp)
 		{

@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 /// <summary>
@@ -8,7 +8,7 @@ using System.Collections;
 public class Section
 {
 	private int[,] grid;
-	private SectionSprites sprites;
+	private SectionAttributes sprites;
 
 	public int[,] Grid
 	{
@@ -18,7 +18,7 @@ public class Section
 		}
 	}
 
-	public SectionSprites Sprites
+	public SectionAttributes Sprites
 	{
 		get
 		{
@@ -26,7 +26,7 @@ public class Section
 		}
 	}
 
-	public Section(int[,] sectionGrid, SectionSprites sectionSprites)
+	public Section(int[,] sectionGrid, SectionAttributes sectionSprites)
 	{
 		grid = sectionGrid;
 		sprites = sectionSprites;

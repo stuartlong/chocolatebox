@@ -22,7 +22,7 @@ public class SBParams
 	/// <summary>
 	/// The various group of sprites that comprise this section.
 	/// </summary>
-	public SectionSprites sprites;
+	public SectionAttributes sprites;
 
 	/// <summary>
 	/// Whether or not pits will be created in this section.
@@ -35,7 +35,6 @@ public class SBParams
 	public bool lastSection = false;
 
 	public int ceilingHeight = -1;
-
 	
 	/// <summary>
 	/// A float to be used as a generic level of difficulty
@@ -117,6 +116,19 @@ public class SBParams
 		}
 	}
 
+	public float Caviness
+	{
+		get
+		{
+			return caviness;
+		}
+		set
+		{
+			caviness = value < 0 ? SMALLEST_PARAM : Mathf.Min(1.0f, value);
+		}
+	}
+
 	private float hilliness;
 	private float pittiness;
+	private float caviness;
 }
