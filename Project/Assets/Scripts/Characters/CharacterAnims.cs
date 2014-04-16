@@ -22,7 +22,8 @@ public class CharacterAnims : MonoBehaviour
     public enum animstate
     {
         PLAYER_ANIMSTATE,
-        GOOMBA_ANIMSTATE
+        GOOMBA_ANIMSTATE,
+        KOOPA_ANIMSTATE
     }
 
 
@@ -45,6 +46,10 @@ public class CharacterAnims : MonoBehaviour
         else if (character.characterType == Character.CharacterType.Goomba)
         {
             _animState = Animator.StringToHash(animstate.GOOMBA_ANIMSTATE.ToString());
+        }
+        else if (character.characterType == Character.CharacterType.Koopa)
+        {
+            _animState = Animator.StringToHash(animstate.KOOPA_ANIMSTATE.ToString());
         }
 
 

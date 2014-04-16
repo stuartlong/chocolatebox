@@ -33,6 +33,16 @@ public class EnemyGenerator : MonoBehaviour
 		yunitc = 2 * _level_generator.GetBaseBlock().sprite.bounds.extents.y;
 
 
+        // Populate Enemy Bucket
+        foreach (EnemyAttachment ea in Enemies)
+        {
+            for (float prob = 0.00f; prob < ea.probability; prob += 0.01f)
+            {
+
+            }
+        }
+
+
         //0,0 is the bottom left tile of a section/level
 
         /*
@@ -159,6 +169,7 @@ public class EnemyGenerator : MonoBehaviour
             return;
         }
         float convertedY = newY * yunitc;
+
         convertedY += Enemies[0].gameObject.renderer.bounds.extents.y;
 
         //Should have a better random algorithm. Generation for now is ok. 
@@ -173,7 +184,7 @@ public class EnemyGenerator : MonoBehaviour
         {
             if ((int)LevelGenerator.AssetTypeKey.None == section.get(x, y))
             {
-                return y;
+                return y+1;
             }
             else
             {

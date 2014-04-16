@@ -25,8 +25,11 @@ public class LevelGenerator : MonoBehaviour
 	public bool openLevel;
 	public SectionAttributes globalAttributes;
 	public bool customSeed = false;
-	public float difficulty;
 	public int maxNumberOfDecorations;
+	public float difficulty;
+	public float currentDifficulty;
+	public float initialDifficulty;
+	public float terminalDifficulty;
 
 	public void Awake () 
 	{
@@ -101,7 +104,10 @@ public class LevelGenerator : MonoBehaviour
 				sbParams.size = scaleNewSection;
 				sbParams.entrancePositions = entrances;
 
-				sbParams.difficulty = difficulty;
+				//make difficulty linearly scale from minimul to maximum
+				currentDifficulty = initialDifficulty + (terminalDifficulty/(master.GetLength(0)-1)) * (width+1);
+
+				sbParams.difficulty = currentDifficulty;
 
 				if (sectionAttributes.GetLength(0) > 0)
 				{
