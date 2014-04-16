@@ -237,17 +237,36 @@ public class LevelGenerator : MonoBehaviour
 				int numbDecorations = (int) (section.Sprites.decorativeParameter * maxNumberOfDecorations);
 				for (int d = 0; d < numbDecorations; d++)
 				{
-					//section.Sprites.decorations;
-				}
-
-				for (int i = 0; i < section.Grid.GetLength(0); i++)
-				{
-					for (int j = 0; j < section.Grid.GetLength(1); j++)
-					{
-
-					}
+					PlaceDecoration(section.Sprites.GetRandomDecoration(), section);
 				}
 			}
+		}
+	}
+
+	private void PlaceDecoration(DecorationAttachment dec, Section section)
+	{
+		switch(dec.type)
+		{
+		case DecorationAttachment.DecorationType.BelowGround:
+			break;
+		case DecorationAttachment.DecorationType.Floating:
+			break;
+		case DecorationAttachment.DecorationType.Hanging:
+			break;
+		case DecorationAttachment.DecorationType.InCeiling:
+			break;
+		case DecorationAttachment.DecorationType.OnGround:
+			for (int x = 0; i < section.Grid.GetLength(0); i++)
+			{
+				for (int y = 0; j < section.Grid.GetLength(1); j++)
+				{
+					
+				}
+			}
+			break;
+		default:
+			Debug.Log("ERROR: DecorationType not recognized" + dec.type);
+			break;
 		}
 	}
 

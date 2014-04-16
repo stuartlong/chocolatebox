@@ -63,6 +63,9 @@ public class SectionAttributes : MonoBehaviour
 				return decMap[(int) (probs.ElementAt(i + 1)*100)];
 			}
 		}
+
+		Debug.Log("ERROR: Couldn't find a random decoration!");
+		return null;
 	}
 
 	private List<float> probs;
