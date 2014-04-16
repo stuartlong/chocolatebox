@@ -106,5 +106,7 @@ public class SectionAttributesEditor : Editor
 			EditorGUILayout.LabelField("If not checked, this section will have a random parameter determining how frequently pits should spawn");
 			GUILayout.Space(VERTICAL_TAB);
 		}
+
+		EditorGUILayout.EndVertical();
 	}
 }

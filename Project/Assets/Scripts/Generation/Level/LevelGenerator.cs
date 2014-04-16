@@ -262,9 +262,9 @@ public class LevelGenerator : MonoBehaviour
 		case DecorationAttachment.DecorationType.InCeiling:
 			break;
 		case DecorationAttachment.DecorationType.OnGround:
-			for (int x = 0; i < section.Grid.GetLength(0); i++)
+			for (int x = 0; x < section.Grid.GetLength(0); x++)
 			{
-				for (int y = 0; j < section.Grid.GetLength(1); j++)
+				for (int y = 0; y < section.Grid.GetLength(1); y++)
 				{
 					
 				}
