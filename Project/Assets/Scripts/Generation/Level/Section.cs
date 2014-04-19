@@ -9,6 +9,7 @@ public class Section
 {
 	private int[,] grid;
 	private SectionAttributes sprites;
+    private EnemySection enemySections;
 
 	public int[,] Grid
 	{
