@@ -65,9 +65,15 @@ public class SectionBuilder {
 		CreateEntrances();
 		DeterminePits();
 
+        List<EnemySection> esections = new List<EnemySection>();
+
 		for (int x = 0; x < numberBlocksX; x++) 
 		{
 			bool makingPit = pits.Contains(x);
+
+            int lastGroundHeight = groundHeight;
+            int lastCeilingHeight = ceilingHeight;
+            int lastBlocksSinceLastChange = blocksSinceLastChange;
 
 			if (!makingPit && ShouldChangeGroundHeight(x)) 
 			{
@@ -78,6 +84,13 @@ public class SectionBuilder {
 			{
 				ChangeCeilingHeightIfAble(x);
 			}
+
+            //If we are changing the ground height, but not making a pit, create a new enemy section
+            if (lastBlocksSinceLastChange > blocksSinceLastChange && !makingPit)
+            {
+                esections.Add(new EnemySection(x-lastBlocksSinceLastChange, x, ceilingHeight, groundHeight));
+            }
+            
 
 			if (x == numberBlocksX-1)
 			{
@@ -139,7 +152,7 @@ public class SectionBuilder {
 
 		finalCeilingHeight = ceilingHeight;
 
-		return new Section(section, sbParams.sprites);
+		return new Section(section, sbParams.sprites, esections);
 	}
 
 	#region Pit Creation

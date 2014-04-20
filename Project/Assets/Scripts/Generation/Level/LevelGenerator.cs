@@ -224,10 +224,21 @@ public class LevelGenerator : MonoBehaviour
 						}
 					}
 				}
-				widthOffset += baseBlock.sprite.bounds.extents.x  * 2 * section.Grid.GetLength(0);
-				//widthOffset += baseBlock.sprite.bounds.extents.y * 2 * section.Grid.GetLength(0)* width * sectionMultiplier[width];
+
+                //Generate the enemies in these sections.
+                section.GenerateEnemyOrder();
+                foreach (EnemySection es in section.EnemySections)
+                {
+                    EnemyAttachment nextEnemy = GetNextEnemy();
+                }
+
+                widthOffset += baseBlock.sprite.bounds.extents.x * 2 * section.Grid.GetLength(0);
+                //widthOffset += baseBlock.sprite.bounds.extents.y * 2 * section.Grid.GetLength(0)* width * sectionMultiplier[width];
+
 			}
 		}
+
+        
 	}
 
 	private void Decorate()
@@ -322,6 +333,19 @@ public class LevelGenerator : MonoBehaviour
 		int randomIndex = UnityEngine.Random.Range(0, allSprites.Count);
 		return allSprites.ElementAt(randomIndex);
 	}
+
+
+    /// <summary>
+    /// Select the next enemy based on the size of the available Enemy Section and
+    /// Enemy occurance probabilities
+    /// </summary>
+    /// <returns></returns>
+    private EnemyAttachment GetNextEnemy()
+    {
+        ///Better algorithm incoming. 
+        int x = (int) UnityEngine.Random.Range(0.0f, (float) globalAttributes.enemies.Length);
+        return globalAttributes.enemies[x];
+    }
 
 	/// <summary>
 	/// The keys for what integers represent what 

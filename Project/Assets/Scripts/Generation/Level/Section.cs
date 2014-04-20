@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 /// <summary>
 /// A high level abstraction of a section
@@ -9,7 +10,8 @@ public class Section
 {
 	private int[,] grid;
 	private SectionAttributes sprites;
-    private EnemySection enemySections;
+    private List<EnemySection> enemySections;
+
 
 	public int[,] Grid
 	{
@@ -27,10 +29,20 @@ public class Section
 		}
 	}
 
-	public Section(int[,] sectionGrid, SectionAttributes sectionSprites)
+    public List<EnemySection> EnemySections
+    {
+        get
+        {
+            return enemySections;
+        }
+    }
+
+
+	public Section(int[,] sectionGrid, SectionAttributes sectionSprites, List<EnemySection> es)
 	{
 		grid = sectionGrid;
 		sprites = sectionSprites;
+        enemySections = es;
 	}
 
     public int getWidth()
@@ -46,5 +58,11 @@ public class Section
     public int get(int x, int y)
     {
         return grid[x, y];
+    }
+
+
+    public void GenerateEnemyOrder()
+    {
+        
     }
 }

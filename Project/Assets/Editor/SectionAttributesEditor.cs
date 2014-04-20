@@ -61,6 +61,15 @@ public class SectionAttributesEditor : Editor
 		{
 			serializedObject.ApplyModifiedProperties();
 		}
+
+        SerializedProperty enemies = serializedObject.FindProperty("enemies");
+        EditorGUI.BeginChangeCheck();
+        EditorGUILayout.PropertyField(enemies, true);
+        if (EditorGUI.EndChangeCheck())
+        {
+            serializedObject.ApplyModifiedProperties();
+        }
+
 		}
 		else
 		{
