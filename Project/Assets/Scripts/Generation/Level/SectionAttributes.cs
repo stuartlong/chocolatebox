@@ -68,6 +68,20 @@ public class SectionAttributes : MonoBehaviour
 		return null;
 	}
 
+	public int GetNumberOfTypersOfDecorations()
+	{
+		List<DecorationAttachment.DecorationType> types = new List<DecorationAttachment.DecorationType>();
+		foreach (DecorationAttachment dec in decorations)
+		{
+			if (!types.Contains(dec.type))
+			{
+				types.Add(dec.type);
+			}
+		}
+
+		return types.Count;
+	}
+
 	private List<float> probs;
 	private Dictionary<int, DecorationAttachment> decMap;
 	private void BuildDecorationDistribution()

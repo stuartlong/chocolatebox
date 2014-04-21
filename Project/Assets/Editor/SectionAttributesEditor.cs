@@ -116,6 +116,19 @@ public class SectionAttributesEditor : Editor
 			GUILayout.Space(VERTICAL_TAB);
 		}
 
+		attributes.hasCustomDecorativeParameter = EditorGUILayout.ToggleLeft("Set Decoration Frequency Paramter", attributes.hasCustomPitParameter);
+		if (attributes.hasCustomDecorativeParameter)
+		{
+			attributes.decorativeParameter = EditorGUILayout.Slider("Decoration Frequency", attributes.decorativeParameter, 0, 1);
+			EditorGUILayout.LabelField("Determines approximately how often decorations should appear.");
+			GUILayout.Space(VERTICAL_TAB);
+		}
+		else
+		{
+			EditorGUILayout.LabelField("If not checked, this section will have a random parameter determining how frequently decorations should spawn");
+			GUILayout.Space(VERTICAL_TAB);
+		}
+
 		EditorGUILayout.EndVertical();
 	}
 }

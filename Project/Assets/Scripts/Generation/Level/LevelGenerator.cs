@@ -25,7 +25,6 @@ public class LevelGenerator : MonoBehaviour
 	public bool openLevel;
 	public SectionAttributes globalAttributes;
 	public bool customSeed = false;
-	public int maxNumberOfDecorations = 10;
 	public float difficulty;
 	public float currentDifficulty;
 	public float initialDifficulty;
@@ -240,9 +239,8 @@ public class LevelGenerator : MonoBehaviour
 			{
 				Section section = master[width,height];
 
-				int numbDecorations = (int) (section.Sprites.decorativeParameter * maxNumberOfDecorations);
-				//TODO
-				for (int d = 0; d < 5; d++)
+				int numbDecorations = (int) (section.Sprites.decorativeParameter * section.getWidth() * section.getWidth() / (Enum.GetValues(typeof(DecorationAttachment.DecorationType)).Length - (float) section.Sprites.GetNumberOfTypersOfDecorations() + 1));
+				for (int d = 0; d < numbDecorations; d++)
 				{
 					PlaceDecoration(section.Sprites.GetRandomDecoration(), section, width, widthOffset);
 				}
@@ -270,11 +268,13 @@ public class LevelGenerator : MonoBehaviour
 			Vector2 maxSize = new Vector2(ConvertToBlocksX(dec.maxSize.x), ConvertToBlocksY(dec.maxSize.y));
 			for (int column = 0; column < section.GroundHeights.GetLength(0); column++)
 			{
-				Debug.Log (section.CeilingHeights[column] - section.GroundHeights[column]);
-				if (section.CeilingHeights[column] - section.GroundHeights[column] > maxSize.y)
+				if (section.CeilingHeights[column] - section.GroundHeights[column] > maxSize.y
+				    && (column == 0 || section.GroundHeights[column] == section.GroundHeights[column - 1])
+				    && !section.GroundDecorationIndeces.Contains(column)
+				    && !section.PitIndeces.Contains(column))
 				{
 					fit++;
-					if (fit >= maxSize.x)
+					if (fit > maxSize.x)
 					{
 						placesToPlace.Add(column - (int) maxSize.x);
 					}
@@ -285,15 +285,21 @@ public class LevelGenerator : MonoBehaviour
 				}
 			}
 
-			if (placesToPlace.Capacity < 1)
+			if (placesToPlace.Count < 1)
 			{
 				return;
 			}
+			int index = UnityEngine.Random.Range(0, placesToPlace.Count - 1);
+			int toPlace = placesToPlace[index];
 
-			float centerX = ConvertToUnityUnitsX(placesToPlace.ElementAt(0)) + widthOffset + (dec.maxSize.x / 2);
-			float centerY = ConvertToUnityUnitsY(section.GroundHeights[placesToPlace.ElementAt(0)]) + (ConvertToUnityUnitsY(1)*section.Grid.GetLength(1)) + (dec.maxSize.y / 2);
+			for (int i = toPlace; i < toPlace + maxSize.x; i++)
+			{
+				section.GroundDecorationIndeces.Add(i);
+			}
+
+			float centerX = ConvertToUnityUnitsX(toPlace) + widthOffset + (dec.maxSize.x / 2) - GetBaseBlock().sprite.bounds.extents.x;
+			float centerY = ConvertToUnityUnitsY(section.GroundHeights[toPlace]) + GetBaseBlock().sprite.bounds.extents.y + (dec.maxSize.y / 2);
 			Instantiate(dec, new Vector3(centerX, centerY,1), new Quaternion());
-			Debug.Log("DECORATING!!!!!!");
 			break;
 		default:
 			Debug.Log("ERROR: DecorationType not recognized" + dec.type);
@@ -361,12 +367,12 @@ public class LevelGenerator : MonoBehaviour
 
 	public int ConvertToBlocksY(float unityUnitsY)
 	{
-		return (int) (unityUnitsY / (GetBaseBlock().sprite.bounds.extents.y * 2));
+		return Mathf.CeilToInt((unityUnitsY / (GetBaseBlock().sprite.bounds.extents.y * 2)));
 	}
 	
 	public int ConvertToBlocksX(float unityUnitsX)
 	{
-		return (int) (unityUnitsX / (GetBaseBlock().sprite.bounds.extents.x * 2));
+		return Mathf.CeilToInt((unityUnitsX / (GetBaseBlock().sprite.bounds.extents.x * 2)));
 	}
 
 	/// <summary>

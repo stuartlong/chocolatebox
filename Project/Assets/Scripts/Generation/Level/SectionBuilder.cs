@@ -147,7 +147,7 @@ public class SectionBuilder {
 
 		finalCeilingHeight = ceilingHeight;
 
-		return new Section(section, sbParams.sprites,ceilingHeights, groundHeights);
+		return new Section(section, sbParams.sprites,ceilingHeights, groundHeights, pits);
 	}
 
 	#region Pit Creation
