@@ -11,6 +11,7 @@ public class Section
 	private SectionAttributes sprites;
 	private int[] ceilingHeights;
 	private int[] groundHeights;
+    private EnemySection enemySections;
 
 	public int[,] Grid
 	{
