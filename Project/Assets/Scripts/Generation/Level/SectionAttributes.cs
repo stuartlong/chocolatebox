@@ -91,5 +91,6 @@ public class SectionAttributes : MonoBehaviour
 		probs.Add(1.0f);
 		
 		probs.Sort();
+		decorationDistributionPopulated = true;
 	}
 }

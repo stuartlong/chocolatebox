@@ -32,6 +32,8 @@ public class SectionBuilder {
 	private int blocksSinceLastChange;
 	private List<int> pits;
 	private SBParams sbParams;
+	private int[] groundHeights;
+	private int[] ceilingHeights;
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="SectionBuilder"/> class.
@@ -42,11 +44,14 @@ public class SectionBuilder {
 	{
 		sbParams = sectionParams;
 		generator = mainGenerator;
-		numberBlocksX = ConvertToBlocksX(sbParams.size.x);
-		numberBlocksY = ConvertToBlocksY(sbParams.size.y);
+		numberBlocksX = generator.ConvertToBlocksX(sbParams.size.x);
+		numberBlocksY = generator.ConvertToBlocksY(sbParams.size.y);
 		section = new int[numberBlocksX,numberBlocksY];
 		groundHeight = sbParams.entrancePositions.westEntrance.location - 1;
 		ceilingHeight = sbParams.ceilingHeight;
+
+		groundHeights = new int[numberBlocksX];
+		ceilingHeights = new int[numberBlocksX];
 
 		blocksSinceLastChange = 0;
 		finalEntrancePositions = new EntrancePositions(sbParams.entrancePositions);
@@ -83,12 +88,12 @@ public class SectionBuilder {
 			{
 				if (sbParams.lastSection)
 				{
-					for (int i = groundHeight + 1; i < Mathf.Min(numberBlocksY, (int) (groundHeight + ConvertToBlocksY(generator.levelEnd.bounds.size.y))); i++)
+					for (int i = groundHeight + 1; i < Mathf.Min(numberBlocksY, (int) (groundHeight + generator.ConvertToBlocksY(generator.levelEnd.bounds.size.y))); i++)
 					{
 						section[x, i] = (int) LevelGenerator.AssetTypeKey.Empty;
 					}
 
-					section[x, (int) (groundHeight + 1 + ConvertToBlocksY(generator.levelEnd.bounds.extents.y))] = (int) LevelGenerator.AssetTypeKey.LevelEnd;
+					section[x, (int) (groundHeight + 1 + generator.ConvertToBlocksY(generator.levelEnd.bounds.extents.y))] = (int) LevelGenerator.AssetTypeKey.LevelEnd;
 				}
 				else
 				{
@@ -135,11 +140,14 @@ public class SectionBuilder {
 					section[x,y] = (int) LevelGenerator.AssetTypeKey.CeilingBlock;
 				}
 			}
+
+			groundHeights[x] = groundHeight;
+			ceilingHeights[x] = ceilingHeight;
 		}
 
 		finalCeilingHeight = ceilingHeight;
 
-		return new Section(section, sbParams.sprites);
+		return new Section(section, sbParams.sprites,ceilingHeights, groundHeights);
 	}
 
 	#region Pit Creation
@@ -175,7 +183,7 @@ public class SectionBuilder {
 
 			if (ShouldMakePit(x, lastPit))
 			{
-				int maxLength = ConvertToBlocksX(generator.player.maxJumpDistance.x);
+				int maxLength = generator.ConvertToBlocksX(generator.player.maxJumpDistance.x);
 				currentMaxPitLength = Random.Range(MIN_PIT_LENGTH, Mathf.Min((int)((maxLength+1)*(sbParams.difficulty/4f + .75)), (numberBlocksX - 1 - x)));
 				pitLength = 0;
 			}
@@ -299,16 +307,6 @@ public class SectionBuilder {
 		}
 	}
 	#endregion
-
-	private int ConvertToBlocksY(float unityUnitsY)
-	{
-		return (int) (unityUnitsY / (generator.GetBaseBlock().sprite.bounds.extents.y * 2));
-	}
-
-	private int ConvertToBlocksX(float unityUnitsX)
-	{
-		return (int) (unityUnitsX / (generator.GetBaseBlock().sprite.bounds.extents.x * 2));
-	}
 
 	private float PercentChangeFromOne(float x)
 	{

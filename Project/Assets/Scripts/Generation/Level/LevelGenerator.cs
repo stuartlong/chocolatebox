@@ -25,7 +25,7 @@ public class LevelGenerator : MonoBehaviour
 	public bool openLevel;
 	public SectionAttributes globalAttributes;
 	public bool customSeed = false;
-	public int maxNumberOfDecorations;
+	public int maxNumberOfDecorations = 10;
 	public float difficulty;
 	public float currentDifficulty;
 	public float initialDifficulty;
@@ -211,9 +211,8 @@ public class LevelGenerator : MonoBehaviour
 				{
 					for (int j = 0; j < section.Grid.GetLength(1); j++)
 					{
-						float centerX = baseBlock.sprite.bounds.extents.x  * 2 * i + widthOffset;
-						float centerY = baseBlock.sprite.bounds.extents.y * 2 * j + (
-							baseBlock.sprite.bounds.extents.y * 2 * section.Grid.GetLength(1) * height);
+						float centerX = ConvertToUnityUnitsX(i) + widthOffset;
+						float centerY = ConvertToUnityUnitsY(j) + (ConvertToUnityUnitsY(height)*section.Grid.GetLength(1));
 
 						AssetTypeKey key = (AssetTypeKey) section.Grid[i,j];
 						UnityEngine.Object toInstantiate = GetBlockOfTypeForSection(key, section);
@@ -224,10 +223,11 @@ public class LevelGenerator : MonoBehaviour
 						}
 					}
 				}
-				widthOffset += baseBlock.sprite.bounds.extents.x  * 2 * section.Grid.GetLength(0);
-				//widthOffset += baseBlock.sprite.bounds.extents.y * 2 * section.Grid.GetLength(0)* width * sectionMultiplier[width];
+				widthOffset += ConvertToUnityUnitsX(section.Grid.GetLength(0));
 			}
 		}
+
+		Decorate();
 	}
 
 	private void Decorate()
@@ -241,15 +241,18 @@ public class LevelGenerator : MonoBehaviour
 				Section section = master[width,height];
 
 				int numbDecorations = (int) (section.Sprites.decorativeParameter * maxNumberOfDecorations);
-				for (int d = 0; d < numbDecorations; d++)
+				//TODO
+				for (int d = 0; d < 5; d++)
 				{
-					PlaceDecoration(section.Sprites.GetRandomDecoration(), section);
+					PlaceDecoration(section.Sprites.GetRandomDecoration(), section, width, widthOffset);
 				}
+
+				widthOffset += ConvertToUnityUnitsX(section.Grid.GetLength(0));
 			}
 		}
 	}
 
-	private void PlaceDecoration(DecorationAttachment dec, Section section)
+	private void PlaceDecoration(DecorationAttachment dec, Section section, int width, float widthOffset)
 	{
 		switch(dec.type)
 		{
@@ -262,13 +265,35 @@ public class LevelGenerator : MonoBehaviour
 		case DecorationAttachment.DecorationType.InCeiling:
 			break;
 		case DecorationAttachment.DecorationType.OnGround:
-			for (int x = 0; x < section.Grid.GetLength(0); x++)
+			int fit = 0;
+			List<int> placesToPlace = new List<int>();
+			Vector2 maxSize = new Vector2(ConvertToBlocksX(dec.maxSize.x), ConvertToBlocksY(dec.maxSize.y));
+			for (int column = 0; column < section.GroundHeights.GetLength(0); column++)
 			{
-				for (int y = 0; y < section.Grid.GetLength(1); y++)
+				Debug.Log (section.CeilingHeights[column] - section.GroundHeights[column]);
+				if (section.CeilingHeights[column] - section.GroundHeights[column] > maxSize.y)
 				{
-					
+					fit++;
+					if (fit >= maxSize.x)
+					{
+						placesToPlace.Add(column - (int) maxSize.x);
+					}
+				}
+				else
+				{
+					fit = 0;
 				}
 			}
+
+			if (placesToPlace.Capacity < 1)
+			{
+				return;
+			}
+
+			float centerX = ConvertToUnityUnitsX(placesToPlace.ElementAt(0)) + widthOffset + (dec.maxSize.x / 2);
+			float centerY = ConvertToUnityUnitsY(section.GroundHeights[placesToPlace.ElementAt(0)]) + (ConvertToUnityUnitsY(1)*section.Grid.GetLength(1)) + (dec.maxSize.y / 2);
+			Instantiate(dec, new Vector3(centerX, centerY,1), new Quaternion());
+			Debug.Log("DECORATING!!!!!!");
 			break;
 		default:
 			Debug.Log("ERROR: DecorationType not recognized" + dec.type);
@@ -321,6 +346,27 @@ public class LevelGenerator : MonoBehaviour
 		
 		int randomIndex = UnityEngine.Random.Range(0, allSprites.Count);
 		return allSprites.ElementAt(randomIndex);
+	}
+
+	public float ConvertToUnityUnitsY(int blocks)
+	{
+		return GetBaseBlock().sprite.bounds.extents.y * 2 * blocks;
+	}
+
+	public float ConvertToUnityUnitsX(int blocks)
+	{
+		return GetBaseBlock().sprite.bounds.extents.x * 2 * blocks;
+	}
+
+
+	public int ConvertToBlocksY(float unityUnitsY)
+	{
+		return (int) (unityUnitsY / (GetBaseBlock().sprite.bounds.extents.y * 2));
+	}
+	
+	public int ConvertToBlocksX(float unityUnitsX)
+	{
+		return (int) (unityUnitsX / (GetBaseBlock().sprite.bounds.extents.x * 2));
 	}
 
 	/// <summary>

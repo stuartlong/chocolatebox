@@ -61,11 +61,20 @@ public class SectionAttributesEditor : Editor
 		{
 			serializedObject.ApplyModifiedProperties();
 		}
+
+			SerializedProperty decs = serializedObject.FindProperty("decorations");
+			EditorGUI.BeginChangeCheck();
+			EditorGUILayout.PropertyField(decs, true);
+			if (EditorGUI.EndChangeCheck())
+			{
+				serializedObject.ApplyModifiedProperties();
+			}
 		}
 		else
 		{
 			EditorGUILayout.LabelField("The sprites to use for you level. These should be prefabs.");
 		}
+
 		GUILayout.Space(VERTICAL_TAB);
 
 		attributes.hasCustomOpennessParameter = EditorGUILayout.ToggleLeft("Set Custom Openness", attributes.hasCustomOpennessParameter);

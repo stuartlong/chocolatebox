@@ -9,12 +9,30 @@ public class Section
 {
 	private int[,] grid;
 	private SectionAttributes sprites;
+	private int[] ceilingHeights;
+	private int[] groundHeights;
 
 	public int[,] Grid
 	{
 		get
 		{
 			return grid;
+		}
+	}
+
+	public int[] GroundHeights
+	{
+		get
+		{
+			return groundHeights;
+		}
+	}
+
+	public int[] CeilingHeights
+	{
+		get
+		{
+			return ceilingHeights;
 		}
 	}
 
@@ -26,10 +44,12 @@ public class Section
 		}
 	}
 
-	public Section(int[,] sectionGrid, SectionAttributes sectionSprites)
+	public Section(int[,] sectionGrid, SectionAttributes sectionSprites, int[] ceilings, int[] grounds)
 	{
 		grid = sectionGrid;
 		sprites = sectionSprites;
+		ceilingHeights = ceilings;
+		groundHeights = grounds;
 	}
 
     public int getWidth()
