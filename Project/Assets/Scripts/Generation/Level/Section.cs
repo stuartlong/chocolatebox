@@ -13,7 +13,7 @@ public class Section
     private List<EnemySection> enemySections;
 
     [HideInInspector]
-    public TreeMap<EnemyAttachment> enemyTree;
+    public RangeTree<EnemyAttachment> enemyTree;
 
 
 	public int[,] Grid
@@ -46,7 +46,7 @@ public class Section
 		grid = sectionGrid;
 		sprites = sectionSprites;
         enemySections = es;
-        enemyTree = new TreeMap<EnemyAttachment>();
+        enemyTree = new RangeTree<EnemyAttachment>();
 	}
 
     public int getWidth()
@@ -65,7 +65,7 @@ public class Section
     }
 
 
-    public void GenerateEnemyTreeMap()
+    public void GenerateEnemyRangeTree()
     {
         foreach (EnemyAttachment enemy in sprites.enemies)
         {

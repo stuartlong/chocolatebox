@@ -226,10 +226,31 @@ public class LevelGenerator : MonoBehaviour
 				}
 
                 //Generate the enemies in these sections.
-                section.GenerateEnemyTreeMap();
+                section.GenerateEnemyRangeTree();
                 foreach (EnemySection es in section.EnemySections)
                 {
-                    EnemyAttachment nextEnemy = GetNextEnemy(section);
+                    int nextX = es.leftBound;
+
+                    while (nextX < es.rightBound && es.rightBound > 20)
+                    {
+                        EnemyAttachment nextEnemy = GetNextEnemy(section);
+
+                        
+                        if (nextEnemy.requiredSpace.x + nextX < es.rightBound)
+                        {
+                            float centerX = (baseBlock.sprite.bounds.extents.x + nextEnemy.requiredSpace.x)                          * 2 * nextX + widthOffset;
+    						float centerY = baseBlock.sprite.bounds.extents.y * 2 * es.lowerBound + 
+                                            (baseBlock.sprite.bounds.extents.y * 2 * 
+                                            section.Grid.GetLength(1) * height);
+
+                            Debug.Log("New Enemy at x: " + nextX + nextEnemy.requiredSpace.x);
+                            Debug.Log("and y: " + es.lowerBound + nextEnemy.requiredSpace.y);
+
+                            Instantiate(nextEnemy.gameObject, new Vector3(centerX, centerY, 0), new Quaternion());
+                        }
+
+                        nextX += (int)nextEnemy.requiredSpace.x * 2;
+                    }
                 }
 
                 widthOffset += baseBlock.sprite.bounds.extents.x * 2 * section.Grid.GetLength(0);

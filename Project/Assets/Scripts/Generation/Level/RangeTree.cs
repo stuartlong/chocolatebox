@@ -4,26 +4,26 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class TreeMap<T>
+public class RangeTree<T>
 {
 
-    private TreeMapNode<T> root;
-    private List<TreeMapNode<T>> allNodes;
+    private RangeTreeNode<T> root;
+    private List<RangeTreeNode<T>> allNodes;
     public float minimumValue;
     public float maximumValue;
 
     /// <summary>
     /// A Tree that maps a range of values to an object.
     /// </summary>
-	public TreeMap()
+	public RangeTree()
 	{
         root = null;
-        allNodes = new List<TreeMapNode<T>>();
+        allNodes = new List<RangeTreeNode<T>>();
 	}
 
     public void Add(float probability, T obj)
     {
-        allNodes.Add(new TreeMapNode<T>(probability, obj));
+        allNodes.Add(new RangeTreeNode<T>(probability, obj));
     }
 
     /// <summary>
@@ -36,6 +36,8 @@ public class TreeMap<T>
 
     public void Index()
     {
+        Debug.Log(allNodes.Count);
+
         // Sort all the nodes to decreasing order
         allNodes.Sort();
         allNodes.Reverse();
@@ -48,18 +50,24 @@ public class TreeMap<T>
         //Populate tree and reset all nodes values;
         while (allNodes.Count > 0)
         {
-            TreeMapNode<T> node = allNodes.First();
+            RangeTreeNode<T> node = allNodes.First();
             allNodes.RemoveAt(0);
             root.Add(node);
         }
 
         //Set the indexes
-        root.SetIndexes(0);
+        this.maximumValue = root.SetIndexes(0);
     }
 
+    /// <summary>
+    /// Generate a valid random index for the given RangeTree
+    /// </summary>
+    /// <returns></returns>
     public float RandomIndex()
     {
-        return UnityEngine.Random.Range(this.minimumValue, this.maximumValue);
+        float x = UnityEngine.Random.Range(this.minimumValue, this.maximumValue);
+        Debug.Log(x);
+        return x;
     }
 
     public T Get(float index)
@@ -69,7 +77,7 @@ public class TreeMap<T>
 }
 
 
-public class TreeMapNode<T> : IComparable
+public class RangeTreeNode<T> : IComparable
 {
     private int leftHeight;
     private int rightHeight;
@@ -80,12 +88,12 @@ public class TreeMapNode<T> : IComparable
     private T data;
 
 
-    private TreeMapNode<T> leftChild;
-    private TreeMapNode<T> rightChild;
-    public TreeMapNode<T> parent;
+    private RangeTreeNode<T> leftChild;
+    private RangeTreeNode<T> rightChild;
+    public RangeTreeNode<T> parent;
 
 
-    public TreeMapNode(float p, T obj)
+    public RangeTreeNode(float p, T obj)
     {
         this.probability = p;
         this.data = obj;
@@ -94,7 +102,7 @@ public class TreeMapNode<T> : IComparable
         this.parent = null;
     }
 
-    public void Add(TreeMapNode<T> node){
+    public void Add(RangeTreeNode<T> node){
         if (this.leftChild == null)
         {
             this.leftChild = node;
@@ -125,7 +133,7 @@ public class TreeMapNode<T> : IComparable
         }
     }
 
-    public void IncrementHeight(TreeMapNode<T> node)
+    public void IncrementHeight(RangeTreeNode<T> node)
     {
         if (node == this.leftChild)
         {
@@ -205,7 +213,7 @@ public class TreeMapNode<T> : IComparable
 
     public int CompareTo(System.Object obj)
     {
-        TreeMapNode<T> node = obj as TreeMapNode<T>;
+        RangeTreeNode<T> node = obj as RangeTreeNode<T>;
         return this.probability.CompareTo(node.probability);
     }
 }
