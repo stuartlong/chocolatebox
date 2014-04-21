@@ -226,10 +226,10 @@ public class LevelGenerator : MonoBehaviour
 				}
 
                 //Generate the enemies in these sections.
-                section.GenerateEnemyOrder();
+                section.GenerateEnemyTreeMap();
                 foreach (EnemySection es in section.EnemySections)
                 {
-                    EnemyAttachment nextEnemy = GetNextEnemy();
+                    EnemyAttachment nextEnemy = GetNextEnemy(section);
                 }
 
                 widthOffset += baseBlock.sprite.bounds.extents.x * 2 * section.Grid.GetLength(0);
@@ -340,11 +340,10 @@ public class LevelGenerator : MonoBehaviour
     /// Enemy occurance probabilities
     /// </summary>
     /// <returns></returns>
-    private EnemyAttachment GetNextEnemy()
+    private EnemyAttachment GetNextEnemy(Section section)
     {
         ///Better algorithm incoming. 
-        int x = (int) UnityEngine.Random.Range(0.0f, (float) globalAttributes.enemies.Length);
-        return globalAttributes.enemies[x];
+        return section.enemyTree.Get(section.enemyTree.RandomIndex());
     }
 
 	/// <summary>

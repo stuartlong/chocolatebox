@@ -12,6 +12,9 @@ public class Section
 	private SectionAttributes sprites;
     private List<EnemySection> enemySections;
 
+    [HideInInspector]
+    public TreeMap<EnemyAttachment> enemyTree;
+
 
 	public int[,] Grid
 	{
@@ -43,6 +46,7 @@ public class Section
 		grid = sectionGrid;
 		sprites = sectionSprites;
         enemySections = es;
+        enemyTree = new TreeMap<EnemyAttachment>();
 	}
 
     public int getWidth()
@@ -61,8 +65,13 @@ public class Section
     }
 
 
-    public void GenerateEnemyOrder()
+    public void GenerateEnemyTreeMap()
     {
-        
+        foreach (EnemyAttachment enemy in sprites.enemies)
+        {
+            enemyTree.Add(enemy.probability, enemy);
+        }
+
+        enemyTree.Index();
     }
 }
