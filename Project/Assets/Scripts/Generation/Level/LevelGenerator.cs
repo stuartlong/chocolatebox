@@ -238,11 +238,10 @@ public class LevelGenerator : MonoBehaviour
 			for (int height = 0; height < master.GetLength(1); height++)
 			{
 				Section section = master[width,height];
-
-				int numbDecorations = (int) (section.Sprites.decorativeParameter * section.getWidth() * section.getWidth() / (Enum.GetValues(typeof(DecorationAttachment.DecorationType)).Length - (float) section.Sprites.GetNumberOfTypersOfDecorations() + 1));
+				int numbDecorations = (int) (section.Sprites.decorativeParameter * section.getWidth() / (Enum.GetValues(typeof(DecorationAttachment.DecorationType)).Length - (float) section.Sprites.GetNumberOfTypersOfDecorations() + 1));
 				for (int d = 0; d < numbDecorations; d++)
 				{
-					PlaceDecoration(section.Sprites.GetRandomDecoration(), section, width, widthOffset);
+					PlaceDecoration(section.Sprites.GetRandomDecoration(), section, widthOffset);
 				}
 
 				widthOffset += ConvertToUnityUnitsX(section.Grid.GetLength(0));
@@ -250,61 +249,145 @@ public class LevelGenerator : MonoBehaviour
 		}
 	}
 
-	private void PlaceDecoration(DecorationAttachment dec, Section section, int width, float widthOffset)
+	private void PlaceFloatingDecoration(DecorationAttachment dec, Section section, float widthOffset)
 	{
-		switch(dec.type)
+
+	}
+
+	private void PlaceGroundDecoration(DecorationAttachment dec, Section section, float widthOffset)
+	{
+		List<int> placesToPlace = new List<int>();
+		Vector2 maxSize = new Vector2(ConvertToBlocksX(dec.maxSize.x), ConvertToBlocksY(dec.maxSize.y));
+		int nextX = 0;
+		for (int column = 0; column < section.GroundHeights.GetLength(0); column++)
 		{
-		case DecorationAttachment.DecorationType.BelowGround:
-			break;
-		case DecorationAttachment.DecorationType.Floating:
-			break;
-		case DecorationAttachment.DecorationType.Hanging:
-			break;
-		case DecorationAttachment.DecorationType.InCeiling:
-			break;
-		case DecorationAttachment.DecorationType.OnGround:
-			int fit = 0;
-			List<int> placesToPlace = new List<int>();
-			Vector2 maxSize = new Vector2(ConvertToBlocksX(dec.maxSize.x), ConvertToBlocksY(dec.maxSize.y));
-			for (int column = 0; column < section.GroundHeights.GetLength(0); column++)
+			for (int x = nextX; x < column + maxSize.x; x++)
 			{
-				if (section.CeilingHeights[column] - section.GroundHeights[column] > maxSize.y
-				    && (column == 0 || section.GroundHeights[column] == section.GroundHeights[column - 1])
-				    && !section.GroundDecorationIndeces.Contains(column)
-				    && !section.PitIndeces.Contains(column))
+				if (x + (int) maxSize.x < section.getWidth()
+				    && section.CeilingHeights[x] - section.GroundHeights[x] > maxSize.y
+				    && (x == section.GroundHeights.Length || section.GroundHeights[x] == section.GroundHeights[x + 1])
+			   		&& !section.PitIndeces.Contains(x))
 				{
-					fit++;
-					if (fit > maxSize.x)
+					if (x == column + maxSize.x - 1)
 					{
-						placesToPlace.Add(column - (int) maxSize.x);
+						if (!CollidesWithDecoration(maxSize, section, new Vector2(column, section.GroundHeights[column])))
+						{
+							placesToPlace.Add(column);
+						}
 					}
 				}
 				else
 				{
-					fit = 0;
+					column = x; 
+					nextX = x + 1;
+					break;
 				}
 			}
+		}
+		
+		if (placesToPlace.Count < 1)
+		{
+			return;
+		}
+		int index = UnityEngine.Random.Range(0, placesToPlace.Count - 1);
+		int toPlace = placesToPlace[index];
 
-			if (placesToPlace.Count < 1)
-			{
-				return;
-			}
-			int index = UnityEngine.Random.Range(0, placesToPlace.Count - 1);
-			int toPlace = placesToPlace[index];
 
-			for (int i = toPlace; i < toPlace + maxSize.x; i++)
+		for (int x = toPlace; x < toPlace + maxSize.x; x++)
+		{
+			for (int y = section.GroundHeights[x]; y < section.GroundHeights[x] + maxSize.y; y++)
 			{
-				section.GroundDecorationIndeces.Add(i);
+				section.DecorationGrid[x,y] = 1;
 			}
+		}
 
 			float centerX = ConvertToUnityUnitsX(toPlace) + widthOffset + (dec.maxSize.x / 2) - GetBaseBlock().sprite.bounds.extents.x;
 			float centerY = ConvertToUnityUnitsY(section.GroundHeights[toPlace]) + GetBaseBlock().sprite.bounds.extents.y + (dec.maxSize.y / 2);
 			Instantiate(dec, new Vector3(centerX, centerY,1), new Quaternion());
+	}
+	
+	private void PlaceDecoration(DecorationAttachment dec, Section section, float widthOffset)
+	{
+		switch(dec.type)
+		{
+		case DecorationAttachment.DecorationType.Floating:
+			break;
+		case DecorationAttachment.DecorationType.Hanging:
+			PlaceHangingDecoration(dec, section, widthOffset);
+			break;
+		case DecorationAttachment.DecorationType.OnGround:
+			PlaceGroundDecoration(dec, section, widthOffset);
 			break;
 		default:
 			Debug.Log("ERROR: DecorationType not recognized" + dec.type);
 			break;
 		}
+	}
+
+	private bool CollidesWithDecoration(Vector2 maxSize, Section section, Vector2 pointToPlace)
+	{
+		for (int x = (int) pointToPlace.x; x < (int) (pointToPlace.x + maxSize.x); x++)
+		{
+			for (int y = (int)pointToPlace.y; y < (int) (pointToPlace.y + maxSize.y); y++)
+			{
+				if (section.DecorationGrid[x,y] == 1)
+				{
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	private void PlaceHangingDecoration(DecorationAttachment dec, Section section, float widthOffset)
+	{
+		List<int> placesToPlace = new List<int>();
+		Vector2 maxSize = new Vector2(ConvertToBlocksX(dec.maxSize.x), ConvertToBlocksY(dec.maxSize.y));
+		int nextX = 0;
+		for (int column = 0; column < section.GroundHeights.GetLength(0); column++)
+		{
+			for (int x = nextX; x < column + maxSize.x; x++)
+			{
+				if (x + (int) maxSize.x < section.getWidth()
+				    && section.CeilingHeights[x] - section.GroundHeights[x] > maxSize.y
+				    && (column == section.CeilingHeights.Length || section.CeilingHeights[column] == section.CeilingHeights[column + 1]))
+				{
+					if (x == column + maxSize.x - 1)
+					{
+						if (!CollidesWithDecoration(maxSize, section, new Vector2(column, section.CeilingHeights[column] - maxSize.y)))
+						{
+							placesToPlace.Add(column);
+						}
+					}
+				}
+				else
+				{
+					column = x; 
+					nextX = x + 1;
+					break;
+				}
+			}
+		}
+		
+		if (placesToPlace.Count < 1)
+		{
+			return;
+		}
+		int index = UnityEngine.Random.Range(0, placesToPlace.Count - 1);
+		int toPlace = placesToPlace[index];
+		
+		
+		for (int x = toPlace; x < toPlace + maxSize.x; x++)
+		{
+			for (int y = section.CeilingHeights[x] - (int) maxSize.y; y < section.CeilingHeights[x]; y++)
+			{
+				section.DecorationGrid[x,y] = 1;
+			}
+		}
+		
+		float centerX = ConvertToUnityUnitsX(toPlace) + widthOffset + (dec.maxSize.x / 2) - GetBaseBlock().sprite.bounds.extents.x;
+		float centerY = ConvertToUnityUnitsY(section.CeilingHeights[toPlace]) - GetBaseBlock().sprite.bounds.extents.y - (dec.maxSize.y / 2);
+		Instantiate(dec, new Vector3(centerX, centerY,1), new Quaternion());
 	}
 
 	private UnityEngine.Object GetBlockOfTypeForSection(AssetTypeKey type, Section s)

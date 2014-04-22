@@ -101,6 +101,7 @@ public class SectionAttributes : MonoBehaviour
 			float cdfVal = (dec.frequency / normalize) + sum;
 			probs.Add(cdfVal);
 			decMap.Add((int) (cdfVal*100), dec);
+			sum += cdfVal;
 		}
 		probs.Add(1.0f);
 		

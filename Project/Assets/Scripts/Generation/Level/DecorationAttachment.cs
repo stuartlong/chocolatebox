@@ -13,8 +13,6 @@ public class DecorationAttachment : MonoBehaviour
 	{
 		OnGround,
 		Hanging,
-		BelowGround,
-		InCeiling,
 		Floating
 	}
 }

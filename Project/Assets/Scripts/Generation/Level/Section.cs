@@ -9,6 +9,7 @@ using System.Collections.Generic;
 public class Section
 {
 	private int[,] grid;
+	private int[,] decorationGrid;
 	private SectionAttributes sprites;
 	private int[] ceilingHeights;
 	private int[] groundHeights;
@@ -29,6 +30,14 @@ public class Section
 		get
 		{
 			return groundDecorationIndeces;
+		}
+	}
+
+	public int[,] DecorationGrid
+	{
+		get
+		{
+			return decorationGrid;
 		}
 	}
 
@@ -67,6 +76,7 @@ public class Section
 	public Section(int[,] sectionGrid, SectionAttributes sectionSprites, int[] ceilings, int[] grounds, List<int> pits)
 	{
 		grid = sectionGrid;
+		decorationGrid = new int[sectionGrid.GetLength(0), sectionGrid.GetLength(1)];
 		sprites = sectionSprites;
 		ceilingHeights = ceilings;
 		groundHeights = grounds;
