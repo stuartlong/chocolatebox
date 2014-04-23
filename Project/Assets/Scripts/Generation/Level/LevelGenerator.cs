@@ -165,6 +165,22 @@ public class LevelGenerator : MonoBehaviour
 					}
 				}
 
+				if (sbParams.sprites.hasCustomPlatformParameter)
+				{
+					sbParams.Platforminess = sbParams.sprites.platformParameter;
+				}
+				else
+				{
+					if (globalAttributes.hasCustomPlatformParameter)
+					{
+						sbParams.Platforminess = globalAttributes.platformParameter;
+					}
+					else
+					{
+						sbParams.Platforminess = UnityEngine.Random.Range(0f, 1f);
+					}
+				}
+
 				if (UnityEngine.Random.Range(0f, 1f) > .75f)
 				{
 					if (UnityEngine.Random.Range(0f, 1f) > .5f)
@@ -398,12 +414,12 @@ public class LevelGenerator : MonoBehaviour
 			return GetBlockFromArrays(globalAttributes.belowGroundBlocks, s.Sprites.belowGroundBlocks);
 		case AssetTypeKey.TopGroundBlock:
 			return GetBlockFromArrays(globalAttributes.topGroundBlocks, s.Sprites.topGroundBlocks);
-		/*case AssetTypeKey.WallBlock:
-			return GetBlockFromArrays(globalSprites.wallBlocks, s.Sprites.wallBlocks);*/
 		case AssetTypeKey.CeilingBlock:
 			return GetBlockFromArrays(globalAttributes.ceilingBlocks, s.Sprites.ceilingBlocks);
 		case AssetTypeKey.LevelEnd:
 			return levelEnd;
+		case AssetTypeKey.Platform:
+			return GetBlockFromArrays(globalAttributes.platformBlocks, s.Sprites.platformBlocks);
 		default:
 			return null;
 		}
@@ -471,6 +487,7 @@ public class LevelGenerator : MonoBehaviour
 		CeilingBlock = 5,
 		TopGroundBlock = 6,
 		LevelEnd = 7,
-		Empty = 8
+		Empty = 8,
+		Platform = 9
 	}
 }

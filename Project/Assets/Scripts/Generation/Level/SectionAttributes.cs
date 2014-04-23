@@ -34,6 +34,8 @@ public class SectionAttributes : MonoBehaviour
 
 	public DecorationAttachment[] decorations;
 
+	public SpriteRenderer[] platformBlocks;
+
 	public bool hasCustomHillParameter = false;
 	public float hillParameter;
 
@@ -45,6 +47,9 @@ public class SectionAttributes : MonoBehaviour
 
 	public bool hasCustomDecorativeParameter = false;
 	public float decorativeParameter;
+
+	public bool hasCustomPlatformParameter = false;
+	public float platformParameter;
 
 	private bool decorationDistributionPopulated = false;
 

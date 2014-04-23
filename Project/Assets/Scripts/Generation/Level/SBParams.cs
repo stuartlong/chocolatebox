@@ -7,7 +7,7 @@ using System.Collections;
 /// </summary>
 public class SBParams 
 {
-	private static float SMALLEST_PARAM = 0.1f;
+	public readonly static float SMALLEST_PARAM = 0.01f;
 
 	/// <summary>
 	/// The size of the section. The units here are Unity units, not the desired number of blocks.
@@ -28,6 +28,8 @@ public class SBParams
 	/// Whether or not pits will be created in this section.
 	/// </summary>
 	public bool allowPits = true;
+
+	public bool allowPlatforms = true;
 
 	/// <summary>
 	/// Indicates that this will be where the current level ends.
@@ -112,7 +114,19 @@ public class SBParams
 		}
 		set
 		{
-			pittiness = value < 0 ? SMALLEST_PARAM : Mathf.Min(1.0f, value);
+			pittiness = value < SMALLEST_PARAM ? 0f : Mathf.Min(1.0f, value);
+		}
+	}
+
+	public float Platforminess
+	{
+		get
+		{
+			return platforminess;
+		}
+		set
+		{
+			platforminess = value < 0 ? SMALLEST_PARAM : Mathf.Min(1.0f, value);
 		}
 	}
 
@@ -128,6 +142,7 @@ public class SBParams
 		}
 	}
 
+	private float platforminess;
 	private float hilliness;
 	private float pittiness;
 	private float caviness;

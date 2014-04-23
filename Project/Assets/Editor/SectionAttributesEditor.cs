@@ -69,6 +69,14 @@ public class SectionAttributesEditor : Editor
 			{
 				serializedObject.ApplyModifiedProperties();
 			}
+
+			SerializedProperty platforms = serializedObject.FindProperty("platformBlocks");
+			EditorGUI.BeginChangeCheck();
+			EditorGUILayout.PropertyField(platforms, true);
+			if (EditorGUI.EndChangeCheck())
+			{
+				serializedObject.ApplyModifiedProperties();
+			}
 		}
 		else
 		{
@@ -116,11 +124,24 @@ public class SectionAttributesEditor : Editor
 			GUILayout.Space(VERTICAL_TAB);
 		}
 
-		attributes.hasCustomDecorativeParameter = EditorGUILayout.ToggleLeft("Set Decoration Frequency Paramter", attributes.hasCustomPitParameter);
+		attributes.hasCustomDecorativeParameter = EditorGUILayout.ToggleLeft("Set Decoration Frequency Paramter", attributes.hasCustomDecorativeParameter);
 		if (attributes.hasCustomDecorativeParameter)
 		{
 			attributes.decorativeParameter = EditorGUILayout.Slider("Decoration Frequency", attributes.decorativeParameter, 0, 1);
 			EditorGUILayout.LabelField("Determines approximately how often decorations should appear.");
+			GUILayout.Space(VERTICAL_TAB);
+		}
+		else
+		{
+			EditorGUILayout.LabelField("If not checked, this section will have a random parameter determining how frequently decorations should spawn");
+			GUILayout.Space(VERTICAL_TAB);
+		}
+
+		attributes.hasCustomPlatformParameter = EditorGUILayout.ToggleLeft("Set Platform Frequency Paramter", attributes.hasCustomPlatformParameter);
+		if (attributes.hasCustomPlatformParameter)
+		{
+			attributes.platformParameter = EditorGUILayout.Slider("Platform Frequency", attributes.platformParameter, 0, 1);
+			EditorGUILayout.LabelField("Determines approximately how often platforms should appear.");
 			GUILayout.Space(VERTICAL_TAB);
 		}
 		else
