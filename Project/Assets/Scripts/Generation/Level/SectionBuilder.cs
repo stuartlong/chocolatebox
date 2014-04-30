@@ -289,9 +289,8 @@ public class SectionBuilder {
 	//returns true if it's time to make a new pit
 	private bool ShouldMakePit(int currentX, int lastPitX)
 	{
-		if (currentX >= numberBlocksX - 2 
-		    || currentX - lastPitX < generator.player.maxPlayerSize.x / sbParams.Pittiness
-		    || false)//(currentX - lastPitX) / numberBlocksX < .25 * sbParams.Pittiness)
+		if (currentX >= numberBlocksX - generator.player.maxPlayerSize.x
+		    || currentX - lastPitX < generator.player.maxPlayerSize.x / sbParams.Pittiness)
 		{
 			return false;
 		}
