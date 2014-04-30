@@ -221,6 +221,7 @@ public class LevelGenerator : MonoBehaviour
 			{
 				Section section = master[width,height];
 				SpriteRenderer baseBlock = GetBaseBlock();
+				bool finalSection = width == (master.GetLength(0) - 1);
 
 				for (int i = 0; i < section.Grid.GetLength(0); i++)
 				{
@@ -231,6 +232,12 @@ public class LevelGenerator : MonoBehaviour
 
 						AssetTypeKey key = (AssetTypeKey) section.Grid[i,j];
 						UnityEngine.Object toInstantiate = GetBlockOfTypeForSection(key, section);
+
+						if (finalSection && i == section.Grid.GetLength(0) - 1 && j == section.GroundHeights[i] + 1) 
+						{
+							float levelEndY = centerY + GetBaseBlock().bounds.size.y + levelEnd.sprite.bounds.extents.y;
+							Instantiate(levelEnd, new Vector3(centerX, centerY, 0), new Quaternion());
+						}
 
 						if (toInstantiate != null)
 						{
@@ -245,6 +252,7 @@ public class LevelGenerator : MonoBehaviour
 		Decorate();
 	}
 
+	#region Decorating
 	private void Decorate()
 	{
 		SpriteRenderer baseBlock = GetBaseBlock();
@@ -405,6 +413,7 @@ public class LevelGenerator : MonoBehaviour
 		float centerY = ConvertToUnityUnitsY(section.CeilingHeights[toPlace]) - GetBaseBlock().sprite.bounds.extents.y - (dec.maxSize.y / 2);
 		Instantiate(dec, new Vector3(centerX, centerY,1), new Quaternion());
 	}
+	#endregion
 
 	private UnityEngine.Object GetBlockOfTypeForSection(AssetTypeKey type, Section s)
 	{
@@ -416,8 +425,6 @@ public class LevelGenerator : MonoBehaviour
 			return GetBlockFromArrays(globalAttributes.topGroundBlocks, s.Sprites.topGroundBlocks);
 		case AssetTypeKey.CeilingBlock:
 			return GetBlockFromArrays(globalAttributes.ceilingBlocks, s.Sprites.ceilingBlocks);
-		case AssetTypeKey.LevelEnd:
-			return levelEnd;
 		case AssetTypeKey.Platform:
 			return GetBlockFromArrays(globalAttributes.platformBlocks, s.Sprites.platformBlocks);
 		default:
@@ -486,7 +493,6 @@ public class LevelGenerator : MonoBehaviour
 		Pit = 3,
 		CeilingBlock = 5,
 		TopGroundBlock = 6,
-		LevelEnd = 7,
 		Empty = 8,
 		Platform = 9
 	}

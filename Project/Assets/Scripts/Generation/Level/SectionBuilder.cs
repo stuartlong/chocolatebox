@@ -78,8 +78,8 @@ public class SectionBuilder {
 	public Section Build()
 	{
 		CreateEntrances();
-		DeterminePlatforms();
 		DeterminePits();
+		DeterminePlatforms();
 
 		for (int x = 0; x < numberBlocksX; x++) 
 		{
@@ -105,14 +105,7 @@ public class SectionBuilder {
 						maxVal = (int) (groundHeight + generator.player.maxJumpDistance.y - 1);
 					}
 
-					if (makingPit && pits.Contains(x + 1))
-					{
-						minVal = (int) Mathf.Max((groundHeight - generator.player.maxJumpDistance.y), 1);
-					}
-					else
-					{
-						minVal = Mathf.Min((int) (groundHeight + generator.player.maxPlayerSize.y + 1), (int) (groundHeight + generator.player.maxJumpDistance.y - 1));
-					}
+				minVal = (int) (groundHeight + generator.player.maxPlayerSize.y + 1);
 
 				platformHeight = Random.Range(minVal, maxVal); 
 			}
@@ -131,12 +124,12 @@ public class SectionBuilder {
 			{
 				if (sbParams.lastSection)
 				{
-					for (int i = groundHeight + 1; i < Mathf.Min(numberBlocksY, (int) (groundHeight + generator.ConvertToBlocksY(generator.levelEnd.bounds.size.y))); i++)
+					for (int i = groundHeight + 1; i < Mathf.Min(numberBlocksY, (int) (groundHeight + generator.ConvertToBlocksY(generator.levelEnd.bounds.size.y) + 1)); i++)
 					{
 						section[x, i] = (int) LevelGenerator.AssetTypeKey.Empty;
 					}
 
-					section[x, (int) (groundHeight + 1 + generator.ConvertToBlocksY(generator.levelEnd.bounds.extents.y))] = (int) LevelGenerator.AssetTypeKey.LevelEnd;
+					//section[x, (int) (groundHeight + 1 + generator.ConvertToBlocksY(generator.levelEnd.bounds.extents.y))] = (int) LevelGenerator.AssetTypeKey.LevelEnd;
 				}
 				else
 				{
@@ -166,7 +159,6 @@ public class SectionBuilder {
 				}
 				else if (shouldPit) 
 				{
-					Debug.Log("GOTTA A PIT");
 					section[x,y] = (int) LevelGenerator.AssetTypeKey.Pit;
 				}
 				else if (belowGround)
@@ -179,10 +171,6 @@ public class SectionBuilder {
 					blocksSinceLastChange++;
 					section[x,y] = (int) LevelGenerator.AssetTypeKey.TopGroundBlock;
 				}
-				/*else if (atWall && !atCeiling)
-				{
-					section[x,y] = (int) LevelGenerator.AssetTypeKey.WallBlock;
-				}*/
 				else if (atCeiling)
 				{
 					section[x,y] = (int) LevelGenerator.AssetTypeKey.CeilingBlock;
@@ -238,7 +226,7 @@ public class SectionBuilder {
 
 	private bool ShouldMakePlatform(int currentX, int lastPlatformX)
 	{
-		if (currentX >= numberBlocksX - 2 || currentX - lastPlatformX < generator.player.maxPlayerSize.x)
+		if (currentX >= numberBlocksX - 2 || currentX - lastPlatformX < generator.player.maxPlayerSize.x || pits.Contains(currentX))
 		{
 			return false;
 		}
@@ -287,7 +275,6 @@ public class SectionBuilder {
 			if (ShouldMakePit(x, lastPit))
 			{
 				numberPits++;
-				Debug.Log ("SHOULD PIT");
 				int maxLength = (int) generator.player.maxJumpDistance.x;
 				//currentMaxPitLength = Random.Range(MIN_PIT_LENGTH, Mathf.Min((int)((maxLength+1)*(sbParams.difficulty/4f + .75)), (numberBlocksX - 1 - x)));
 				currentMaxPitLength = Random.Range(MIN_PIT_LENGTH, Mathf.Min((int)(maxLength+1), (numberBlocksX - 1 - x)));
@@ -308,7 +295,7 @@ public class SectionBuilder {
 		{
 			return false;
 		}
-		Debug.Log("hey");
+
 		bool shouldPit = Random.Range(0f,1f) /*+ (sbParams.difficulty-.5f)/4f)*/ > 1-sbParams.Pittiness;
 
 		return shouldPit;
