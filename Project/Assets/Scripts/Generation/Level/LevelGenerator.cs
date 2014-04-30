@@ -30,6 +30,7 @@ public class LevelGenerator : MonoBehaviour
 	public float initialDifficulty;
 	public float terminalDifficulty;
 
+	#region Level Build
 	public void Awake () 
 	{
 		if (!customSeed)
@@ -251,6 +252,7 @@ public class LevelGenerator : MonoBehaviour
 
 		Decorate();
 	}
+	#endregion
 
 	#region Decorating
 	private void Decorate()
