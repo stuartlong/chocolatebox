@@ -335,7 +335,9 @@ public class SectionBuilder {
 	//returns true if the ground height should be changed
 	private bool ShouldChangeGroundHeight(int currentX) 
 	{
-		if (currentX <= 1 || currentX >= numberBlocksX - 2)
+		if (currentX <= 1 
+		    || currentX >= numberBlocksX - 2 
+		    || blocksSinceLastChange < generator.player.maxPlayerSize.x)
 		{
 			return false;
 		}
@@ -345,7 +347,7 @@ public class SectionBuilder {
 			return true;
 		}
 
-		return Random.Range(0f,1f) > 1-sbParams.Hilliness;
+		return Random.Range(0f,1f) > 1-sbParams.Hilliness && Random.Range(0f,1f) > 1-sbParams.Hilliness;
 	}
 
 	//changes the ground height. Direction is completely random.
