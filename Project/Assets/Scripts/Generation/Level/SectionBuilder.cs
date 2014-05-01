@@ -218,7 +218,7 @@ public class SectionBuilder {
 			
 			if (ShouldMakePlatform(x, lastP))
 			{
-				currentMaxPlatformLength = Random.Range((int) generator.player.maxPlayerSize.x,(int) (generator.player.maxPlayerSize.x*generator.player.maxPlayerSize.x)); 
+				currentMaxPlatformLength = Random.Range((int) generator.player.maxPlayerSize.x,(int) (generator.player.maxPlayerSize.x*generator.player.maxPlayerSize.x + 2*generator.player.maxPlayerSize.x)); 
 				platformLength = 0;
 			}
 		}
@@ -335,6 +335,7 @@ public class SectionBuilder {
 	//returns true if the ground height should be changed
 	private bool ShouldChangeGroundHeight(int currentX) 
 	{
+		Debug.Log (generator.player.maxPlayerSize);
 		if (currentX <= 1 
 		    || currentX >= numberBlocksX - 2 
 		    || blocksSinceLastChange < generator.player.maxPlayerSize.x)
