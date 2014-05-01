@@ -124,7 +124,7 @@ public class SectionBuilder {
 			{
 				if (sbParams.lastSection)
 				{
-					for (int i = groundHeight + 1; i < Mathf.Min(numberBlocksY, (int) (groundHeight + generator.ConvertToBlocksY(generator.levelEnd.bounds.size.y) + 1)); i++)
+					for (int i = groundHeight + 1; i < Mathf.Min(numberBlocksY, (int) (groundHeight + generator.ConvertToBlocksY(generator.levelEnd.maxSize.y) + 1)); i++)
 					{
 						section[x, i] = (int) LevelGenerator.AssetTypeKey.Empty;
 					}

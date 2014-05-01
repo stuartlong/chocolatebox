@@ -76,7 +76,7 @@ public class LevelGeneratorEditor : Editor
 		EditorGUILayout.LabelField("The player object");
 		GUILayout.Space(VERTICAL_TAB);
 
-		generator.levelEnd = (SpriteRenderer) EditorGUILayout.ObjectField("Level End", generator.levelEnd, typeof(SpriteRenderer), true);
+		generator.levelEnd = (LevelEndAttachment) EditorGUILayout.ObjectField("Level End", generator.levelEnd, typeof(LevelEndAttachment), true);
 		EditorGUILayout.LabelField("The object to appear at the end of the level.");
 		GUILayout.Space(VERTICAL_TAB);
 

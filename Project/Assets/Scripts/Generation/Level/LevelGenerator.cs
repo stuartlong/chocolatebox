@@ -20,7 +20,7 @@ public class LevelGenerator : MonoBehaviour
 	public SectionAttributes[] sectionAttributes;
     public int MergeChance;
 	public PlayerAttachment player;
-	public SpriteRenderer levelEnd;
+	public LevelEndAttachment levelEnd;
 	public Section[,] master;
 	public bool openLevel;
 	public SectionAttributes globalAttributes;
@@ -234,10 +234,10 @@ public class LevelGenerator : MonoBehaviour
 						AssetTypeKey key = (AssetTypeKey) section.Grid[i,j];
 						UnityEngine.Object toInstantiate = GetBlockOfTypeForSection(key, section);
 
-						if (finalSection && i == section.Grid.GetLength(0) - 1 && j == section.GroundHeights[i] + 1) 
+						if (finalSection && i == section.Grid.GetLength(0) - 1 && j == section.GroundHeights[i]) 
 						{
-							float levelEndY = centerY + GetBaseBlock().bounds.size.y + levelEnd.sprite.bounds.extents.y;
-							Instantiate(levelEnd, new Vector3(centerX, centerY, 0), new Quaternion());
+							float levelEndY = centerY + GetBaseBlock().bounds.extents.y + levelEnd.maxSize.y / 2f;
+							Instantiate(levelEnd, new Vector3(centerX, levelEndY, 0), new Quaternion());
 						}
 
 						if (toInstantiate != null)
@@ -273,11 +273,6 @@ public class LevelGenerator : MonoBehaviour
 				widthOffset += ConvertToUnityUnitsX(section.Grid.GetLength(0));
 			}
 		}
-	}
-
-	private void PlaceFloatingDecoration(DecorationAttachment dec, Section section, float widthOffset)
-	{
-
 	}
 
 	private void PlaceGroundDecoration(DecorationAttachment dec, Section section, float widthOffset)
@@ -336,8 +331,6 @@ public class LevelGenerator : MonoBehaviour
 	{
 		switch(dec.type)
 		{
-		case DecorationAttachment.DecorationType.Floating:
-			break;
 		case DecorationAttachment.DecorationType.Hanging:
 			PlaceHangingDecoration(dec, section, widthOffset);
 			break;
