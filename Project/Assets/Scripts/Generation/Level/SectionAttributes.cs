@@ -40,6 +40,8 @@ public class SectionAttributes : MonoBehaviour
 
 	public DecorationAttachment[] decorations;
 
+	public SpriteRenderer[] platformBlocks;
+
 	public bool hasCustomHillParameter = false;
 	public float hillParameter;
 
@@ -51,6 +53,9 @@ public class SectionAttributes : MonoBehaviour
 
 	public bool hasCustomDecorativeParameter = false;
 	public float decorativeParameter;
+
+	public bool hasCustomPlatformParameter = false;
+	public float platformParameter;
 
 	private bool decorationDistributionPopulated = false;
 
@@ -74,6 +79,20 @@ public class SectionAttributes : MonoBehaviour
 		return null;
 	}
 
+	public int GetNumberOfTypersOfDecorations()
+	{
+		List<DecorationAttachment.DecorationType> types = new List<DecorationAttachment.DecorationType>();
+		foreach (DecorationAttachment dec in decorations)
+		{
+			if (!types.Contains(dec.type))
+			{
+				types.Add(dec.type);
+			}
+		}
+
+		return types.Count;
+	}
+
 	private List<float> probs;
 	private Dictionary<int, DecorationAttachment> decMap;
 	private void BuildDecorationDistribution()
@@ -93,9 +112,11 @@ public class SectionAttributes : MonoBehaviour
 			float cdfVal = (dec.frequency / normalize) + sum;
 			probs.Add(cdfVal);
 			decMap.Add((int) (cdfVal*100), dec);
+			sum += cdfVal;
 		}
 		probs.Add(1.0f);
 		
 		probs.Sort();
+		decorationDistributionPopulated = true;
 	}
 }

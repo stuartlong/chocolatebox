@@ -1,0 +1,139 @@
+\documentclass[pdftex,12pt,letter]{article}
+\usepackage{fancyhdr}
+\usepackage{enumerate}
+\usepackage{tabularx}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage[toc,page]{appendix}
+\usepackage[justification=justified,singlelinecheck=false]{caption}
+\usepackage{placeins}
+\usepackage{hyperref}
+\pagestyle{fancy}
+\makeatletter
+  \renewcommand\@seccntformat[1]{\csname the#1\endcsname.\quad}
+\makeatother
+
+\newcolumntype {Y}{ >{\raggedright \arraybackslash }X}
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+\captionsetup{labelformat=empty}
+
+\begin{document}
+
+\begin{titlepage}
+\begin{flushright}
+\HRule \\[0.4cm]
+{ \bfseries
+{\huge User Guide\\[1cm]}
+{\Large for\\[1cm]}
+{\huge Chocolate Box\large\\[.1cm]
+A Procedural Level Generator for Unity\\[3cm]}
+{\large Prepared by\\[1cm]James Fitzpatrick\\Stuart Long\\Frank Singel\\[2cm]
+Version 1.0\\
+April 22, 2014\\
+}}
+\end{flushright}
+\end{titlepage}
+\FloatBarrier
+\newpage
+\tableofcontents
+\newpage
+
+\section{Introduction}
+\subsection{Overview}
+Talk about what to expect from ChocolateBox
+\subsection{Features}
+Talk briefly about what features exist in ChocolateBox
+\begin{enumerate}
+\item Level Generator
+\begin{enumerate}
+\item Section Generation
+\item Transitions
+\item User Parameters
+\begin{enumerate}
+\item Pits/Spikes
+\item Elevation
+\item Difficulty
+\end{enumerate}
+\item Decorations
+\end{enumerate}
+
+\item Enemy Generator
+\begin{enumerate}
+\item Generation Algorithm
+\item Enemy User Parameters
+\begin{enumerate}
+\item Required Space
+\item Movement Type
+\item Frequency
+\item Difficulty
+\end{enumerate}
+\item Enemy Assets
+\begin{enumerate}
+\item Movement Pattern
+\item Character Interaction
+\item Miscellaneous Scripting
+\end{enumerate}
+\end{enumerate}
+
+\item{Item Generator}
+\begin{enumerate}
+\item Item Placement Algorithms
+\item User Parameters
+\begin{enumerate}
+\item Frequency
+\item Value
+\item Type
+\end{enumerate}
+\item Item Scripting
+\end{enumerate}
+
+\item{Unity Demo Game}
+\begin{enumerate}
+\item Level Design and Development
+\item Enemy Design and Development
+\item Item Design and Development
+\item Non-Generated Game Elements
+\end{enumerate}
+\end{enumerate}
+
+\section{Getting Started}
+Talk about how each script works together to achieve functionality.
+Minimum scripts needed for basic functionality.
+
+\section{Application}
+\subsection{Overview}
+This section provides a low level overview of the features and individual scripts of \textit{Chocolate Box}.
+
+\subsection{Level Generation}
+\subsubsection{Decoration Attachment}
+Use this to describe the decoration to the level generation scripts. Has values for it's size, how often you want it to appear, and what types of places you want it to spawn in (On ceiling, in the air, on the ground, etc.).
+\subsubsection{Entrance Position}
+This is used to determine the desired location of the entrance, as well as its size.
+\subsubsection{Entrance Positions}
+
+\subsubsection{Level Generator}
+\subsubsection{SB Params}
+\subsubsection{Section Attributes}
+Specifies sprites to be used in various sections
+\subsubsection{Section Builder}
+\subsection{Enemy Generation}
+\subsubsection{Enemy Generator}
+\subsubsection{Enemy Section}
+
+\begin{thebibliography}{3}
+\bibitem{unity}Unity Technologies (2013). \textit{Unity Scripting Reference} [Online]. \url{http://docs.unity3d.com/Documentation/ScriptReference/index.html}
+\end{thebibliography}
+
+\newpage
+\appendix
+\section{Programmer's Manual}
+\subsection{Using Unity}
+Unity can be installed for free from \url{https://unity3d.com/}. The Unity website also provides extensive documentation on its use.
+\subsection{Chocolate Box}
+\subsubsection{Installation}
+\textit{Chocolate Box} is used through Unity as its own Unity project. Once completed, the source code can be obtained from \url{https://github.com/stuartlong/chocolatebox}. To open \textit{Chocolate Box} in Unity, start Unity and select "Open Project" and navigate to the /ChocolateBox/Project folder and select it.
+\subsubsection{Code}
+For a brief overview of the code see Section \ref{Modules}. The code itself is explained in great detail in the comments and the project documentation provided on GitHub.
+
+\FloatBarrier
+\end{document}

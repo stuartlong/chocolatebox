@@ -62,19 +62,35 @@ public class SectionAttributesEditor : Editor
 			serializedObject.ApplyModifiedProperties();
 		}
 
-        SerializedProperty enemies = serializedObject.FindProperty("enemies");
-        EditorGUI.BeginChangeCheck();
-        EditorGUILayout.PropertyField(enemies, true);
-        if (EditorGUI.EndChangeCheck())
-        {
-            serializedObject.ApplyModifiedProperties();
-        }
+	        SerializedProperty enemies = serializedObject.FindProperty("enemies");
+	        EditorGUI.BeginChangeCheck();
+	        EditorGUILayout.PropertyField(enemies, true);
+        	if (EditorGUI.EndChangeCheck())
+	        {
+	            serializedObject.ApplyModifiedProperties();
+        	}
+        
+		SerializedProperty decs = serializedObject.FindProperty("decorations");
+		EditorGUI.BeginChangeCheck();
+		EditorGUILayout.PropertyField(decs, true);
+		if (EditorGUI.EndChangeCheck())
+		{
+			serializedObject.ApplyModifiedProperties();
+		}
 
+		SerializedProperty platforms = serializedObject.FindProperty("platformBlocks");
+		EditorGUI.BeginChangeCheck();
+		EditorGUILayout.PropertyField(platforms, true);
+		if (EditorGUI.EndChangeCheck())
+		{
+			serializedObject.ApplyModifiedProperties();
+		}
 		}
 		else
 		{
 			EditorGUILayout.LabelField("The sprites to use for you level. These should be prefabs.");
 		}
+
 		GUILayout.Space(VERTICAL_TAB);
 
 		attributes.hasCustomOpennessParameter = EditorGUILayout.ToggleLeft("Set Custom Openness", attributes.hasCustomOpennessParameter);
@@ -113,6 +129,32 @@ public class SectionAttributesEditor : Editor
 		else
 		{
 			EditorGUILayout.LabelField("If not checked, this section will have a random parameter determining how frequently pits should spawn");
+			GUILayout.Space(VERTICAL_TAB);
+		}
+
+		attributes.hasCustomDecorativeParameter = EditorGUILayout.ToggleLeft("Set Decoration Frequency Paramter", attributes.hasCustomDecorativeParameter);
+		if (attributes.hasCustomDecorativeParameter)
+		{
+			attributes.decorativeParameter = EditorGUILayout.Slider("Decoration Frequency", attributes.decorativeParameter, 0, 1);
+			EditorGUILayout.LabelField("Determines approximately how often decorations should appear.");
+			GUILayout.Space(VERTICAL_TAB);
+		}
+		else
+		{
+			EditorGUILayout.LabelField("If not checked, this section will have a random parameter determining how frequently decorations should spawn");
+			GUILayout.Space(VERTICAL_TAB);
+		}
+
+		attributes.hasCustomPlatformParameter = EditorGUILayout.ToggleLeft("Set Platform Frequency Paramter", attributes.hasCustomPlatformParameter);
+		if (attributes.hasCustomPlatformParameter)
+		{
+			attributes.platformParameter = EditorGUILayout.Slider("Platform Frequency", attributes.platformParameter, 0, 1);
+			EditorGUILayout.LabelField("Determines approximately how often platforms should appear.");
+			GUILayout.Space(VERTICAL_TAB);
+		}
+		else
+		{
+			EditorGUILayout.LabelField("If not checked, this section will have a random parameter determining how frequently decorations should spawn");
 			GUILayout.Space(VERTICAL_TAB);
 		}
 

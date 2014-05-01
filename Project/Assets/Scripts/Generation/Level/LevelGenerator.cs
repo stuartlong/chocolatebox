@@ -25,12 +25,12 @@ public class LevelGenerator : MonoBehaviour
 	public bool openLevel;
 	public SectionAttributes globalAttributes;
 	public bool customSeed = false;
-	public int maxNumberOfDecorations;
 	public float difficulty;
 	public float currentDifficulty;
 	public float initialDifficulty;
 	public float terminalDifficulty;
 
+	#region Level Build
 	public void Awake () 
 	{
 		if (!customSeed)
@@ -166,6 +166,22 @@ public class LevelGenerator : MonoBehaviour
 					}
 				}
 
+				if (sbParams.sprites.hasCustomPlatformParameter)
+				{
+					sbParams.Platforminess = sbParams.sprites.platformParameter;
+				}
+				else
+				{
+					if (globalAttributes.hasCustomPlatformParameter)
+					{
+						sbParams.Platforminess = globalAttributes.platformParameter;
+					}
+					else
+					{
+						sbParams.Platforminess = UnityEngine.Random.Range(0f, 1f);
+					}
+				}
+
 				if (UnityEngine.Random.Range(0f, 1f) > .75f)
 				{
 					if (UnityEngine.Random.Range(0f, 1f) > .5f)
@@ -206,17 +222,23 @@ public class LevelGenerator : MonoBehaviour
 			{
 				Section section = master[width,height];
 				SpriteRenderer baseBlock = GetBaseBlock();
+				bool finalSection = width == (master.GetLength(0) - 1);
 
 				for (int i = 0; i < section.Grid.GetLength(0); i++)
 				{
 					for (int j = 0; j < section.Grid.GetLength(1); j++)
 					{
-						float centerX = baseBlock.sprite.bounds.extents.x  * 2 * i + widthOffset;
-						float centerY = baseBlock.sprite.bounds.extents.y * 2 * j + (
-							baseBlock.sprite.bounds.extents.y * 2 * section.Grid.GetLength(1) * height);
+						float centerX = ConvertToUnityUnitsX(i) + widthOffset;
+						float centerY = ConvertToUnityUnitsY(j) + (ConvertToUnityUnitsY(height)*section.Grid.GetLength(1));
 
 						AssetTypeKey key = (AssetTypeKey) section.Grid[i,j];
 						UnityEngine.Object toInstantiate = GetBlockOfTypeForSection(key, section);
+
+						if (finalSection && i == section.Grid.GetLength(0) - 1 && j == section.GroundHeights[i] + 1) 
+						{
+							float levelEndY = centerY + GetBaseBlock().bounds.size.y + levelEnd.sprite.bounds.extents.y;
+							Instantiate(levelEnd, new Vector3(centerX, centerY, 0), new Quaternion());
+						}
 
 						if (toInstantiate != null)
 						{
@@ -255,9 +277,11 @@ public class LevelGenerator : MonoBehaviour
 			}
 		}
 
-        
+		Decorate();
 	}
+	#endregion
 
+	#region Decorating
 	private void Decorate()
 	{
 		SpriteRenderer baseBlock = GetBaseBlock();
@@ -267,42 +291,158 @@ public class LevelGenerator : MonoBehaviour
 			for (int height = 0; height < master.GetLength(1); height++)
 			{
 				Section section = master[width,height];
-
-				int numbDecorations = (int) (section.Sprites.decorativeParameter * maxNumberOfDecorations);
+				int numbDecorations = (int) (section.Sprites.decorativeParameter * section.getWidth() / (Enum.GetValues(typeof(DecorationAttachment.DecorationType)).Length - (float) section.Sprites.GetNumberOfTypersOfDecorations() + 1));
 				for (int d = 0; d < numbDecorations; d++)
 				{
-					PlaceDecoration(section.Sprites.GetRandomDecoration(), section);
+					PlaceDecoration(section.Sprites.GetRandomDecoration(), section, widthOffset);
 				}
+
+				widthOffset += ConvertToUnityUnitsX(section.Grid.GetLength(0));
 			}
 		}
 	}
 
-	private void PlaceDecoration(DecorationAttachment dec, Section section)
+	private void PlaceFloatingDecoration(DecorationAttachment dec, Section section, float widthOffset)
+	{
+
+	}
+
+	private void PlaceGroundDecoration(DecorationAttachment dec, Section section, float widthOffset)
+	{
+		List<int> placesToPlace = new List<int>();
+		Vector2 maxSize = new Vector2(ConvertToBlocksX(dec.maxSize.x), ConvertToBlocksY(dec.maxSize.y));
+		int nextX = 0;
+		for (int column = 0; column < section.GroundHeights.GetLength(0); column++)
+		{
+			for (int x = nextX; x < column + maxSize.x; x++)
+			{
+				if (x + (int) maxSize.x < section.getWidth()
+				    && section.CeilingHeights[x] - section.GroundHeights[x] > maxSize.y
+				    && (x == section.GroundHeights.Length || section.GroundHeights[x] == section.GroundHeights[x + 1])
+			   		&& !section.PitIndeces.Contains(x))
+				{
+					if (x == column + maxSize.x - 1)
+					{
+						if (!CollidesWithDecoration(maxSize, section, new Vector2(column, section.GroundHeights[column])))
+						{
+							placesToPlace.Add(column);
+						}
+					}
+				}
+				else
+				{
+					column = x; 
+					nextX = x + 1;
+					break;
+				}
+			}
+		}
+		
+		if (placesToPlace.Count < 1)
+		{
+			return;
+		}
+		int index = UnityEngine.Random.Range(0, placesToPlace.Count - 1);
+		int toPlace = placesToPlace[index];
+
+
+		for (int x = toPlace; x < toPlace + maxSize.x; x++)
+		{
+			for (int y = section.GroundHeights[x]; y < section.GroundHeights[x] + maxSize.y; y++)
+			{
+				section.DecorationGrid[x,y] = 1;
+			}
+		}
+
+			float centerX = ConvertToUnityUnitsX(toPlace) + widthOffset + (dec.maxSize.x / 2) - GetBaseBlock().sprite.bounds.extents.x;
+			float centerY = ConvertToUnityUnitsY(section.GroundHeights[toPlace]) + GetBaseBlock().sprite.bounds.extents.y + (dec.maxSize.y / 2);
+			Instantiate(dec, new Vector3(centerX, centerY,1), new Quaternion());
+	}
+	
+	private void PlaceDecoration(DecorationAttachment dec, Section section, float widthOffset)
 	{
 		switch(dec.type)
 		{
-		case DecorationAttachment.DecorationType.BelowGround:
-			break;
 		case DecorationAttachment.DecorationType.Floating:
 			break;
 		case DecorationAttachment.DecorationType.Hanging:
-			break;
-		case DecorationAttachment.DecorationType.InCeiling:
+			PlaceHangingDecoration(dec, section, widthOffset);
 			break;
 		case DecorationAttachment.DecorationType.OnGround:
-			for (int x = 0; x < section.Grid.GetLength(0); x++)
-			{
-				for (int y = 0; y < section.Grid.GetLength(1); y++)
-				{
-					
-				}
-			}
+			PlaceGroundDecoration(dec, section, widthOffset);
 			break;
 		default:
 			Debug.Log("ERROR: DecorationType not recognized" + dec.type);
 			break;
 		}
 	}
+
+	private bool CollidesWithDecoration(Vector2 maxSize, Section section, Vector2 pointToPlace)
+	{
+		for (int x = (int) pointToPlace.x; x < (int) (pointToPlace.x + maxSize.x); x++)
+		{
+			for (int y = (int)pointToPlace.y; y < (int) (pointToPlace.y + maxSize.y); y++)
+			{
+				if (section.DecorationGrid[x,y] == 1)
+				{
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	private void PlaceHangingDecoration(DecorationAttachment dec, Section section, float widthOffset)
+	{
+		List<int> placesToPlace = new List<int>();
+		Vector2 maxSize = new Vector2(ConvertToBlocksX(dec.maxSize.x), ConvertToBlocksY(dec.maxSize.y));
+		int nextX = 0;
+		for (int column = 0; column < section.GroundHeights.GetLength(0); column++)
+		{
+			for (int x = nextX; x < column + maxSize.x; x++)
+			{
+				if (x + (int) maxSize.x < section.getWidth()
+				    && section.CeilingHeights[x] - section.GroundHeights[x] > maxSize.y
+				    && (column == section.CeilingHeights.Length || section.CeilingHeights[column] == section.CeilingHeights[column + 1]))
+				{
+					if (x == column + maxSize.x - 1)
+					{
+						if (!CollidesWithDecoration(maxSize, section, new Vector2(column, section.CeilingHeights[column] - maxSize.y)))
+						{
+							placesToPlace.Add(column);
+						}
+					}
+				}
+				else
+				{
+					column = x; 
+					nextX = x + 1;
+					break;
+				}
+			}
+		}
+		
+		if (placesToPlace.Count < 1)
+		{
+			return;
+		}
+		int index = UnityEngine.Random.Range(0, placesToPlace.Count - 1);
+		int toPlace = placesToPlace[index];
+		
+		
+		for (int x = toPlace; x < toPlace + maxSize.x; x++)
+		{
+			for (int y = section.CeilingHeights[x] - (int) maxSize.y; y < section.CeilingHeights[x]; y++)
+			{
+				section.DecorationGrid[x,y] = 1;
+			}
+		}
+		
+		float centerX = ConvertToUnityUnitsX(toPlace) + widthOffset + (dec.maxSize.x / 2) - GetBaseBlock().sprite.bounds.extents.x;
+		float centerY = ConvertToUnityUnitsY(section.CeilingHeights[toPlace]) - GetBaseBlock().sprite.bounds.extents.y - (dec.maxSize.y / 2);
+		Instantiate(dec, new Vector3(centerX, centerY,1), new Quaternion());
+	}
+	#endregion
 
 	private UnityEngine.Object GetBlockOfTypeForSection(AssetTypeKey type, Section s)
 	{
@@ -312,12 +452,10 @@ public class LevelGenerator : MonoBehaviour
 			return GetBlockFromArrays(globalAttributes.belowGroundBlocks, s.Sprites.belowGroundBlocks);
 		case AssetTypeKey.TopGroundBlock:
 			return GetBlockFromArrays(globalAttributes.topGroundBlocks, s.Sprites.topGroundBlocks);
-		/*case AssetTypeKey.WallBlock:
-			return GetBlockFromArrays(globalSprites.wallBlocks, s.Sprites.wallBlocks);*/
 		case AssetTypeKey.CeilingBlock:
 			return GetBlockFromArrays(globalAttributes.ceilingBlocks, s.Sprites.ceilingBlocks);
-		case AssetTypeKey.LevelEnd:
-			return levelEnd;
+		case AssetTypeKey.Platform:
+			return GetBlockFromArrays(globalAttributes.platformBlocks, s.Sprites.platformBlocks);
 		default:
 			return null;
 		}
@@ -363,6 +501,27 @@ public class LevelGenerator : MonoBehaviour
         return section.enemyTree.Get(section.enemyTree.RandomIndex());
     }
 
+	public float ConvertToUnityUnitsY(int blocks)
+	{
+		return GetBaseBlock().sprite.bounds.extents.y * 2 * blocks;
+	}
+
+	public float ConvertToUnityUnitsX(int blocks)
+	{
+		return GetBaseBlock().sprite.bounds.extents.x * 2 * blocks;
+	}
+
+
+	public int ConvertToBlocksY(float unityUnitsY)
+	{
+		return Mathf.CeilToInt((unityUnitsY / (GetBaseBlock().sprite.bounds.extents.y * 2)));
+	}
+	
+	public int ConvertToBlocksX(float unityUnitsX)
+	{
+		return Mathf.CeilToInt((unityUnitsX / (GetBaseBlock().sprite.bounds.extents.x * 2)));
+	}
+
 	/// <summary>
 	/// The keys for what integers represent what 
 	/// in the array representations of levels.
@@ -375,7 +534,7 @@ public class LevelGenerator : MonoBehaviour
 		Pit = 3,
 		CeilingBlock = 5,
 		TopGroundBlock = 6,
-		LevelEnd = 7,
-		Empty = 8
+		Empty = 8,
+		Platform = 9
 	}
 }
