@@ -36,8 +36,6 @@ public class RangeTree<T>
 
     public void Index()
     {
-        Debug.Log(allNodes.Count);
-
         // Sort all the nodes to decreasing order
         allNodes.Sort();
         allNodes.Reverse();
@@ -65,9 +63,7 @@ public class RangeTree<T>
     /// <returns></returns>
     public float RandomIndex()
     {
-        float x = UnityEngine.Random.Range(this.minimumValue, this.maximumValue);
-        Debug.Log(x);
-        return x;
+        return UnityEngine.Random.Range(this.minimumValue, this.maximumValue);
     }
 
     public T Get(float index)

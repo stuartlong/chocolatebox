@@ -231,23 +231,19 @@ public class LevelGenerator : MonoBehaviour
                 {
                     int nextX = es.leftBound;
 
-                    while (nextX < es.rightBound && es.rightBound > 20)
+                    while (nextX < es.rightBound && es.rightBound > 5)
                     {
                         EnemyAttachment nextEnemy = GetNextEnemy(section);
 
-                        
-                        if (nextEnemy.requiredSpace.x + nextX < es.rightBound)
-                        {
-                            float centerX = (baseBlock.sprite.bounds.extents.x + nextEnemy.requiredSpace.x)                          * 2 * nextX + widthOffset;
-    						float centerY = baseBlock.sprite.bounds.extents.y * 2 * es.lowerBound + 
-                                            (baseBlock.sprite.bounds.extents.y * 2 * 
-                                            section.Grid.GetLength(1) * height);
+                        float centerX = (baseBlock.sprite.bounds.extents.x + nextEnemy.requiredSpace.x)                          * 2 * nextX + widthOffset +
+                                            nextEnemy.gameObject.renderer.bounds.extents.x*2;
 
-                            Debug.Log("New Enemy at x: " + nextX + nextEnemy.requiredSpace.x);
-                            Debug.Log("and y: " + es.lowerBound + nextEnemy.requiredSpace.y);
+    					float centerY = baseBlock.sprite.bounds.extents.y * 2 * (es.upperBound+es.lowerBound)/2 + 
+                                        (baseBlock.sprite.bounds.extents.y * 2 * 
+                                        section.Grid.GetLength(1) * height + 
+                                        nextEnemy.renderer.bounds.extents.y*2);
 
-                            Instantiate(nextEnemy.gameObject, new Vector3(centerX, centerY, 0), new Quaternion());
-                        }
+                        Instantiate(nextEnemy.gameObject, new Vector3(centerX, centerY, 0), new Quaternion());
 
                         nextX += (int)nextEnemy.requiredSpace.x * 2;
                     }
