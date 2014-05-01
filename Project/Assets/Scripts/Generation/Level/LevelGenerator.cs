@@ -29,6 +29,7 @@ public class LevelGenerator : MonoBehaviour
 	public float currentDifficulty;
 	public float initialDifficulty;
 	public float terminalDifficulty;
+	public bool infiniteLevel;
 
 	#region Level Build
 	public void Awake () 
@@ -39,6 +40,8 @@ public class LevelGenerator : MonoBehaviour
 			seed = (int) (System.DateTime.UtcNow - epochStart).TotalSeconds;
 		}
 		UnityEngine.Random.seed = seed;
+
+		player.repeatingLevel = infiniteLevel;
 
 		//determine premerge section sizes
 		float xSize = levelSize.x / sectionsX;
@@ -251,6 +254,7 @@ public class LevelGenerator : MonoBehaviour
 		}
 
 		Decorate();
+		player.OnLevelLoad();
 	}
 	#endregion
 

@@ -6,6 +6,8 @@ public class PlayerAttachment : MonoBehaviour
 	public Vector2 maxJumpDistance;
 	public Vector2	maxPlayerSize;
 
+	[HideInInspector] public bool repeatingLevel;
+
 	public void OnLevelEnd() { }
 	public void OnLevelLoad() { }
 
@@ -15,7 +17,10 @@ public class PlayerAttachment : MonoBehaviour
 		{
 			Debug.Log("COLLIDE");
 			OnLevelEnd();
-			Application.LoadLevel(Application.loadedLevelName);
+			if (repeatingLevel) 
+			{
+				Application.LoadLevel(Application.loadedLevelName);
+			}
 		}
 	}
 }

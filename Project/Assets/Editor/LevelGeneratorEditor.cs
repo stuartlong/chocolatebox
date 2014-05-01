@@ -29,18 +29,12 @@ public class LevelGeneratorEditor : Editor
 		EditorGUILayout.LabelField("Open levels will have no walls or ceilings.");
 		GUILayout.Space(VERTICAL_TAB);
 
-		if (!generator.openLevel) 
-		{
-			Vector2 numbSections = EditorGUILayout.Vector2Field("Number of Sections", new Vector2(generator.sectionsX, generator.sectionsY));
-			generator.sectionsX = (int) numbSections.x;
-			generator.sectionsY = (int) numbSections.y;
-		}
-		else
-		{
-			Vector2 numbSections = EditorGUILayout.Vector2Field("Number of Sections", new Vector2(generator.sectionsX, 1));
-			generator.sectionsX = (int) numbSections.x;
-			generator.sectionsY = 1;
-		}
+		generator.infiniteLevel = EditorGUILayout.Toggle("Loop Level", generator.infiniteLevel);
+		EditorGUILayout.LabelField("If toggled, ending the level by reaching the Level End object will generate a new level with these current parameters");
+		GUILayout.Space(VERTICAL_TAB);
+
+		generator.sectionsX = EditorGUILayout.IntField("Number of Sections", generator.sectionsX);
+		generator.sectionsY = 1;
 		EditorGUILayout.LabelField("The number of sections that will comprise your level.");
 		GUILayout.Space(VERTICAL_TAB);
 
