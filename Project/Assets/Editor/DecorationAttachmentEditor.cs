@@ -10,7 +10,7 @@ public class DecorationAttachmentEditor : Editor {
 		serializedObject.Update();
 		DecorationAttachment dec = (DecorationAttachment) target;
 
-		dec.type = (DecorationAttachment.DecorationType) EditorGUILayout.EnumMaskField("Decoration Type", dec.type);
+		dec.type = (DecorationAttachment.DecorationType) EditorGUILayout.EnumPopup("Decoration Type", dec.type);
 		dec.frequency = EditorGUILayout.Slider("Frequency", dec.frequency, 0f, 1f);
 
 		Vector2 maxSize = EditorGUILayout.Vector2Field("Maximum Size", dec.maxSize);
@@ -29,5 +29,7 @@ public class DecorationAttachmentEditor : Editor {
 			maxSize = new Vector2(maxSize.x, decSprite.bounds.size.y);
 		}
 		dec.maxSize = maxSize;
+
+		dec.allowOverlap = EditorGUILayout.Toggle("Allow Overlap", dec.allowOverlap);
 	}
 }

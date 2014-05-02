@@ -271,6 +271,11 @@ public class LevelGenerator : MonoBehaviour
 				int numbDecorations = (int) (section.Sprites.decorativeParameter * section.getWidth() / (Enum.GetValues(typeof(DecorationAttachment.DecorationType)).Length - (float) section.Sprites.GetNumberOfTypersOfDecorations() + 1));
 				for (int d = 0; d < numbDecorations; d++)
 				{
+					DecorationAttachment decoration = section.Sprites.GetRandomDecoration();
+					if (openLevel && decoration.type.Equals(DecorationAttachment.DecorationType.Hanging)) {
+						continue;
+					}
+
 					PlaceDecoration(section.Sprites.GetRandomDecoration(), section, widthOffset);
 				}
 
@@ -295,7 +300,7 @@ public class LevelGenerator : MonoBehaviour
 				{
 					if (x == column + maxSize.x - 1)
 					{
-						if (!CollidesWithDecoration(maxSize, section, new Vector2(column, section.GroundHeights[column])))
+						if (dec.allowOverlap || !CollidesWithDecoration(maxSize, section, new Vector2(column, section.GroundHeights[column])))
 						{
 							placesToPlace.Add(column);
 						}
@@ -377,7 +382,7 @@ public class LevelGenerator : MonoBehaviour
 				{
 					if (x == column + maxSize.x - 1)
 					{
-						if (!CollidesWithDecoration(maxSize, section, new Vector2(column, section.CeilingHeights[column] - maxSize.y)))
+						if (dec.allowOverlap || !CollidesWithDecoration(maxSize, section, new Vector2(column, section.CeilingHeights[column] - maxSize.y)))
 						{
 							placesToPlace.Add(column);
 						}

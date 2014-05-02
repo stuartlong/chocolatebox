@@ -9,10 +9,11 @@ public class DecorationAttachment : MonoBehaviour
 
 	public float frequency;
 
+	public bool allowOverlap;
+
 	public enum DecorationType
 	{
 		OnGround,
-		Hanging,
-		Floating
+		Hanging
 	}
 }
