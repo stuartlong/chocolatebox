@@ -267,7 +267,6 @@ public class SectionBuilder {
 		int nextPitPlatform = -1;
 		int pitPlatformLength = -1;
 		bool makingPitPlatform = false;
-		int maxPitPlatformLength = -1;
 
 		for (int x = 0; x < numberBlocksX; x++) 
 		{
@@ -306,7 +305,6 @@ public class SectionBuilder {
 				{
 					currentMaxPitLength = Random.Range(MIN_PIT_LENGTH * 2, (numberBlocksX - (int) playerSize.x - 1 - x));
 					nextPitPlatform = x + 2 + Random.Range((int) playerSize.x + 1, (int) generator.player.maxJumpDistance.x - 1);
-					maxPitPlatformLength = currentMaxPitLength - ((int) generator.player.maxJumpDistance.x - 1)*2;
 					pitPlatformLength = 0;
 					makingPitPlatform = true;
 				}
