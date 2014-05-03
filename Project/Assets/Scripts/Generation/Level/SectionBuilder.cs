@@ -280,7 +280,7 @@ public class SectionBuilder {
 				platforms.Add(x);
 				pitPlatformLength++;
 
-				if (pitPlatformLength > Random.Range((int) playerSize.x, (int) playerSize.x * playerSize.x * 3)
+				if (pitPlatformLength > Random.Range((int) playerSize.x, (int) (playerSize.x + 1) * (playerSize.x + 1) * 3)
 				    && currentMaxPitLength - pitLength > generator.player.maxJumpDistance.x) 
 				{
 					nextPitPlatform = x + Random.Range((int) playerSize.x, (int) generator.player.maxJumpDistance.x);
@@ -301,9 +301,10 @@ public class SectionBuilder {
 				numberPits++;
 				if (numberBlocksX - x > generator.player.maxJumpDistance.x * 2 + (int) playerSize.x
 				    && Random.Range(0f, 1f) > 1 - sbParams.Platforminess && Random.Range(0f, 1f) > 1 - sbParams.Platforminess
-				    && Random.Range (0f,1f) > 1 - sbParams.Pittiness && Random.Range (0f,1f) > 1 - sbParams.Pittiness)
+				    && Random.Range (0f,1f) > 1 - (sbParams.Pittiness * sbParams.Pittiness)
+				    )
 				{
-					currentMaxPitLength = Random.Range(MIN_PIT_LENGTH * 2, (numberBlocksX - (int) playerSize.x - 1 - x));
+					currentMaxPitLength = Random.Range(MIN_PIT_LENGTH * 2, Mathf.Min((int) (numberBlocksX / 3f), (int) (numberBlocksX - (int) playerSize.x - 1 - x)));
 					nextPitPlatform = x + 2 + Random.Range((int) playerSize.x + 1, (int) generator.player.maxJumpDistance.x - 1);
 					pitPlatformLength = 0;
 					makingPitPlatform = true;
@@ -384,6 +385,11 @@ public class SectionBuilder {
 			return true;
 		}
 
+		if (platformHeight - groundHeight <= playerSize.y + 1)
+		{
+			return true;
+		}
+
 		return Random.Range(0f,1f) > 1-sbParams.Hilliness && Random.Range(0f,1f) > 1-sbParams.Hilliness;
 	}
 
@@ -396,7 +402,9 @@ public class SectionBuilder {
 		int maxJump = (int) generator.player.maxJumpDistance.y;
 		//int difference = (int)((float) maxJump * Beta(Random.Range(0f,1f)));
 		if ((int) (ceilingHeight - groundHeight - playerSize.y - 1) <= 0
-		    || platforms.Contains(currentX))
+		    || platforms.Contains(currentX)
+		    || platforms.Contains(currentX - 1)
+		    || platforms.Contains(currentX + 1))
 		{
 			goUp = false;
 		}
@@ -404,11 +412,20 @@ public class SectionBuilder {
 		int difference = Random.Range(1,maxJump);
 		if (goUp)
 		{
-			groundHeight = Mathf.Min((int) (numberBlocksY - (playerSize.y + 1) - 1), (int) (groundHeight + difference), (int) (ceilingHeight - playerSize.y + 1));
+			groundHeight = Mathf.Min((int) (numberBlocksY - (playerSize.y + 1) - 1), 
+			                         (int) (groundHeight + difference), 
+			                         (int) (ceilingHeight - playerSize.y + 1));
 		}
 		else
 		{
-			groundHeight = Mathf.Max(0, groundHeight - difference);
+			if (platforms.Contains(currentX))
+			{
+				groundHeight = Mathf.Max(0, Mathf.Min(groundHeight - difference, platformHeight - (int) playerSize.y - 1));
+			}
+			else
+			{
+				groundHeight = Mathf.Max(0, groundHeight - difference);
+			}
 		}
 
 		blocksSinceLastChange = 0;
