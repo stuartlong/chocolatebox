@@ -65,13 +65,13 @@ public class SectionBuilder {
 		pits = new List<int>();
 		platforms = new List<int>();
 		playerSize = new Vector2(generator.ConvertToBlocksX(generator.player.maxPlayerSize.x), generator.ConvertToBlocksY(generator.player.maxPlayerSize.y));
-		Debug.Log (playerSize);
 
 		//MAX_PITS = (int)(1 + 3 * sbParams.difficulty);
 
 		//MIN_PIT_LENGTH = (int)(2 + 2 * sbParams.difficulty);
-		MIN_PIT_LENGTH = (int) playerSize.x + 1;
-		MAX_PITS = (int)(numberBlocksX / (MIN_PIT_LENGTH * MIN_PIT_LENGTH) * sbParams.Pittiness);
+		MIN_PIT_LENGTH = (int) playerSize.x + 1;// Random.Range(1, (int) (sbParams.difficulty * generator.player.maxJumpDistance.x));
+		//MAX_PITS = (int)(numberBlocksX / (MIN_PIT_LENGTH * MIN_PIT_LENGTH) * sbParams.Pittiness);\
+		MAX_PITS = (int)((numberBlocksX / (MIN_PIT_LENGTH)) * sbParams.Pittiness);
 	}
 
 	/// <returns>
@@ -131,8 +131,6 @@ public class SectionBuilder {
 					{
 						section[x, i] = (int) LevelGenerator.AssetTypeKey.Empty;
 					}
-
-					//section[x, (int) (groundHeight + 1 + generator.ConvertToBlocksY(generator.levelEnd.bounds.extents.y))] = (int) LevelGenerator.AssetTypeKey.LevelEnd;
 				}
 				else
 				{
@@ -209,7 +207,7 @@ public class SectionBuilder {
 			{
 				continue;
 			}
-			
+
 			if (platformLength < currentMaxPlatformLength)
 			{
 				platforms.Add(x);
@@ -221,7 +219,7 @@ public class SectionBuilder {
 			
 			if (ShouldMakePlatform(x, lastP))
 			{
-				currentMaxPlatformLength = Random.Range((int) playerSize.x,(int) (playerSize.x*playerSize.x + 2*playerSize.x)); 
+				currentMaxPlatformLength = Random.Range((int) playerSize.x,(int) (3*playerSize.x)); 
 				platformLength = 0;
 			}
 		}
@@ -255,15 +253,26 @@ public class SectionBuilder {
 		int numberPits = 0;
 		int pitLength = 0;
 		//int firstPit = Random.Range(2,(int)(sbParams.size.x * (1-.5f * sbParams.difficulty)));
-		int firstPit = Random.Range(2, (int) Random.Range(numberBlocksX / (4 * sbParams.Pittiness), numberBlocksX / (2 * sbParams.Pittiness)));
+		//int firstPit = Random.Range(2, (int) Random.Range(numberBlocksX / (4 * sbParams.Pittiness), numberBlocksX / (2 * sbParams.Pittiness)));
+		int firstPit = (int) playerSize.x + 1;
 		int currentMaxPitLength = 0;
 		int nextPitSpace = 0;
+		int nextPitPlatform = -1;
+		int pitPlatformLength = -1;
+		bool makingPitPlatform = false;
+		int maxPitPlatformLength = -1;
 
 		for (int x = 0; x < numberBlocksX; x++) 
 		{
 			if (x < firstPit || numberPits >= MAX_PITS || x < nextPitSpace)
 			{
 				continue;
+			}
+
+			if (makingPitPlatform && x >= nextPitPlatform && pitPlatformLength < maxPitPlatformLength)
+			{
+				platforms.Add(x);
+				pitPlatformLength++;
 			}
 
 			if (pitLength < currentMaxPitLength)
@@ -278,13 +287,25 @@ public class SectionBuilder {
 			if (ShouldMakePit(x, lastPit))
 			{
 				numberPits++;
-				int maxLength = (int) generator.player.maxJumpDistance.x;
-				//currentMaxPitLength = Random.Range(MIN_PIT_LENGTH, Mathf.Min((int)((maxLength+1)*(sbParams.difficulty/4f + .75)), (numberBlocksX - 1 - x)));
-				currentMaxPitLength = Random.Range(MIN_PIT_LENGTH, Mathf.Min((int)(maxLength+1), (numberBlocksX - 1 - x)));
+				if (numberBlocksX - x > generator.player.maxJumpDistance.x * 2 && Random.Range(0f, 1f) > 1 - sbParams.Platforminess)
+				{
+					currentMaxPitLength = Random.Range(MIN_PIT_LENGTH * 2, (numberBlocksX - 1 - x));
+					nextPitPlatform = x + 1 + Random.Range((int) playerSize.x + 1, (int) generator.player.maxJumpDistance.x - 1);
+					maxPitPlatformLength = currentMaxPitLength - ((int) generator.player.maxJumpDistance.x - 1)*2;
+					pitPlatformLength = 0;
+					makingPitPlatform = true;
+				}
+				else
+				{
+					makingPitPlatform = false;
+					int maxLength = (int) generator.player.maxJumpDistance.x;
+					//currentMaxPitLength = Random.Range(MIN_PIT_LENGTH, Mathf.Min((int)((maxLength+1)*(sbParams.difficulty/4f + .75)), (numberBlocksX - 1 - x)));
+					currentMaxPitLength = Random.Range(MIN_PIT_LENGTH, Mathf.Min((int)(maxLength+1), (numberBlocksX - 1 - x)));
+				}
+
 				int nextMin = (int) (playerSize.x + x + currentMaxPitLength);
 				nextPitSpace = Random.Range(nextMin, nextMin + Random.Range(1, (int) ((numberBlocksX - x) * (1 - sbParams.Pittiness))));
 				pitLength = 0;
-				Debug.Log (currentMaxPitLength);
 			}
 		}
 	}
