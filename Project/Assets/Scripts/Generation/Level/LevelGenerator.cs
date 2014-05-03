@@ -20,7 +20,7 @@ public class LevelGenerator : MonoBehaviour
 	public SectionAttributes[] sectionAttributes;
     public int MergeChance;
 	public PlayerAttachment player;
-	public SpriteRenderer levelEnd;
+	public LevelEndAttachment levelEnd;
 	public Section[,] master;
 	public bool openLevel;
 	public SectionAttributes globalAttributes;
@@ -29,6 +29,7 @@ public class LevelGenerator : MonoBehaviour
 	public float currentDifficulty;
 	public float initialDifficulty;
 	public float terminalDifficulty;
+	public bool infiniteLevel;
 
 	#region Level Build
 	public void Awake () 
@@ -39,6 +40,8 @@ public class LevelGenerator : MonoBehaviour
 			seed = (int) (System.DateTime.UtcNow - epochStart).TotalSeconds;
 		}
 		UnityEngine.Random.seed = seed;
+
+		player.repeatingLevel = infiniteLevel;
 
 		//determine premerge section sizes
 		float xSize = levelSize.x / sectionsX;
@@ -88,7 +91,7 @@ public class LevelGenerator : MonoBehaviour
 				{
 					int initialGroundHeight = UnityEngine.Random.Range(1,(int) (levelSize.y/sectionsY));
 					entrances = new EntrancePositions(new EntrancePosition(initialGroundHeight,2),new EntrancePosition(),new EntrancePosition(),new EntrancePosition());
-					int min = (int) (player.maxPlayerSize.y + initialGroundHeight + 1);
+					int min = (int) (ConvertToBlocksY(player.maxPlayerSize.y) + initialGroundHeight + 1);
 					int max = (int) (levelSize.y - 1);
 					sbParams.ceilingHeight = UnityEngine.Random.Range(min, max);
 	
@@ -234,10 +237,10 @@ public class LevelGenerator : MonoBehaviour
 						AssetTypeKey key = (AssetTypeKey) section.Grid[i,j];
 						UnityEngine.Object toInstantiate = GetBlockOfTypeForSection(key, section);
 
-						if (finalSection && i == section.Grid.GetLength(0) - 1 && j == section.GroundHeights[i] + 1) 
+						if (finalSection && i == section.Grid.GetLength(0) - 1 && j == section.GroundHeights[i]) 
 						{
-							float levelEndY = centerY + GetBaseBlock().bounds.size.y + levelEnd.sprite.bounds.extents.y;
-							Instantiate(levelEnd, new Vector3(centerX, centerY, 0), new Quaternion());
+							float levelEndY = centerY + GetBaseBlock().bounds.extents.y + levelEnd.maxSize.y / 2f;
+							Instantiate(levelEnd, new Vector3(centerX, levelEndY, 0), new Quaternion());
 						}
 
 						if (toInstantiate != null)
@@ -278,6 +281,7 @@ public class LevelGenerator : MonoBehaviour
 		}
 
 		Decorate();
+		player.OnLevelLoad();
 	}
 	#endregion
 
@@ -294,17 +298,17 @@ public class LevelGenerator : MonoBehaviour
 				int numbDecorations = (int) (section.Sprites.decorativeParameter * section.getWidth() / (Enum.GetValues(typeof(DecorationAttachment.DecorationType)).Length - (float) section.Sprites.GetNumberOfTypersOfDecorations() + 1));
 				for (int d = 0; d < numbDecorations; d++)
 				{
+					DecorationAttachment decoration = section.Sprites.GetRandomDecoration();
+					if (openLevel && decoration.type.Equals(DecorationAttachment.DecorationType.Hanging)) {
+						continue;
+					}
+
 					PlaceDecoration(section.Sprites.GetRandomDecoration(), section, widthOffset);
 				}
 
 				widthOffset += ConvertToUnityUnitsX(section.Grid.GetLength(0));
 			}
 		}
-	}
-
-	private void PlaceFloatingDecoration(DecorationAttachment dec, Section section, float widthOffset)
-	{
-
 	}
 
 	private void PlaceGroundDecoration(DecorationAttachment dec, Section section, float widthOffset)
@@ -323,7 +327,7 @@ public class LevelGenerator : MonoBehaviour
 				{
 					if (x == column + maxSize.x - 1)
 					{
-						if (!CollidesWithDecoration(maxSize, section, new Vector2(column, section.GroundHeights[column])))
+						if (dec.allowOverlap || !CollidesWithDecoration(maxSize, section, new Vector2(column, section.GroundHeights[column])))
 						{
 							placesToPlace.Add(column);
 						}
@@ -363,8 +367,6 @@ public class LevelGenerator : MonoBehaviour
 	{
 		switch(dec.type)
 		{
-		case DecorationAttachment.DecorationType.Floating:
-			break;
 		case DecorationAttachment.DecorationType.Hanging:
 			PlaceHangingDecoration(dec, section, widthOffset);
 			break;
@@ -407,7 +409,7 @@ public class LevelGenerator : MonoBehaviour
 				{
 					if (x == column + maxSize.x - 1)
 					{
-						if (!CollidesWithDecoration(maxSize, section, new Vector2(column, section.CeilingHeights[column] - maxSize.y)))
+						if (dec.allowOverlap || !CollidesWithDecoration(maxSize, section, new Vector2(column, section.CeilingHeights[column] - maxSize.y)))
 						{
 							placesToPlace.Add(column);
 						}
