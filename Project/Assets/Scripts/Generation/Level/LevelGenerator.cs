@@ -285,7 +285,6 @@ public class LevelGenerator : MonoBehaviour
                 }
 
                 widthOffset += baseBlock.sprite.bounds.extents.x * 2 * section.Grid.GetLength(0);
-                //widthOffset += baseBlock.sprite.bounds.extents.y * 2 * section.Grid.GetLength(0)* width * sectionMultiplier[width];
 
 			}
 		}

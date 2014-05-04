@@ -12,9 +12,6 @@ using System.Linq;
 /// Primary Author - Stuart Long
 /// </summary>
 public class SectionBuilder {
-	//These are later changed ONCE in constructor to account for difficulty since appropriate scope is required
-	private int MIN_PIT_LENGTH = 3;
-	private int MAX_PITS = 3;
 
 	/// <summary>
 	/// The final entrance positions after building.
@@ -38,6 +35,8 @@ public class SectionBuilder {
 	private int platformHeight;
 	private int lastPlatform;
 	private Vector2 playerSize;
+	private int minPitLength;
+	private int maxNumberPits;
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="SectionBuilder"/> class.
@@ -69,9 +68,9 @@ public class SectionBuilder {
 		//MAX_PITS = (int)(1 + 3 * sbParams.difficulty);
 
 		//MIN_PIT_LENGTH = (int)(2 + 2 * sbParams.difficulty);
-		MIN_PIT_LENGTH = (int) playerSize.x + 1;// Random.Range(1, (int) (sbParams.difficulty * generator.player.maxJumpDistance.x));
+		minPitLength = (int) playerSize.x + 1;// Random.Range(1, (int) (sbParams.difficulty * generator.player.maxJumpDistance.x));
 		//MAX_PITS = (int)(numberBlocksX / (MIN_PIT_LENGTH * MIN_PIT_LENGTH) * sbParams.Pittiness);\
-		MAX_PITS = (int)((numberBlocksX / (MIN_PIT_LENGTH)) * sbParams.Pittiness);
+		maxNumberPits = (int)((numberBlocksX / (minPitLength)) * sbParams.Pittiness);
 	}
 
 	/// <returns>
@@ -284,7 +283,7 @@ public class SectionBuilder {
 
 		for (int x = 0; x < numberBlocksX; x++) 
 		{
-			if (x < firstPit || numberPits >= MAX_PITS || (x < nextPitSpace && !(pitLength < currentMaxPitLength)))
+			if (x < firstPit || numberPits >= maxNumberPits || (x < nextPitSpace && !(pitLength < currentMaxPitLength)))
 			{
 				continue;
 			}
@@ -328,7 +327,7 @@ public class SectionBuilder {
 					makingPitPlatform = false;
 					int maxLength = (int) generator.player.maxJumpDistance.x;
 					//currentMaxPitLength = Random.Range(MIN_PIT_LENGTH, Mathf.Min((int)((maxLength+1)*(sbParams.difficulty/4f + .75)), (numberBlocksX - 1 - x)));
-					currentMaxPitLength = Random.Range(MIN_PIT_LENGTH, Mathf.Min((int)(maxLength+1), (numberBlocksX - 1 - x)));
+					currentMaxPitLength = Random.Range(minPitLength, Mathf.Min((int)(maxLength+1), (numberBlocksX - 1 - x)));
 				}
 
 				int nextMin = (int) (playerSize.x + x + currentMaxPitLength);
@@ -487,27 +486,4 @@ public class SectionBuilder {
 		}
 	}
 	#endregion
-
-	private float PercentChangeFromOne(float x)
-	{
-		return ((float)(x - 1) / x);
-	}
-
-	private float NormalApprox(float min, float max)
-	{
-		return (Random.Range(min, max) + Random.Range(min, max) + Random.Range(min, max)) / 3;
-	}
-
-	private int NormalApprox(int min, int max)
-	{
-		return (Random.Range(min, max) + Random.Range(min, max) + Random.Range (min, max)) / 3;
-	}
-	
-	//beta probilitity distribution
-	private float Beta(float x)
-	{
-		float alpha = 3;
-		float beta = 1;
-		return Mathf.Pow(x, alpha - 1)*Mathf.Pow(1-x,beta-1) / 3f;
-	}
 }
