@@ -2,6 +2,10 @@
 using System.Collections;
 using UnityEditor;
 
+/// <summary>
+/// Custom PlayerAttachment Unity editor.
+/// Primary Author - Stuart Long
+/// </summary>
 [CustomEditor(typeof(PlayerAttachment))]
 public class PlayerAttachmentEditor : Editor {
 

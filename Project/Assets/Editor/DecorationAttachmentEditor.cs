@@ -2,6 +2,10 @@
 using System.Collections;
 using UnityEditor;
 
+/// <summary>
+/// Custom DecorationAttachment Unity editor.
+/// Primary Author - Stuart Long
+/// </summary>
 [CustomEditor(typeof(DecorationAttachment))]
 public class DecorationAttachmentEditor : Editor {
 

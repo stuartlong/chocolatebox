@@ -2,6 +2,10 @@
 using System.Collections;
 using UnityEditor;
 
+/// <summary>
+/// Custom LevelEndAttachment Unity editor.
+/// Primary Author - Stuart Long
+/// </summary>
 [CustomEditor(typeof(LevelEndAttachment))]
 public class LevelEndAttachmentEditor : Editor {
 	public override void OnInspectorGUI()

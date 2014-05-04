@@ -6,6 +6,8 @@ using System.Linq;
 /// <summary>
 /// Specifies the various sprites to use in a given section. The sprites for all of the BLOCKS
 /// MUST be the same size.
+/// 
+/// Primary author - Stuart Long
 /// </summary>
 public class SectionAttributes : MonoBehaviour
 {
@@ -38,27 +40,83 @@ public class SectionAttributes : MonoBehaviour
     /// </summary>
     public EnemyAttachment[] enemies;
 
+	/// <summary>
+	/// The sprites representing game decorations.
+	/// </summary>
 	public DecorationAttachment[] decorations;
 
+	/// <summary>
+	/// The sprites represents platform blocks.
+	/// These should be the same size as the ground blocks.
+	/// </summary>
 	public SpriteRenderer[] platformBlocks;
 
+	/// <summary>
+	/// Specifices whether or not this section has a custom
+	/// hill parameter. If false, the parameter
+	/// will be selected pseudorandomly.
+	/// </summary>
 	public bool hasCustomHillParameter = false;
+	/// <summary>
+	/// The parameter determining how frequently the
+	/// section gradient should change.
+	/// </summary>
 	public float hillParameter;
 
+	/// <summary>
+	/// Specifices whether or not this section has a custom
+	/// pit frequency parameter. If false, the parameter
+	/// will be selected pseudorandomly.
+	/// </summary>
 	public bool hasCustomPitParameter = false;
+	/// <summary>
+	/// The parameter determining how frequently
+	/// pits should appear
+	/// </summary>
 	public float pitParameter;
 
+	/// <summary>
+	/// Specifices whether or not this section has a custom
+	/// openess parameter. If false, the parameter
+	/// will be selected pseudorandomly.
+	/// </summary>
 	public bool hasCustomOpennessParameter = false;
+	/// <summary>
+	/// The parameter determining approximately how
+	/// far apart the ground and ceiling are
+	/// </summary>
 	public float opennessParameter;
 
+	/// <summary>
+	/// Specifices whether or not this section has a custom
+	/// decoration frequency parameter. If false, the parameter
+	/// will be selected pseudorandomly.
+	/// </summary>
 	public bool hasCustomDecorativeParameter = false;
+	/// <summary>
+	/// The parameter determining how frequently
+	/// decorations should appear.
+	/// </summary>
 	public float decorativeParameter;
 
+	/// <summary>
+	/// Specifices whether or not this section has a custom
+	/// platform parameter. If false, the parameter
+	/// will be selected pseudorandomly.
+	/// </summary>
 	public bool hasCustomPlatformParameter = false;
+	/// <summary>
+	/// The parameter determining how frequently
+	/// platforms should appear.
+	/// </summary>
 	public float platformParameter;
 
 	private bool decorationDistributionPopulated = false;
 
+	/// <summary>
+	/// Gets a random decoration for this section.
+	/// </summary>
+	/// <returns>A random decoration.</returns>
 	public DecorationAttachment GetRandomDecoration()
 	{
 		if (!decorationDistributionPopulated)
@@ -79,6 +137,10 @@ public class SectionAttributes : MonoBehaviour
 		return null;
 	}
 
+	/// <summary>
+	/// Gets the number of typers of decorations in this section.
+	/// </summary>
+	/// <returns>The number of typers of decorations.</returns>
 	public int GetNumberOfTypersOfDecorations()
 	{
 		List<DecorationAttachment.DecorationType> types = new List<DecorationAttachment.DecorationType>();

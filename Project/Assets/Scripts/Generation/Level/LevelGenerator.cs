@@ -304,17 +304,17 @@ public class LevelGenerator : MonoBehaviour
 			for (int height = 0; height < master.GetLength(1); height++)
 			{
 				Section section = master[width,height];
-				float avgNumbDecs = section.Sprites.decorativeParameter * section.getWidth() / (2*(Enum.GetValues(typeof(DecorationAttachment.DecorationType)).Length - (float) section.Sprites.GetNumberOfTypersOfDecorations() + 1));
+				float avgNumbDecs = section.Attributes.decorativeParameter * section.getWidth() / (2*(Enum.GetValues(typeof(DecorationAttachment.DecorationType)).Length - (float) section.Attributes.GetNumberOfTypersOfDecorations() + 1));
 				int numbDecorations = (int) generateNormalVar(avgNumbDecs, avgNumbDecs / 6);
 
 				for (int d = 0; d < numbDecorations; d++)
 				{
-					DecorationAttachment decoration = section.Sprites.GetRandomDecoration();
+					DecorationAttachment decoration = section.Attributes.GetRandomDecoration();
 					if (openLevel && decoration.type.Equals(DecorationAttachment.DecorationType.Hanging)) {
 						continue;
 					}
 
-					PlaceDecoration(section.Sprites.GetRandomDecoration(), section, widthOffset);
+					PlaceDecoration(section.Attributes.GetRandomDecoration(), section, widthOffset);
 				}
 
 				widthOffset += ConvertToUnityUnitsX(section.Grid.GetLength(0));
@@ -467,13 +467,13 @@ public class LevelGenerator : MonoBehaviour
 		switch (type)
 		{
 		case AssetTypeKey.UndergroundBlock:
-			return GetBlockFromArrays(globalAttributes.belowGroundBlocks, s.Sprites.belowGroundBlocks);
+			return GetBlockFromArrays(globalAttributes.belowGroundBlocks, s.Attributes.belowGroundBlocks);
 		case AssetTypeKey.TopGroundBlock:
-			return GetBlockFromArrays(globalAttributes.topGroundBlocks, s.Sprites.topGroundBlocks);
+			return GetBlockFromArrays(globalAttributes.topGroundBlocks, s.Attributes.topGroundBlocks);
 		case AssetTypeKey.CeilingBlock:
-			return GetBlockFromArrays(globalAttributes.ceilingBlocks, s.Sprites.ceilingBlocks);
+			return GetBlockFromArrays(globalAttributes.ceilingBlocks, s.Attributes.ceilingBlocks);
 		case AssetTypeKey.Platform:
-			return GetBlockFromArrays(globalAttributes.platformBlocks, s.Sprites.platformBlocks);
+			return GetBlockFromArrays(globalAttributes.platformBlocks, s.Attributes.platformBlocks);
 		default:
 			return null;
 		}

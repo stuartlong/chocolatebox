@@ -18,6 +18,9 @@ public class SectionBuilder {
 	/// </summary>
 	public EntrancePositions finalEntrancePositions;
 
+	/// <summary>
+	/// The final height of the ceiling.
+	/// </summary>
 	public int finalCeilingHeight;
 
 	private LevelGenerator generator;
