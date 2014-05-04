@@ -303,7 +303,7 @@ public class LevelGenerator : MonoBehaviour
 			{
 				Section section = master[width,height];
 				float avgNumbDecs = section.Attributes.decorativeParameter * section.getWidth() / (2*(Enum.GetValues(typeof(DecorationAttachment.DecorationType)).Length - (float) section.Attributes.GetNumberOfTypersOfDecorations() + 1));
-				int numbDecorations = (int) generateNormalVar(avgNumbDecs, avgNumbDecs / 6);
+				int numbDecorations = (int) GenerateNormalVar(avgNumbDecs, avgNumbDecs / 6);
 
 				for (int d = 0; d < numbDecorations; d++)
 				{
@@ -536,6 +536,19 @@ public class LevelGenerator : MonoBehaviour
 	public int ConvertToBlocksX(float unityUnitsX)
 	{
 		return Mathf.CeilToInt((unityUnitsX / (GetBaseBlock().sprite.bounds.extents.x * 2)));
+	}
+
+	public static float GenerateNormalVar(float mean, float stdDev)
+	{
+		float uOne = UnityEngine.Random.Range(0f, 1f);
+		float uTwo = UnityEngine.Random.Range(0f, 1f);
+		float normalVar = Mathf.Sqrt(-2f * Mathf.Log(uOne)) * Mathf.Sin(2f*Mathf.PI*uTwo);
+		return mean + stdDev * normalVar;
+	}
+
+	public static float GenerateExponentialVar(float mu)
+	{
+		return -mu * Mathf.Log(1 - UnityEngine.Random.Range(0f, 1f));
 	}
 
 	/// <summary>
