@@ -391,7 +391,7 @@ public class SectionBuilder {
 	{
 		if (currentX <= 1 
 		    || currentX >= numberBlocksX - 2 
-		    || blocksSinceLastChange < Mathf.Max(playerSize.x, LevelGenerator.GenerateExponentialVar(playerSize.x)))
+		    || blocksSinceLastChange < Mathf.Max(playerSize.x * 2, LevelGenerator.GenerateExponentialVar(playerSize.x * 2)))
 		{
 			return false;
 		}
@@ -401,7 +401,7 @@ public class SectionBuilder {
 			return true;
 		}
 
-		if (platformHeight - groundHeight <= playerSize.y + 1)
+		if ((platforms.Contains(currentX) || platforms.Contains(currentX - 1) || platforms.Contains(currentX + 1)) && platformHeight - groundHeight <= playerSize.y + 1)
 		{
 			return true;
 		}
