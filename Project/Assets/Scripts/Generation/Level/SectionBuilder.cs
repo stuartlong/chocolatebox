@@ -239,7 +239,8 @@ public class SectionBuilder {
 			
 			if (ShouldMakePlatform(x, lastP))
 			{
-				currentMaxPlatformLength = Random.Range((int) playerSize.x,(int) (3*playerSize.x)); 
+				//currentMaxPlatformLength = Random.Range((int) playerSize.x,(int) (3*playerSize.x)); 
+				currentMaxPlatformLength = (int) LevelGenerator.generateNormalVar(playerSize.x * 2 + 1, playerSize.x + 1);
 				platformLength = 0;
 			}
 		}
@@ -317,7 +318,7 @@ public class SectionBuilder {
 				    && Random.Range (0f,1f) > 1 - (sbParams.Pittiness * sbParams.Pittiness)
 				    )
 				{
-					currentMaxPitLength = Random.Range(MIN_PIT_LENGTH * 2, Mathf.Min((int) (numberBlocksX / 3f), (int) (numberBlocksX - (int) playerSize.x - 1 - x)));
+					currentMaxPitLength = Mathf.Min((int) (numberBlocksX - (int) playerSize.x - 1 - x), (int) LevelGenerator.generateNormalVar(generator.player.maxJumpDistance.x * 3f, generator.player.maxJumpDistance.x));
 					nextPitPlatform = x + 2 + Random.Range((int) playerSize.x + 1, (int) generator.player.maxJumpDistance.x - 1);
 					pitPlatformLength = 0;
 					makingPitPlatform = true;
@@ -422,7 +423,7 @@ public class SectionBuilder {
 			goUp = false;
 		}
 
-		int difference = Random.Range(1,maxJump);
+		int difference = Mathf.Min(maxJump - 1, Mathf.Max(1, (int) LevelGenerator.generateExponentialVar(playerSize.x / 2f)));
 		if (goUp)
 		{
 			groundHeight = Mathf.Min((int) (numberBlocksY - (playerSize.y + 1) - 1), 

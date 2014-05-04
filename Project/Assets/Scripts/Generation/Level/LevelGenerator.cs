@@ -89,7 +89,7 @@ public class LevelGenerator : MonoBehaviour
 				EntrancePositions entrances;
 				if (lastSection == null) 
 				{
-					int initialGroundHeight = UnityEngine.Random.Range(1,(int) (levelSize.y/sectionsY));
+					int initialGroundHeight = (int) generateNormalVar(levelSize.y / 2f, levelSize.y / 4f);
 					entrances = new EntrancePositions(new EntrancePosition(initialGroundHeight,2),new EntrancePosition(),new EntrancePosition(),new EntrancePosition());
 					int min = (int) (ConvertToBlocksY(player.maxPlayerSize.y) + initialGroundHeight + 1);
 					int max = (int) (levelSize.y - 1);
@@ -123,65 +123,67 @@ public class LevelGenerator : MonoBehaviour
 
 				if (sbParams.sprites.hasCustomOpennessParameter)
 				{
-					sbParams.Caviness = 1.0f - sbParams.sprites.opennessParameter;
+					float caviness = 1.0f - sbParams.sprites.opennessParameter;
+					sbParams.Caviness = generateNormalVar(caviness, .1f);
 				}
 				else
 				{
 					if (globalAttributes.hasCustomOpennessParameter)
 					{
-						sbParams.Caviness = 1.0f - globalAttributes.opennessParameter;
+						float caviness = 1.0f - globalAttributes.opennessParameter;
+						sbParams.Caviness = generateNormalVar(caviness, .1f);
 					}
 					else
 					{
-						sbParams.Caviness = UnityEngine.Random.Range(0f, 1f);
+						sbParams.Caviness = generateNormalVar(.5f, .33f);
 					}
 				}
 
 				if (sbParams.sprites.hasCustomHillParameter)
 				{
-					sbParams.Hilliness = sbParams.sprites.hillParameter;
+					sbParams.Hilliness = generateNormalVar(sbParams.sprites.hillParameter, .1f);
 				}
 				else
 				{
 					if (globalAttributes.hasCustomHillParameter)
 					{
-						sbParams.Hilliness = globalAttributes.hillParameter;
+						sbParams.Hilliness = generateNormalVar(globalAttributes.hillParameter, .1f);
 					}
 					else
 					{
-						sbParams.Hilliness = UnityEngine.Random.Range(0f, 1f);
+						sbParams.Hilliness = generateNormalVar(.5f, .33f);
 					}
 				}
 
 				if (sbParams.sprites.hasCustomPitParameter)
 				{
-					sbParams.Pittiness = sbParams.sprites.pitParameter;
+					sbParams.Pittiness = generateNormalVar(sbParams.sprites.pitParameter, .1f);
 				}
 				else
 				{
 					if (globalAttributes.hasCustomPitParameter)
 					{
-						sbParams.Pittiness = globalAttributes.pitParameter;
+						sbParams.Pittiness = generateNormalVar(globalAttributes.pitParameter, .1f);
 					}
 					else
 					{
-						sbParams.Pittiness = UnityEngine.Random.Range(0f, 1f);
+						sbParams.Pittiness = generateNormalVar(.5f, .33f);
 					}
 				}
 
 				if (sbParams.sprites.hasCustomPlatformParameter)
 				{
-					sbParams.Platforminess = sbParams.sprites.platformParameter;
+					sbParams.Platforminess = generateNormalVar(sbParams.sprites.platformParameter, .1f);
 				}
 				else
 				{
 					if (globalAttributes.hasCustomPlatformParameter)
 					{
-						sbParams.Platforminess = globalAttributes.platformParameter;
+						sbParams.Platforminess = generateNormalVar(globalAttributes.platformParameter, .1f);
 					}
 					else
 					{
-						sbParams.Platforminess = UnityEngine.Random.Range(0f, 1f);
+						sbParams.Platforminess = generateNormalVar(.5f, .33f);
 					}
 				}
 
@@ -524,6 +526,19 @@ public class LevelGenerator : MonoBehaviour
 		return Mathf.CeilToInt((unityUnitsX / (GetBaseBlock().sprite.bounds.extents.x * 2)));
 	}
 
+	public static float generateNormalVar(float mean, float stdDev)
+	{
+		float uOne = UnityEngine.Random.Range(0f,1f);
+		float uTwo = UnityEngine.Random.Range(0f,1f);
+		float normalRand = Mathf.Sqrt(-2f * Mathf.Log(uOne)) * Mathf.Sin(2f * Mathf.PI * uTwo);
+		return mean + stdDev * normalRand;
+	}
+
+	public static float generateExponentialVar(float mu)
+	{
+		return -mu * Mathf.Log(1 - UnityEngine.Random.Range(0f,1f));
+	}
+
 	/// <summary>
 	/// The keys for what integers represent what 
 	/// in the array representations of levels.
@@ -540,3 +555,4 @@ public class LevelGenerator : MonoBehaviour
 		Platform = 9
 	}
 }
+
