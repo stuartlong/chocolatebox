@@ -131,7 +131,7 @@ public class SectionBuilder {
 				ChangeGroundHeightIfAble(x);
 			}
 
-			if (ShouldChangeCeilingHeight(x))
+			if (!generator.openLevel && ShouldChangeCeilingHeight(x))
 			{
 				ChangeCeilingHeightIfAble(x);
 			}
@@ -414,13 +414,18 @@ public class SectionBuilder {
 		bool goUp = sbParams.OnlyGoesUp || r >= .5;
 		
 		int maxJump = (int) generator.player.maxJumpDistance.y;
-		//int difference = (int)((float) maxJump * Beta(Random.Range(0f,1f)));
+
 		if ((int) (ceilingHeight - groundHeight - playerSize.y - 1) <= 0
+		    || sbParams.OnlyGoesDown
 		    || platforms.Contains(currentX)
 		    || platforms.Contains(currentX - 1)
 		    || platforms.Contains(currentX + 1))
 		{
 			goUp = false;
+		}
+		else if (groundHeight == 0)
+		{
+			goUp = true;
 		}
 
 		int difference = Mathf.Min(maxJump - 1, Mathf.Max(1, (int) LevelGenerator.generateExponentialVar(playerSize.x / 2f)));

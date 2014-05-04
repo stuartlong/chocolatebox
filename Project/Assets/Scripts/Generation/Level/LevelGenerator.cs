@@ -91,10 +91,16 @@ public class LevelGenerator : MonoBehaviour
 				{
 					int initialGroundHeight = (int) generateNormalVar(levelSize.y / 2f, levelSize.y / 4f);
 					entrances = new EntrancePositions(new EntrancePosition(initialGroundHeight,2),new EntrancePosition(),new EntrancePosition(),new EntrancePosition());
-					int min = (int) (ConvertToBlocksY(player.maxPlayerSize.y) + initialGroundHeight + 1);
-					int max = (int) (levelSize.y - 1);
-					sbParams.ceilingHeight = UnityEngine.Random.Range(min, max);
-	
+					if (openLevel)
+					{
+						sbParams.ceilingHeight = (int) levelSize.y;
+					}
+					else
+					{
+						int min = (int) (ConvertToBlocksY(player.maxPlayerSize.y) + initialGroundHeight + 1);
+						int max = (int) (levelSize.y - 1);
+						sbParams.ceilingHeight = UnityEngine.Random.Range(min, max);
+					}
 				}
 				else
 				{
