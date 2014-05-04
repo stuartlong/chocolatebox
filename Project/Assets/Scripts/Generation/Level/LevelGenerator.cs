@@ -89,7 +89,7 @@ public class LevelGenerator : MonoBehaviour
 				EntrancePositions entrances;
 				if (lastSection == null) 
 				{
-					int initialGroundHeight = (int) generateNormalVar(levelSize.y / 2f, levelSize.y / 4f);
+					int initialGroundHeight = UnityEngine.Random.Range(1,(int) (levelSize.y/sectionsY));
 					entrances = new EntrancePositions(new EntrancePosition(initialGroundHeight,2),new EntrancePosition(),new EntrancePosition(),new EntrancePosition());
 					int min = (int) (ConvertToBlocksY(player.maxPlayerSize.y) + initialGroundHeight + 1);
 					int max = (int) (levelSize.y - 1);
@@ -123,67 +123,65 @@ public class LevelGenerator : MonoBehaviour
 
 				if (sbParams.sprites.hasCustomOpennessParameter)
 				{
-					float caviness = 1.0f - sbParams.sprites.opennessParameter;
-					sbParams.Caviness = generateNormalVar(caviness, .1f);
+					sbParams.Caviness = 1.0f - sbParams.sprites.opennessParameter;
 				}
 				else
 				{
 					if (globalAttributes.hasCustomOpennessParameter)
 					{
-						float caviness = 1.0f - globalAttributes.opennessParameter;
-						sbParams.Caviness = generateNormalVar(caviness, .1f);
+						sbParams.Caviness = 1.0f - globalAttributes.opennessParameter;
 					}
 					else
 					{
-						sbParams.Caviness = generateNormalVar(.5f, .33f);
+						sbParams.Caviness = UnityEngine.Random.Range(0f, 1f);
 					}
 				}
 
 				if (sbParams.sprites.hasCustomHillParameter)
 				{
-					sbParams.Hilliness = generateNormalVar(sbParams.sprites.hillParameter, .1f);
+					sbParams.Hilliness = sbParams.sprites.hillParameter;
 				}
 				else
 				{
 					if (globalAttributes.hasCustomHillParameter)
 					{
-						sbParams.Hilliness = generateNormalVar(globalAttributes.hillParameter, .1f);
+						sbParams.Hilliness = globalAttributes.hillParameter;
 					}
 					else
 					{
-						sbParams.Hilliness = generateNormalVar(.5f, .33f);
+						sbParams.Hilliness = UnityEngine.Random.Range(0f, 1f);
 					}
 				}
 
 				if (sbParams.sprites.hasCustomPitParameter)
 				{
-					sbParams.Pittiness = generateNormalVar(sbParams.sprites.pitParameter, .1f);
+					sbParams.Pittiness = sbParams.sprites.pitParameter;
 				}
 				else
 				{
 					if (globalAttributes.hasCustomPitParameter)
 					{
-						sbParams.Pittiness = generateNormalVar(globalAttributes.pitParameter, .1f);
+						sbParams.Pittiness = globalAttributes.pitParameter;
 					}
 					else
 					{
-						sbParams.Pittiness = generateNormalVar(.5f, .33f);
+						sbParams.Pittiness = UnityEngine.Random.Range(0f, 1f);
 					}
 				}
 
 				if (sbParams.sprites.hasCustomPlatformParameter)
 				{
-					sbParams.Platforminess = generateNormalVar(sbParams.sprites.platformParameter, .1f);
+					sbParams.Platforminess = sbParams.sprites.platformParameter;
 				}
 				else
 				{
 					if (globalAttributes.hasCustomPlatformParameter)
 					{
-						sbParams.Platforminess = generateNormalVar(globalAttributes.platformParameter, .1f);
+						sbParams.Platforminess = globalAttributes.platformParameter;
 					}
 					else
 					{
-						sbParams.Platforminess = generateNormalVar(.5f, .33f);
+						sbParams.Platforminess = UnityEngine.Random.Range(0f, 1f);
 					}
 				}
 
@@ -262,7 +260,7 @@ public class LevelGenerator : MonoBehaviour
                     {
                         EnemyAttachment nextEnemy = GetNextEnemy(section);
 
-                        float centerX = (baseBlock.sprite.bounds.extents.x + nextEnemy.requiredSpace.x)                          * 2 * nextX + widthOffset +
+                        float centerX = (baseBlock.sprite.bounds.extents.x + nextEnemy.requiredSpace.x) * 2 * nextX + widthOffset +
                                             nextEnemy.gameObject.renderer.bounds.extents.x*2;
 
     					float centerY = (baseBlock.sprite.bounds.extents.y * 2 * 
@@ -528,19 +526,6 @@ public class LevelGenerator : MonoBehaviour
 		return Mathf.CeilToInt((unityUnitsX / (GetBaseBlock().sprite.bounds.extents.x * 2)));
 	}
 
-	public static float generateNormalVar(float mean, float stdDev)
-	{
-		float uOne = UnityEngine.Random.Range(0f,1f);
-		float uTwo = UnityEngine.Random.Range(0f,1f);
-		float normalRand = Mathf.Sqrt(-2f * Mathf.Log(uOne)) * Mathf.Sin(2f * Mathf.PI * uTwo);
-		return mean + stdDev * normalRand;
-	}
-
-	public static float generateExponentialVar(float mu)
-	{
-		return -mu * Mathf.Log(1 - UnityEngine.Random.Range(0f,1f));
-	}
-
 	/// <summary>
 	/// The keys for what integers represent what 
 	/// in the array representations of levels.
@@ -557,4 +542,3 @@ public class LevelGenerator : MonoBehaviour
 		Platform = 9
 	}
 }
-
