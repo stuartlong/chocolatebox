@@ -297,7 +297,9 @@ public class LevelGenerator : MonoBehaviour
 			for (int height = 0; height < master.GetLength(1); height++)
 			{
 				Section section = master[width,height];
-				int numbDecorations = (int) (section.Sprites.decorativeParameter * section.getWidth() / (Enum.GetValues(typeof(DecorationAttachment.DecorationType)).Length - (float) section.Sprites.GetNumberOfTypersOfDecorations() + 1));
+				float avgNumbDecs = section.Sprites.decorativeParameter * section.getWidth() / (2*(Enum.GetValues(typeof(DecorationAttachment.DecorationType)).Length - (float) section.Sprites.GetNumberOfTypersOfDecorations() + 1));
+				int numbDecorations = (int) generateNormalVar(avgNumbDecs, avgNumbDecs / 6);
+
 				for (int d = 0; d < numbDecorations; d++)
 				{
 					DecorationAttachment decoration = section.Sprites.GetRandomDecoration();
@@ -329,7 +331,7 @@ public class LevelGenerator : MonoBehaviour
 				{
 					if (x == column + maxSize.x - 1)
 					{
-						if (dec.allowOverlap || !CollidesWithDecoration(maxSize, section, new Vector2(column, section.GroundHeights[column])))
+						if (!CollidesWithDecorationOrPlatform(maxSize, section, new Vector2(column, section.GroundHeights[column]), dec.allowOverlap))
 						{
 							placesToPlace.Add(column);
 						}
@@ -381,13 +383,18 @@ public class LevelGenerator : MonoBehaviour
 		}
 	}
 
-	private bool CollidesWithDecoration(Vector2 maxSize, Section section, Vector2 pointToPlace)
+	private bool CollidesWithDecorationOrPlatform(Vector2 maxSize, Section section, Vector2 pointToPlace, bool allowOverlap)
 	{
 		for (int x = (int) pointToPlace.x; x < (int) (pointToPlace.x + maxSize.x); x++)
 		{
 			for (int y = (int)pointToPlace.y; y < (int) (pointToPlace.y + maxSize.y); y++)
 			{
-				if (section.DecorationGrid[x,y] == 1)
+				if (!allowOverlap && section.DecorationGrid[x,y] == 1)
+				{
+					return true;
+				}
+
+				if (section.Grid[x,y] == (int) AssetTypeKey.Platform)
 				{
 					return true;
 				}
@@ -411,7 +418,7 @@ public class LevelGenerator : MonoBehaviour
 				{
 					if (x == column + maxSize.x - 1)
 					{
-						if (dec.allowOverlap || !CollidesWithDecoration(maxSize, section, new Vector2(column, section.CeilingHeights[column] - maxSize.y)))
+						if (!CollidesWithDecorationOrPlatform(maxSize, section, new Vector2(column, section.CeilingHeights[column] - maxSize.y), dec.allowOverlap))
 						{
 							placesToPlace.Add(column);
 						}
