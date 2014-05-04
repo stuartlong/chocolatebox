@@ -6,7 +6,7 @@ public class Enemy : Character
     [HideInInspector]
     public static GameObject player;
     
-    private static float hdist = 5.0f;
+    private static float hdist = 10.0f;
 
     public bool activeEnemy = false;
 

@@ -265,14 +265,16 @@ public class LevelGenerator : MonoBehaviour
                         float centerX = (baseBlock.sprite.bounds.extents.x + nextEnemy.requiredSpace.x)                          * 2 * nextX + widthOffset +
                                             nextEnemy.gameObject.renderer.bounds.extents.x*2;
 
-    					float centerY = baseBlock.sprite.bounds.extents.y * 2 * (es.upperBound+es.lowerBound)/2 + 
-                                        (baseBlock.sprite.bounds.extents.y * 2 * 
+    					float centerY = (baseBlock.sprite.bounds.extents.y * 2 * 
                                         section.Grid.GetLength(1) * height + 
                                         nextEnemy.renderer.bounds.extents.y*2);
 
-                        Instantiate(nextEnemy.gameObject, new Vector3(centerX, centerY, 0), new Quaternion());
+                        if (centerX >= 3)
+                        {
+                            Instantiate(nextEnemy.gameObject, new Vector3(centerX, centerY, 0), new Quaternion());
+                        }
 
-                        nextX += (int)nextEnemy.requiredSpace.x * 2;
+                        nextX += (int)nextEnemy.requiredSpace.x;
                     }
                 }
 

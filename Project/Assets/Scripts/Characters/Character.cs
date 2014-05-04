@@ -40,9 +40,10 @@ public class Character : MonoBehaviour
     protected Rigidbody2D _rigidbody;
 
     // edit these to tune character movement	
-    protected float walkVel = 4; 	// walk speed
+    protected float walkVel = 3; 	// walk speed
+    protected float runVel = 6;
     protected float jumpVel = 6f; 	// jump velocity
-    protected float jump2Vel = 2f; 	// double jump velocity
+    protected float jump2Vel = 3f; 	// double jump velocity
     protected float fallVel = 1f;		// fall velocity, gravity
 
     public float moveVel;

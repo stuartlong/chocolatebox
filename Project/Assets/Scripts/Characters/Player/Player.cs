@@ -3,6 +3,8 @@ using System.Collections;
 
 public class Player : Character
 {
+    private bool running; 
+
     public override void Start()
     {
         base.Start();
@@ -28,6 +30,16 @@ public class Player : Character
     {
         currentInputState = inputState.None;
 
+        // running
+        if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+        {
+            this.running = true;
+        }
+        else
+        {
+            this.running = false;
+        }
+
         // move left
         if (Input.GetKey(KeyCode.A))
         {
@@ -51,5 +63,19 @@ public class Player : Character
 
         UpdatePhysics();
 
+    }
+
+    public override void UpdatePhysics()
+    {
+        if (running)
+        {
+            moveVel = runVel;
+        }
+        else
+        {
+            moveVel = walkVel;
+        }
+
+        base.UpdatePhysics();
     }
 }
