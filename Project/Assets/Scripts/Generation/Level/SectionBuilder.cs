@@ -391,7 +391,7 @@ public class SectionBuilder {
 	{
 		if (currentX <= 1 
 		    || currentX >= numberBlocksX - 2 
-		    || blocksSinceLastChange < playerSize.x)
+		    || blocksSinceLastChange < Mathf.Max(playerSize.x, LevelGenerator.GenerateExponentialVar(playerSize.x)))
 		{
 			return false;
 		}
