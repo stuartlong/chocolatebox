@@ -249,7 +249,34 @@ public class LevelGenerator : MonoBehaviour
 						}
 					}
 				}
-				widthOffset += ConvertToUnityUnitsX(section.Grid.GetLength(0));
+
+                //Generate the enemies in these sections.
+                section.GenerateEnemyRangeTree();
+                foreach (EnemySection es in section.EnemySections)
+                {
+                    int nextX = es.leftBound;
+
+                    while (nextX < es.rightBound && es.rightBound > 5)
+                    {
+                        EnemyAttachment nextEnemy = GetNextEnemy(section);
+
+                        float centerX = (baseBlock.sprite.bounds.extents.x + nextEnemy.requiredSpace.x)                          * 2 * nextX + widthOffset +
+                                            nextEnemy.gameObject.renderer.bounds.extents.x*2;
+
+    					float centerY = baseBlock.sprite.bounds.extents.y * 2 * (es.upperBound+es.lowerBound)/2 + 
+                                        (baseBlock.sprite.bounds.extents.y * 2 * 
+                                        section.Grid.GetLength(1) * height + 
+                                        nextEnemy.renderer.bounds.extents.y*2);
+
+                        Instantiate(nextEnemy.gameObject, new Vector3(centerX, centerY, 0), new Quaternion());
+
+                        nextX += (int)nextEnemy.requiredSpace.x * 2;
+                    }
+                }
+
+                widthOffset += baseBlock.sprite.bounds.extents.x * 2 * section.Grid.GetLength(0);
+                //widthOffset += baseBlock.sprite.bounds.extents.y * 2 * section.Grid.GetLength(0)* width * sectionMultiplier[width];
+
 			}
 		}
 
@@ -463,6 +490,18 @@ public class LevelGenerator : MonoBehaviour
 		int randomIndex = UnityEngine.Random.Range(0, allSprites.Count);
 		return allSprites.ElementAt(randomIndex);
 	}
+
+
+    /// <summary>
+    /// Select the next enemy based on the size of the available Enemy Section and
+    /// Enemy occurance probabilities
+    /// </summary>
+    /// <returns></returns>
+    private EnemyAttachment GetNextEnemy(Section section)
+    {
+        ///Better algorithm incoming. 
+        return section.enemyTree.Get(section.enemyTree.RandomIndex());
+    }
 
 	public float ConvertToUnityUnitsY(int blocks)
 	{

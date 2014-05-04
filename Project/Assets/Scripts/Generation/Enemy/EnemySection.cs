@@ -13,12 +13,16 @@ using System.Linq;
 
 public class EnemySection
 {
-    private int leftBound;
-    private int rightBound;
-    private int upperBound;
-    private int lowerBound;
+    public int leftBound;
+    public int rightBound;
+    public int upperBound;
+    public int lowerBound;
 
-	public EnemySection()
+	public EnemySection(int left, int right, int up, int down)
 	{
+        leftBound = left;
+        rightBound = right;
+        upperBound = up;
+        lowerBound = down;
 	}
 }

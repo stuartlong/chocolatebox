@@ -62,29 +62,32 @@ public class SectionAttributesEditor : Editor
 			serializedObject.ApplyModifiedProperties();
 		}
 
-	        SerializedProperty enemies = serializedObject.FindProperty("enemies");
-	        EditorGUI.BeginChangeCheck();
-	        EditorGUILayout.PropertyField(enemies, true);
-        	if (EditorGUI.EndChangeCheck())
-	        {
-	            serializedObject.ApplyModifiedProperties();
-        	}
-        
-		SerializedProperty decs = serializedObject.FindProperty("decorations");
-		EditorGUI.BeginChangeCheck();
-		EditorGUILayout.PropertyField(decs, true);
-		if (EditorGUI.EndChangeCheck())
-		{
-			serializedObject.ApplyModifiedProperties();
-		}
+<<<<<<< HEAD
+        SerializedProperty enemies = serializedObject.FindProperty("enemies");
+        EditorGUI.BeginChangeCheck();
+        EditorGUILayout.PropertyField(enemies, true);
+        if (EditorGUI.EndChangeCheck())
+        {
+            serializedObject.ApplyModifiedProperties();
+        }
 
-		SerializedProperty platforms = serializedObject.FindProperty("platformBlocks");
-		EditorGUI.BeginChangeCheck();
-		EditorGUILayout.PropertyField(platforms, true);
-		if (EditorGUI.EndChangeCheck())
-		{
-			serializedObject.ApplyModifiedProperties();
-		}
+=======
+			SerializedProperty decs = serializedObject.FindProperty("decorations");
+			EditorGUI.BeginChangeCheck();
+			EditorGUILayout.PropertyField(decs, true);
+			if (EditorGUI.EndChangeCheck())
+			{
+				serializedObject.ApplyModifiedProperties();
+			}
+
+			SerializedProperty platforms = serializedObject.FindProperty("platformBlocks");
+			EditorGUI.BeginChangeCheck();
+			EditorGUILayout.PropertyField(platforms, true);
+			if (EditorGUI.EndChangeCheck())
+			{
+				serializedObject.ApplyModifiedProperties();
+			}
+>>>>>>> master
 		}
 		else
 		{

@@ -32,6 +32,12 @@ public class SectionAttributes : MonoBehaviour
 	/// </summary>
 	public SpriteRenderer[] ceilingBlocks;
 
+    /// <summary>
+    /// The enemies to be generated via the generator. 
+    /// Enemies must utilize the Enemy Attachment Script
+    /// </summary>
+    public EnemyAttachment[] enemies;
+
 	public DecorationAttachment[] decorations;
 
 	public SpriteRenderer[] platformBlocks;

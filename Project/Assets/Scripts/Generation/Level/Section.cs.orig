@@ -11,13 +11,17 @@ public class Section
 	private int[,] grid;
 	private int[,] decorationGrid;
 	private SectionAttributes sprites;
-  	private List<EnemySection> enemySections;
+<<<<<<< HEAD
+    private List<EnemySection> enemySections;
 
-  	[HideInInspector]
+    [HideInInspector]
+    public RangeTree<EnemyAttachment> enemyTree;
+
+=======
 	private int[] ceilingHeights;
 	private int[] groundHeights;
 	private List<int> groundDecorationIndeces;
-    	public RangeTree<EnemyAttachment> enemyTree;
+    private EnemySection enemySections;
 	private List<int> pitIndeces;
 
 	public List<int> PitIndeces
@@ -43,6 +47,7 @@ public class Section
 			return decorationGrid;
 		}
 	}
+>>>>>>> master
 
 	public int[,] Grid
 	{
@@ -76,6 +81,7 @@ public class Section
 		}
 	}
 
+<<<<<<< HEAD
     public List<EnemySection> EnemySections
     {
         get
@@ -85,17 +91,23 @@ public class Section
     }
 
 
-	public Section(int[,] sectionGrid, SectionAttributes sectionSprites, int[] ceilings, int[] grounds, List<int> pits, List<EnemySection> es)
+	public Section(int[,] sectionGrid, SectionAttributes sectionSprites, List<EnemySection> es)
+=======
+	public Section(int[,] sectionGrid, SectionAttributes sectionSprites, int[] ceilings, int[] grounds, List<int> pits)
+>>>>>>> master
 	{
 		grid = sectionGrid;
 		decorationGrid = new int[sectionGrid.GetLength(0), sectionGrid.GetLength(1)];
 		sprites = sectionSprites;
-       		enemySections = es;
-		enemyTree = new RangeTree<EnemyAttachment>();
+<<<<<<< HEAD
+        enemySections = es;
+        enemyTree = new RangeTree<EnemyAttachment>();
+=======
 		ceilingHeights = ceilings;
 		groundHeights = grounds;
 		groundDecorationIndeces = new List<int>();
 		pitIndeces = pits;
+>>>>>>> master
 	}
 
     public int getWidth()
