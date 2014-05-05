@@ -33,15 +33,6 @@ public class EnemyGenerator : MonoBehaviour
 		yunitc = 2 * _level_generator.GetBaseBlock().sprite.bounds.extents.y;
 
 
-        // Populate Enemy Bucket
-        foreach (EnemyAttachment ea in Enemies)
-        {
-            for (float prob = 0.00f; prob < ea.probability; prob += 0.01f)
-            {
-
-            }
-        }
-
 
         //0,0 is the bottom left tile of a section/level
 

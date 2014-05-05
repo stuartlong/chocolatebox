@@ -29,6 +29,9 @@ public class SBParams
 	/// </summary>
 	public bool allowPits = true;
 
+	/// <summary>
+	/// Whether or not platforms will be generated in this section.
+	/// </summary>
 	public bool allowPlatforms = true;
 
 	/// <summary>
@@ -36,6 +39,9 @@ public class SBParams
 	/// </summary>
 	public bool lastSection = false;
 
+	/// <summary>
+	/// The initial height of the ceiling.
+	/// </summary>
 	public int ceilingHeight = -1;
 	
 	/// <summary>
@@ -118,6 +124,11 @@ public class SBParams
 		}
 	}
 
+
+	/// <summary>
+	/// Gets or sets the platforminess which determines how often platforms appear.
+	/// </summary>
+	/// <value>The platforminess.</value>
 	public float Platforminess
 	{
 		get
@@ -130,6 +141,10 @@ public class SBParams
 		}
 	}
 
+	/// <summary>
+	/// Gets or sets the caviness, which determines how far apart the ground and ceiling should be.
+	/// </summary>
+	/// <value>The caviness.</value>
 	public float Caviness
 	{
 		get

@@ -29,39 +29,47 @@ public class SectionAttributesEditor : Editor
 			GUILayout.Space(20);
 			
 			EditorGUILayout.BeginVertical();
-		EditorGUILayout.LabelField("The sprites to use for you level. These should be prefabs.");
-		SerializedProperty pitsObjects = serializedObject.FindProperty("pitObjects");
-		EditorGUI.BeginChangeCheck();
-		EditorGUILayout.PropertyField(pitsObjects, true);
-		if (EditorGUI.EndChangeCheck())
-		{
-			serializedObject.ApplyModifiedProperties();
-		}
+			EditorGUILayout.LabelField("The sprites to use for you level. These should be prefabs.");
+			SerializedProperty pitsObjects = serializedObject.FindProperty("pitObjects");
+			EditorGUI.BeginChangeCheck();
+			EditorGUILayout.PropertyField(pitsObjects, true);
+			if (EditorGUI.EndChangeCheck())
+			{
+				serializedObject.ApplyModifiedProperties();
+			}
 		
-		SerializedProperty belowGroundBlocks = serializedObject.FindProperty("belowGroundBlocks");
-		EditorGUI.BeginChangeCheck();
-		EditorGUILayout.PropertyField(belowGroundBlocks, true);
-		if (EditorGUI.EndChangeCheck())
-		{
-			serializedObject.ApplyModifiedProperties();
-		}
+			SerializedProperty belowGroundBlocks = serializedObject.FindProperty("belowGroundBlocks");
+			EditorGUI.BeginChangeCheck();
+			EditorGUILayout.PropertyField(belowGroundBlocks, true);
+			if (EditorGUI.EndChangeCheck())
+			{
+				serializedObject.ApplyModifiedProperties();
+			}
 
-		SerializedProperty topGroundBlocks = serializedObject.FindProperty("topGroundBlocks");
-		EditorGUI.BeginChangeCheck();
-		EditorGUILayout.PropertyField(topGroundBlocks, true);
-		if (EditorGUI.EndChangeCheck())
-		{
-			serializedObject.ApplyModifiedProperties();
-		}
+			SerializedProperty topGroundBlocks = serializedObject.FindProperty("topGroundBlocks");
+			EditorGUI.BeginChangeCheck();
+			EditorGUILayout.PropertyField(topGroundBlocks, true);
+			if (EditorGUI.EndChangeCheck())
+			{
+				serializedObject.ApplyModifiedProperties();
+			}
 
-		SerializedProperty ceilingBlocks = serializedObject.FindProperty("ceilingBlocks");
-		EditorGUI.BeginChangeCheck();
-		EditorGUILayout.PropertyField(ceilingBlocks, true);
-		if (EditorGUI.EndChangeCheck())
-		{
-			serializedObject.ApplyModifiedProperties();
-		}
+			SerializedProperty ceilingBlocks = serializedObject.FindProperty("ceilingBlocks");
+			EditorGUI.BeginChangeCheck();
+			EditorGUILayout.PropertyField(ceilingBlocks, true);
+			if (EditorGUI.EndChangeCheck())
+			{
+				serializedObject.ApplyModifiedProperties();
+			}
 
+	        SerializedProperty enemies = serializedObject.FindProperty("enemies");
+	        EditorGUI.BeginChangeCheck();
+	        EditorGUILayout.PropertyField(enemies, true);
+        	if (EditorGUI.EndChangeCheck())
+	        {
+	            serializedObject.ApplyModifiedProperties();
+        	}
+        
 			SerializedProperty decs = serializedObject.FindProperty("decorations");
 			EditorGUI.BeginChangeCheck();
 			EditorGUILayout.PropertyField(decs, true);
@@ -77,6 +85,9 @@ public class SectionAttributesEditor : Editor
 			{
 				serializedObject.ApplyModifiedProperties();
 			}
+
+			EditorGUILayout.EndVertical();
+			EditorGUILayout.EndHorizontal();
 		}
 		else
 		{

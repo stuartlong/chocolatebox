@@ -10,6 +10,9 @@ public class EnemyAttachment : MonoBehaviour
     public float probability;
     public float difficulty;
 
+    [HideInInspector]
+    public float summedProbability;
+
     public bool flying; 
     public bool stationary;
     public bool intelligent;
