@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+
 public class Megaman : MonoBehaviour
 {
     public bool jumping = false;
@@ -8,6 +9,7 @@ public class Megaman : MonoBehaviour
     public bool shooting = false;
     public bool hit = false;
     public bool pressedJump = false;
+    private bool fireShot;
 
     public bool grounded = true;
     protected int groundMask = 1 << 8; // Ground layer mask
@@ -24,17 +26,26 @@ public class Megaman : MonoBehaviour
     protected Transform _transform;
     protected Rigidbody2D _rigidbody;
 
+    public BusterShot weapon;
+    
+
     private float moveVel = 4.0f;
     private float jumpVel = 6.0f;
-    private float fallVel = 1.0f;
+    private float fallVel = 0.75f;
     
     private Vector2 physVec;
+
+    private System.DateTime lastShotTime;
+    private System.TimeSpan shotInterval;
 
 
     public void Awake()
     {
         _transform = transform;
         _rigidbody = rigidbody2D;
+        lastShotTime = System.DateTime.Now;
+        shotInterval = new System.TimeSpan((long) (weapon.threshold * 10000000));
+        Debug.Log(shotInterval);
     }
 
     public void Start()
@@ -85,10 +96,48 @@ public class Megaman : MonoBehaviour
         if (Input.GetKey(KeyCode.Space))
         {
             shooting = true;
+
+            System.DateTime nextShotTime = System.DateTime.Now;
+
+            if (nextShotTime - lastShotTime > shotInterval)
+            {
+                if (!hit)
+                {
+                    fireShot = true;
+                    lastShotTime = nextShotTime;
+                }
+            }
+            else
+            {
+                fireShot = false;
+            }
         }
         else
         {
             shooting = false;
+            fireShot = false;
+        }
+
+
+        if (fireShot)
+        {
+            // Make a new bustershot
+            Vector3 shotPosition = new Vector3();
+            if (currentFacing == mmFacing.Left)
+            {
+                shotPosition.x = _transform.position.x - 0.4f;
+            }
+            else
+            {
+                shotPosition.x = transform.position.x + 0.4f;
+            }
+            shotPosition.y = _transform.position.y + .02f;
+
+            //Fire the gun, launch shot in other direction. 
+            weapon.direction = currentFacing;
+            BusterShot shot = weapon;
+            shot.direction = currentFacing;
+            Instantiate(shot.gameObject, shotPosition, new Quaternion());
         }
 
 
