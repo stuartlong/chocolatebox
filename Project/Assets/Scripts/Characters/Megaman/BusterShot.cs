@@ -6,6 +6,8 @@ public class BusterShot : MonoBehaviour {
     public Megaman.mmFacing direction;
     private float initialX;
 
+    public BusterExplosion explosion;
+
     /// <summary>
     /// Time between shots in seconds
     /// </summary>
@@ -52,9 +54,8 @@ public class BusterShot : MonoBehaviour {
 
     public void Explode()
     {
-        //Launch Explosion Animation
-
+        //Launch Explosion Animationd
         Destroy(this.gameObject);
-        Destroy(this);
+        Instantiate(explosion.gameObject, this.gameObject.transform.position, new Quaternion());
     }
 }
