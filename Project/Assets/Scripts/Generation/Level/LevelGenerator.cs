@@ -41,7 +41,7 @@ public class LevelGenerator : MonoBehaviour
 		}
 		UnityEngine.Random.seed = seed;
 
-		player.repeatingLevel = infiniteLevel;
+		//player.repeatingLevel = infiniteLevel;
 
 		//determine premerge section sizes
 		float xSize = levelSize.x / sectionsX;

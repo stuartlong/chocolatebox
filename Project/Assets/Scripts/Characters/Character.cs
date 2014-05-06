@@ -8,7 +8,8 @@ public class Character : MonoBehaviour
         Null, 
         Player,
         Goomba,
-        Koopa
+        Koopa,
+        Megaman
     }
 
     public CharacterType characterType;
