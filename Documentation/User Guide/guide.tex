@@ -103,16 +103,18 @@ Minimum scripts needed for basic functionality.
 \section{Application}
 \subsection{Overview}
 This section provides a low level overview of the features and individual scripts of \textit{Chocolate Box}.
-
+~~~~~~~~~~~HOW MANY ARE INTERNAL USE ONLY?~~~~~~~~~~~~
 \subsection{Level Generation}
 \subsubsection{Decoration Attachment}
 Use this to describe the decoration to the level generation scripts. Has values for it's size, how often you want it to appear, and what types of places you want it to spawn in (On ceiling, in the air, on the ground, etc.).
 \subsubsection{Entrance Position}
 This is used to determine the desired location of the entrance, as well as its size.
 \subsubsection{Entrance Positions}
-
+This is used to describe where each entrance into a section is. THIS HAS VALUES FOR NORTH AND SOUTH, WHICH ARE NOT IMPLEMENTED!!!
 \subsubsection{Level Generator}
+This is the script that actually generates the level. This should be placed in a scene at the point where the generated scene should start appearing. This script also has many arguments that modify the level generated. Some of these include level size, the number of sections that should exist in the area determined earlier (THIS INCLUDES VERTICAL SECTIONS WE DON'T REALLY IMPLEMENT), Section Attributes, and difficulty. 
 \subsubsection{SB Params}
+This script serves to contain all parameters passed to the section builder script. Internal use only.
 \subsubsection{Section Attributes}
 Specifies sprites to be used in various sections
 \subsubsection{Section Builder}
