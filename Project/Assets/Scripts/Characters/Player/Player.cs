@@ -17,28 +17,18 @@ public class Player : Character
     public void Update()
     {
         // Reset level
-        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.T))
+        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.R))
         {
             Application.LoadLevel(0);
         }
-        
-        //Movement
-        
+
     }
 
     public void FixedUpdate()
     {
         currentInputState = inputState.None;
 
-        // running
-        if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
-        {
-            this.running = true;
-        }
-        else
-        {
-            this.running = false;
-        }
+
 
         // move left
         if (Input.GetKey(KeyCode.A))

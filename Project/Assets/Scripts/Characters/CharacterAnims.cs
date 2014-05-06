@@ -23,7 +23,11 @@ public class CharacterAnims : MonoBehaviour
     {
         PLAYER_ANIMSTATE,
         GOOMBA_ANIMSTATE,
-        KOOPA_ANIMSTATE
+        KOOPA_ANIMSTATE,
+        MEGAMAN_RUNNING,
+        MEGAMAN_SHOOTING,
+        MEGAMAN_JUMPING,
+        MEGAMAN_HIT
     }
 
 
