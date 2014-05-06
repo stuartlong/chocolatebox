@@ -14,7 +14,6 @@ public class BusterShot : MonoBehaviour {
     public Vector2 velocity;
 	// Use this for initialization
 	void Start () {
-        Debug.Log(direction);
         initialX = transform.position.x;
 	}
 	
@@ -36,4 +35,26 @@ public class BusterShot : MonoBehaviour {
             }
         }
 	}
+
+    public void OnTriggerEnter2D(Collider2D col)
+    {
+        Debug.Log("Entering collision");
+        if (col.gameObject.tag == "Enemy")
+        {
+            Enemy enemy = col.gameObject.GetComponent<Enemy>();
+            enemy.health--;
+            this.Explode();
+        }
+    }
+
+
+
+
+    public void Explode()
+    {
+        //Launch Explosion Animation
+
+        Destroy(this.gameObject);
+        Destroy(this);
+    }
 }

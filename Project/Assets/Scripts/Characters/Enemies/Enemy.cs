@@ -7,6 +7,9 @@ public class Enemy : Character
     public static GameObject player;
     
     private static float hdist = 10.0f;
+    public int health;
+
+    private int weaponLayer;
 
     public bool activeEnemy = false;
 
@@ -17,14 +20,17 @@ public class Enemy : Character
         {
             player = GameObject.FindWithTag("Player");
         }
-
-
     }
 
     public override void UpdatePhysics()
     {
         if(activeEnemy){
             base.UpdatePhysics();
+
+            if (this.health <= 0)
+            {
+                this.DeathAnimation();
+            }
         }
         else
         {
@@ -33,5 +39,22 @@ public class Enemy : Character
                 activeEnemy = true;
             }
         }
+    }
+
+    public void OnCollision2DEnter(Collision2D col)
+    {
+        Debug.Log("Entering collision");
+        if (col.gameObject.tag == "Weapon")
+        {
+            BusterShot shot = col.gameObject.GetComponent<BusterShot>();
+            shot.Explode();
+
+            this.health--;
+        }
+    }
+
+    public void DeathAnimation()
+    {
+        Destroy(this.gameObject);
     }
 }
