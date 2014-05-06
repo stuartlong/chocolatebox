@@ -269,9 +269,11 @@ public class LevelGenerator : MonoBehaviour
                         float centerX = (baseBlock.sprite.bounds.extents.x + nextEnemy.requiredSpace.x) * 2 * nextX + widthOffset +
                                             nextEnemy.gameObject.renderer.bounds.extents.x*2;
 
-    					float centerY = (baseBlock.sprite.bounds.extents.y * 2 * 
-                                        section.Grid.GetLength(1) * height + 
-                                        nextEnemy.renderer.bounds.extents.y*2);
+                        float yPos = (float)UnityEngine.Random.Range(es.lowerBound, es.upperBound);
+
+    					float centerY = (1+yPos) * baseBlock.sprite.bounds.extents.y * 2 * baseBlock.transform.localScale.y;
+                        centerY *= section.Grid.GetLength(1) * height;
+                        centerY += nextEnemy.renderer.bounds.extents.y * 2 * nextEnemy.transform.localScale.y;
 
                         if (centerX >= 3)
                         {
@@ -492,7 +494,6 @@ public class LevelGenerator : MonoBehaviour
 	private UnityEngine.Object GetBlockFromArrays(params SpriteRenderer[][] arrays)
 	{
 		List<SpriteRenderer> allSprites = new List<SpriteRenderer>();
-		int totalSize = 0;
 		for (int i = 0; i < arrays.GetLength(0); i++)
 		{
 			for (int j = 0; j < ((SpriteRenderer[]) arrays[i]).GetLength(0); j++)
