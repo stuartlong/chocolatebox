@@ -13,6 +13,7 @@ using System.Linq;
 /// </summary>
 public class LevelGenerator : MonoBehaviour 
 {
+	private readonly bool ALLOW_ENEMIES = true;
 	public int seed;
 	public int sectionsY;
 	public int sectionsX;
@@ -30,7 +31,6 @@ public class LevelGenerator : MonoBehaviour
 	public float initialDifficulty;
 	public float terminalDifficulty;
 	public bool infiniteLevel;
-	public bool allowEnemies = false;
 
 	#region Level Build
 	public void Awake () 
@@ -253,7 +253,7 @@ public class LevelGenerator : MonoBehaviour
 					}
 				}
 
-				if (allowEnemies)
+				if (ALLOW_ENEMIES)
 				{
 					//Generate the enemies in these sections.
 					section.GenerateEnemyRangeTree();
