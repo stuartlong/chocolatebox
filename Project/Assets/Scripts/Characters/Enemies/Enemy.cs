@@ -41,15 +41,24 @@ public class Enemy : Character
         }
     }
 
-    public void OnCollision2DEnter(Collision2D col)
+    public void OnTriggerEnter2D(Collider2D col)
     {
-        Debug.Log("Entering collision");
-        if (col.gameObject.tag == "Weapon")
+        if (col.gameObject.tag == "Enemy")
         {
-            BusterShot shot = col.gameObject.GetComponent<BusterShot>();
-            shot.Explode();
-
-            this.health--;
+            if (this.facingDir == facing.Left)
+            {
+                this.facingDir = facing.Right;
+                this.currentInputState = inputState.WalkRight;
+                Vector3 oldPos = this.transform.position;
+                this.transform.position = new Vector3(oldPos.x + 0.01f, oldPos.y, oldPos.z);
+            }
+            else
+            {
+                this.facingDir = facing.Left;
+                this.currentInputState = inputState.WalkLeft;
+                Vector3 oldPos = this.transform.position;
+                this.transform.position = new Vector3(oldPos.x - 0.01f, oldPos.y, oldPos.z);
+            }
         }
     }
 

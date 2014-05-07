@@ -10,6 +10,7 @@ public class Megaman : MonoBehaviour
     public bool hit = false;
     public bool pressedJump = false;
     private bool fireShot;
+    private bool invincible;
 
     public bool grounded = true;
     protected int groundMask = 1 << 8; // Ground layer mask
@@ -38,8 +39,13 @@ public class Megaman : MonoBehaviour
     private System.DateTime lastShotTime;
     private System.TimeSpan shotInterval;
 
+    public float woundDuration;
+    private System.DateTime lastHitTime;
+    private System.TimeSpan hitDuration;
+
     public AudioClip fallSound;
     public AudioClip megaBusterSound;
+    public AudioClip hurtSound;
 
     public void Awake()
     {
@@ -47,6 +53,7 @@ public class Megaman : MonoBehaviour
         _rigidbody = rigidbody2D;
         lastShotTime = System.DateTime.Now;
         shotInterval = new System.TimeSpan((long) (weapon.threshold * 10000000));
+        hitDuration = new System.TimeSpan((long)(woundDuration * 10000000));
         Debug.Log(shotInterval);
     }
 
@@ -63,87 +70,162 @@ public class Megaman : MonoBehaviour
             Application.LoadLevel(0);
         }
 
+        if (hit)
+        {
+            System.DateTime curHitTime = System.DateTime.Now;
+
+            if (curHitTime - lastHitTime > hitDuration)
+            {
+                hit = false;
+                invincible = true;
+            }
+        }
+        if (invincible)
+        {
+            System.DateTime recoverTime = System.DateTime.Now;
+            if (recoverTime - lastHitTime > hitDuration + hitDuration)
+            {
+                invincible = false;
+                this.gameObject.GetComponent<SpriteRenderer>().color = Color.white;
+
+            }
+            else
+            {
+                if (this.gameObject.GetComponent<SpriteRenderer>().color != Color.gray)
+                {
+                    this.gameObject.GetComponent<SpriteRenderer>().color = Color.gray;
+                } 
+                else
+                {
+                    this.gameObject.GetComponent<SpriteRenderer>().color = Color.clear;
+                }
+            }
+        }
+
+    }
+
+    public void OnTriggerEnter2D(Collider2D col)
+    {
+        // If we are not already hit (Invincibility frames)
+        if (!hit)
+        {
+            if (col.gameObject.tag == "Enemy" && !invincible)
+            {
+                hit = true;
+                lastHitTime = System.DateTime.Now;
+                AudioSource.PlayClipAtPoint(hurtSound, transform.position);
+
+                if (col.gameObject.transform.position.x <= this.transform.position.x)
+                {
+                    this.currentFacing = mmFacing.Left;
+                }
+                else
+                {
+                    this.currentFacing = mmFacing.Right;
+                }
+            }
+        }
+        
     }
 
     public void FixedUpdate()
     {
-
-        // move left
-        if (Input.GetKey(KeyCode.A))
+        //Disable button commands when hit. 
+        if (!hit)
         {
-            currentFacing = mmFacing.Left;
-        }
-        
-        if (Input.GetKey(KeyCode.D))
-        {
-            currentFacing = mmFacing.Right;
-        }
-
-        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
-        {
-            running = true;
-        }
-        else
-        {
-            running = false;
-        }
-
-        // jump
-        if (Input.GetKey(KeyCode.W))
-        {
-            pressedJump = true;
-        }
-
-        // shoot
-        if (Input.GetKey(KeyCode.Space))
-        {
-            shooting = true;
-
-            System.DateTime nextShotTime = System.DateTime.Now;
-
-            if (nextShotTime - lastShotTime > shotInterval)
+            // move left
+            if (Input.GetKey(KeyCode.A))
             {
-                if (!hit)
+                currentFacing = mmFacing.Left;
+            }
+
+            if (Input.GetKey(KeyCode.D))
+            {
+                currentFacing = mmFacing.Right;
+            }
+
+            if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
+            {
+                running = true;
+            }
+            else
+            {
+                running = false;
+            }
+
+            // jump
+            if (Input.GetKey(KeyCode.W))
+            {
+                pressedJump = true;
+            }
+
+            // shoot
+            if (Input.GetKey(KeyCode.Space))
+            {
+                shooting = true;
+
+                System.DateTime nextShotTime = System.DateTime.Now;
+
+                if (nextShotTime - lastShotTime > shotInterval)
                 {
-                    fireShot = true;
-                    lastShotTime = nextShotTime;
+                    if (!hit)
+                    {
+                        fireShot = true;
+                        lastShotTime = nextShotTime;
+                    }
+                }
+                else
+                {
+                    fireShot = false;
                 }
             }
             else
             {
+                shooting = false;
                 fireShot = false;
             }
-        }
-        else
-        {
-            shooting = false;
-            fireShot = false;
-        }
 
 
-        if (fireShot)
-        {
-            // Make a new bustershot
-            Vector3 shotPosition = new Vector3();
-            if (currentFacing == mmFacing.Left)
+            if (fireShot)
             {
-                shotPosition.x = _transform.position.x - 0.4f;
+                // Make a new bustershot
+                Vector3 shotPosition = new Vector3();
+                if (currentFacing == mmFacing.Left)
+                {
+                    shotPosition.x = _transform.position.x - 0.4f;
+                }
+                else
+                {
+                    shotPosition.x = transform.position.x + 0.4f;
+                }
+                shotPosition.y = _transform.position.y + .02f;
+
+                //Fire the gun, launch shot in other direction. 
+                weapon.direction = currentFacing;
+                BusterShot shot = weapon;
+                shot.direction = currentFacing;
+                Instantiate(shot.gameObject, shotPosition, new Quaternion());
+
+                AudioSource.PlayClipAtPoint(megaBusterSound, this.transform.position);
+            }
+        }
+        else //WE'VE BEEN HIT CAP'N STAGGER A BIT!
+        {
+            Vector3 staggerPosition = new Vector3();
+            staggerPosition.y = this.transform.position.y;
+            staggerPosition.z = this.transform.position.z;
+            if(currentFacing == mmFacing.Left)
+            {
+                //We are facing backwards, so move forwards
+                staggerPosition.x = this.transform.position.x + 0.075f;
             }
             else
             {
-                shotPosition.x = transform.position.x + 0.4f;
+                staggerPosition.x = this.transform.position.x - 0.075f;
             }
-            shotPosition.y = _transform.position.y + .02f;
 
-            //Fire the gun, launch shot in other direction. 
-            weapon.direction = currentFacing;
-            BusterShot shot = weapon;
-            shot.direction = currentFacing;
-            Instantiate(shot.gameObject, shotPosition, new Quaternion());
-
-            AudioSource.PlayClipAtPoint(megaBusterSound, this.transform.position);
+            this.transform.position = staggerPosition;
         }
-
 
         UpdatePhysics();
 
@@ -207,6 +289,11 @@ public class Megaman : MonoBehaviour
             grounded = false;
             jumping = true;
             _rigidbody.AddForce(-Vector3.up * fallVel);
+        }
+
+        if (hit)
+        {
+            physVec.x = -physVec.x/10;
         }
 
         // actually move the player

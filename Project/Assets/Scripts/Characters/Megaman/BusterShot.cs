@@ -21,7 +21,7 @@ public class BusterShot : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (Mathf.Abs(initialX - transform.position.x) > 15)
+        if (Mathf.Abs(initialX - transform.position.x) > 20)
         {
             Destroy(this.gameObject);
         }
@@ -40,7 +40,6 @@ public class BusterShot : MonoBehaviour {
 
     public void OnTriggerEnter2D(Collider2D col)
     {
-        Debug.Log("Entering collision with " + col.gameObject.tag);
         if (col.gameObject.tag == "Enemy")
         {
             Enemy enemy = col.gameObject.GetComponent<Enemy>();
