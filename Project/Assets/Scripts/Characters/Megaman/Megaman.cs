@@ -54,7 +54,6 @@ public class Megaman : MonoBehaviour
         lastShotTime = System.DateTime.Now;
         shotInterval = new System.TimeSpan((long) (weapon.threshold * 10000000));
         hitDuration = new System.TimeSpan((long)(woundDuration * 10000000));
-        Debug.Log(shotInterval);
     }
 
     public void Start()
