@@ -132,7 +132,7 @@ public class LevelGenerator : MonoBehaviour
 				}
 				else
 				{
-					if (globalAttributes.hasCustomOpennessParameter)
+					if (globalAttributes != null && globalAttributes.hasCustomOpennessParameter)
 					{
 						sbParams.Caviness = 1.0f - globalAttributes.opennessParameter;
 					}
@@ -148,7 +148,7 @@ public class LevelGenerator : MonoBehaviour
 				}
 				else
 				{
-					if (globalAttributes.hasCustomHillParameter)
+					if (globalAttributes != null && globalAttributes.hasCustomHillParameter)
 					{
 						sbParams.Hilliness = globalAttributes.hillParameter;
 					}
@@ -164,7 +164,7 @@ public class LevelGenerator : MonoBehaviour
 				}
 				else
 				{
-					if (globalAttributes.hasCustomPitParameter)
+					if (globalAttributes != null && globalAttributes.hasCustomPitParameter)
 					{
 						sbParams.Pittiness = globalAttributes.pitParameter;
 					}
@@ -180,7 +180,7 @@ public class LevelGenerator : MonoBehaviour
 				}
 				else
 				{
-					if (globalAttributes.hasCustomPlatformParameter)
+					if (globalAttributes != null && globalAttributes.hasCustomPlatformParameter)
 					{
 						sbParams.Platforminess = globalAttributes.platformParameter;
 					}
@@ -468,13 +468,41 @@ public class LevelGenerator : MonoBehaviour
 		switch (type)
 		{
 		case AssetTypeKey.UndergroundBlock:
-			return GetBlockFromArrays(globalAttributes.belowGroundBlocks, s.Attributes.belowGroundBlocks);
+			if (globalAttributes != null)
+			{
+				return GetBlockFromArrays(globalAttributes.belowGroundBlocks, s.Attributes.belowGroundBlocks);
+			}
+			else
+			{
+				return GetBlockFromArrays(s.Attributes.belowGroundBlocks);
+			}
 		case AssetTypeKey.TopGroundBlock:
-			return GetBlockFromArrays(globalAttributes.topGroundBlocks, s.Attributes.topGroundBlocks);
+			if (globalAttributes != null)
+			{
+				return GetBlockFromArrays(globalAttributes.belowGroundBlocks, s.Attributes.topGroundBlocks);
+			}
+			else
+			{
+				return GetBlockFromArrays(s.Attributes.topGroundBlocks);
+			}
 		case AssetTypeKey.CeilingBlock:
-			return GetBlockFromArrays(globalAttributes.ceilingBlocks, s.Attributes.ceilingBlocks);
+			if (globalAttributes != null)
+			{
+				return GetBlockFromArrays(globalAttributes.belowGroundBlocks, s.Attributes.ceilingBlocks);
+			}
+			else
+			{
+				return GetBlockFromArrays(s.Attributes.ceilingBlocks);
+			}
 		case AssetTypeKey.Platform:
-			return GetBlockFromArrays(globalAttributes.platformBlocks, s.Attributes.platformBlocks);
+			if (globalAttributes != null)
+			{
+				return GetBlockFromArrays(globalAttributes.platformBlocks, s.Attributes.platformBlocks);
+			}
+			else
+			{
+				return GetBlockFromArrays(s.Attributes.platformBlocks);
+			}
 		default:
 			return null;
 		}
@@ -482,7 +510,7 @@ public class LevelGenerator : MonoBehaviour
 
 	public SpriteRenderer GetBaseBlock()
 	{
-		if (globalAttributes.belowGroundBlocks.GetLength(0) > 0)
+		if (globalAttributes != null && globalAttributes.belowGroundBlocks.GetLength(0) > 0)
 		{
 			return globalAttributes.belowGroundBlocks[0];
 		}
