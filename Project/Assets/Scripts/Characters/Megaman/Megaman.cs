@@ -29,15 +29,17 @@ public class Megaman : MonoBehaviour
     public BusterShot weapon;
     
 
-    private float moveVel = 4.0f;
-    private float jumpVel = 6.0f;
-    private float fallVel = 0.75f;
+    private float moveVel = 5.0f;
+    private float jumpVel = 7.0f;
+    private float fallVel = 1.0f;
     
     private Vector2 physVec;
 
     private System.DateTime lastShotTime;
     private System.TimeSpan shotInterval;
 
+    public AudioClip fallSound;
+    public AudioClip megaBusterSound;
 
     public void Awake()
     {
@@ -138,6 +140,8 @@ public class Megaman : MonoBehaviour
             BusterShot shot = weapon;
             shot.direction = currentFacing;
             Instantiate(shot.gameObject, shotPosition, new Quaternion());
+
+            AudioSource.PlayClipAtPoint(megaBusterSound, this.transform.position);
         }
 
 
@@ -186,9 +190,17 @@ public class Megaman : MonoBehaviour
             || Physics2D.Raycast(new Vector2(_transform.position.x + 0.20f, _transform.position.y), -Vector2.up, .40f, groundMask))
         {
             grounded = true;
+
+            if (jumping && !Input.GetKey(KeyCode.W))
+            {
+                AudioSource.PlayClipAtPoint(fallSound, transform.position);
+            }
+
+
             jumped = false;
             jumping = false;
             pressedJump = false;
+            this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y + .001f, 0);
         }
         else
         {

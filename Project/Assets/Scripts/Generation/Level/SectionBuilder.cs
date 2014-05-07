@@ -85,6 +85,8 @@ public class SectionBuilder {
 		CreateEntrances();
 		DeterminePits();
 		DeterminePlatforms();
+        int lastCeilingHeight = int.MaxValue;
+        int lastGroundHeight = 0;
 
         List<EnemySection> esections = new List<EnemySection>();
 
@@ -124,8 +126,8 @@ public class SectionBuilder {
 				platformHeight = Random.Range(minVal, maxVal); 
 			}
 
-            int lastGroundHeight = groundHeight;
-            int lastCeilingHeight = ceilingHeight;
+            lastGroundHeight = Mathf.Max(groundHeight, lastGroundHeight);
+            lastCeilingHeight = Mathf.Min(ceilingHeight, lastCeilingHeight);
             int lastBlocksSinceLastChange = blocksSinceLastChange;
 
 			if (!makingPit && ShouldChangeGroundHeight(x)) 
@@ -141,7 +143,7 @@ public class SectionBuilder {
             //If we are changing the ground height, but not making a pit, create a new enemy section
             if (lastBlocksSinceLastChange > blocksSinceLastChange && !makingPit)
             {
-                esections.Add(new EnemySection(x-lastBlocksSinceLastChange, x, ceilingHeight, groundHeight));
+                esections.Add(new EnemySection(x-lastBlocksSinceLastChange, x, lastCeilingHeight, lastGroundHeight));
             }
             
 
