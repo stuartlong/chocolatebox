@@ -38,7 +38,7 @@ public class Koopa : Enemy
             facingDir = facing.Left;
         }
 
-        //If something is belowus to our left or our right. 
+        // Check to see if we are on a ledge
         if (Physics2D.Raycast(new Vector2(_transform.position.x, _transform.position.y), Vector2.right, 0.48f, groundMask))
         {
             currentInputState = inputState.WalkLeft;

@@ -253,6 +253,8 @@ public class LevelGenerator : MonoBehaviour
 					}
 				}
 
+
+                
 				if (ALLOW_ENEMIES)
 				{
 					//Generate the enemies in these sections.
@@ -260,19 +262,18 @@ public class LevelGenerator : MonoBehaviour
 					foreach (EnemySection es in section.EnemySections)
 					{
 						int nextX = es.leftBound;
+
 						
-						while (nextX < es.rightBound && es.rightBound > 5)
+						while (nextX < es.rightBound && es.rightBound > 10)
 						{
 							EnemyAttachment nextEnemy = GetNextEnemy(section);
-							
-							float centerX = (baseBlock.sprite.bounds.extents.x + nextEnemy.requiredSpace.x) * 2 * nextX + widthOffset +
-								nextEnemy.gameObject.renderer.bounds.extents.x*2;
-							
-							float yPos = (float)UnityEngine.Random.Range(es.lowerBound, es.upperBound);
-							
-							float centerY = (1+yPos) * baseBlock.sprite.bounds.extents.y * 2 * baseBlock.transform.localScale.y;
-							//centerY *= section.Grid.GetLength(1) * height; //This line multiplies by 0
-							centerY += nextEnemy.renderer.bounds.extents.y * 4 * nextEnemy.transform.localScale.y;
+
+                            float centerX = ConvertToUnityUnitsX(nextX) + widthOffset;
+							int yPos = UnityEngine.Random.Range(es.lowerBound, es.upperBound);
+
+                            float centerY = ConvertToUnityUnitsY(yPos) + (ConvertToUnityUnitsY(height) * section.Grid.GetLength(1));
+                            centerY += nextEnemy.renderer.bounds.size.y;
+
 							
 							if (centerX >= 3)
 							{
