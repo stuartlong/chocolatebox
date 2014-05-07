@@ -34,9 +34,11 @@ public class PlayerAttachment : MonoBehaviour
 	{
 		if (collision.gameObject.GetComponent(typeof(LevelEndAttachment)) != null)
 		{
+			Debug.Log("IT'S AN END");
 			OnLevelEnd();
 			if (repeatingLevel) 
 			{
+				Debug.Log ("LOAD");
 				Application.LoadLevel(Application.loadedLevelName);
 			}
 		}
