@@ -460,7 +460,7 @@ public class LevelGenerator : MonoBehaviour
 		
 		float centerX = ConvertToUnityUnitsX(toPlace) + widthOffset + (dec.maxSize.x / 2) - GetBaseBlock().sprite.bounds.extents.x;
 		float centerY = ConvertToUnityUnitsY(section.CeilingHeights[toPlace]) - GetBaseBlock().sprite.bounds.extents.y - (dec.maxSize.y / 2);
-		Instantiate(dec, new Vector3(centerX, centerY,1), new Quaternion());
+		Instantiate(dec, new Vector3(centerX, centerY,0), new Quaternion());
 	}
 	#endregion
 
