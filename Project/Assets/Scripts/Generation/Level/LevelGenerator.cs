@@ -272,7 +272,7 @@ public class LevelGenerator : MonoBehaviour
                         float yPos = (float)UnityEngine.Random.Range(es.lowerBound, es.upperBound);
 
     					float centerY = (1+yPos) * baseBlock.sprite.bounds.extents.y * 2 * baseBlock.transform.localScale.y;
-                        centerY *= section.Grid.GetLength(1) * height;
+                        //centerY *= section.Grid.GetLength(1) * height; //This line multiplies by 0
                         centerY += nextEnemy.renderer.bounds.extents.y * 4 * nextEnemy.transform.localScale.y;
 
                         if (centerX >= 3)
