@@ -12,19 +12,22 @@ public class BusterExplosion : MonoBehaviour
     public float duration = 0.05f;
     private int nanotosecondsConstant = 100000000;
     private System.DateTime startTime;
+
     public AudioClip explosionSound;
     
     void Start()
     {
         ttl = new System.TimeSpan((long) duration * nanotosecondsConstant);
         startTime = System.DateTime.Now;
-        AudioSource.PlayClipAtPoint(explosionSound, Camera.current.transform.position);
+        
     }
 
     // Update is called once per frame
     void Update()
     {
         System.DateTime curTime = System.DateTime.Now;
+
+        AudioSource.PlayClipAtPoint(explosionSound, GameObject.FindGameObjectWithTag("Player").transform.position);
 
         if (curTime - startTime > ttl)
         {

@@ -21,7 +21,7 @@ public class BusterShot : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (Mathf.Abs(initialX - transform.position.x) > 20)
+        if (Mathf.Abs(initialX - transform.position.x) > 15)
         {
             Destroy(this.gameObject);
         }

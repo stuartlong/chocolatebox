@@ -200,6 +200,7 @@ public class Megaman : MonoBehaviour
             jumped = false;
             jumping = false;
             pressedJump = false;
+            this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y + .001f, 0);
         }
         else
         {
