@@ -9,7 +9,8 @@ public class Character : MonoBehaviour
         Player,
         Goomba,
         Koopa,
-        Megaman
+        Megaman,
+		Minion
     }
 
     public CharacterType characterType;
