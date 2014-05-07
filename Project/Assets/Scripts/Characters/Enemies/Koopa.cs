@@ -38,11 +38,23 @@ public class Koopa : Enemy
             facingDir = facing.Left;
         }
 
-        // Check to see if we are on a ledge
-        if (Physics2D.Raycast(new Vector2(_transform.position.x, _transform.position.y), Vector2.right, 0.48f, groundMask))
+        // If we are on a left facing cliff
+        if(this.facingDir == facing.Left){
+            if (!Physics2D.Raycast(new Vector2(_transform.position.x - 0.10f, _transform.position.y), Vector2.up, -0.48f, groundMask))
+            {
+                currentInputState = inputState.WalkRight;
+                facingDir = facing.Right;
+            }
+        }
+
+        // If we are on a right facing cliff
+        if (this.facingDir == facing.Right)
         {
-            currentInputState = inputState.WalkLeft;
-            facingDir = facing.Left;
+            if (!Physics2D.Raycast(new Vector2(_transform.position.x + 0.10f, _transform.position.y), Vector2.up, -0.48f, groundMask))
+            {
+                currentInputState = inputState.WalkLeft;
+                facingDir = facing.Left;
+            }
         }
 
 
