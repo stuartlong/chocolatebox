@@ -13,6 +13,7 @@ using System.Linq;
 /// </summary>
 public class LevelGenerator : MonoBehaviour 
 {
+	private readonly bool ALLOW_ENEMIES = true;
 	public int seed;
 	public int sectionsY;
 	public int sectionsX;
@@ -40,8 +41,6 @@ public class LevelGenerator : MonoBehaviour
 			seed = (int) (System.DateTime.UtcNow - epochStart).TotalSeconds;
 		}
 		UnityEngine.Random.seed = seed;
-
-		//player.repeatingLevel = infiniteLevel;
 
 		//determine premerge section sizes
 		float xSize = levelSize.x / sectionsX;
@@ -133,7 +132,7 @@ public class LevelGenerator : MonoBehaviour
 				}
 				else
 				{
-					if (globalAttributes.hasCustomOpennessParameter)
+					if (globalAttributes != null && globalAttributes.hasCustomOpennessParameter)
 					{
 						sbParams.Caviness = 1.0f - globalAttributes.opennessParameter;
 					}
@@ -149,7 +148,7 @@ public class LevelGenerator : MonoBehaviour
 				}
 				else
 				{
-					if (globalAttributes.hasCustomHillParameter)
+					if (globalAttributes != null && globalAttributes.hasCustomHillParameter)
 					{
 						sbParams.Hilliness = globalAttributes.hillParameter;
 					}
@@ -165,7 +164,7 @@ public class LevelGenerator : MonoBehaviour
 				}
 				else
 				{
-					if (globalAttributes.hasCustomPitParameter)
+					if (globalAttributes != null && globalAttributes.hasCustomPitParameter)
 					{
 						sbParams.Pittiness = globalAttributes.pitParameter;
 					}
@@ -181,7 +180,7 @@ public class LevelGenerator : MonoBehaviour
 				}
 				else
 				{
-					if (globalAttributes.hasCustomPlatformParameter)
+					if (globalAttributes != null && globalAttributes.hasCustomPlatformParameter)
 					{
 						sbParams.Platforminess = globalAttributes.platformParameter;
 					}
@@ -208,8 +207,6 @@ public class LevelGenerator : MonoBehaviour
 					sbParams.lastSection = true;
 				}
 
-
-				//TODO should be based on difficulty and the pittiness
 				if (UnityEngine.Random.Range(0f, 1f) > .9f)
 				{
 					sbParams.allowPits = false;
@@ -256,41 +253,48 @@ public class LevelGenerator : MonoBehaviour
 					}
 				}
 
-                //Generate the enemies in these sections.
-                section.GenerateEnemyRangeTree();
-                foreach (EnemySection es in section.EnemySections)
-                {
-                    int nextX = es.leftBound;
+				if (ALLOW_ENEMIES)
+				{
+					//Generate the enemies in these sections.
+					section.GenerateEnemyRangeTree();
+					foreach (EnemySection es in section.EnemySections)
+					{
+						int nextX = es.leftBound;
+						
+						while (nextX < es.rightBound && es.rightBound > 5)
+						{
+							EnemyAttachment nextEnemy = GetNextEnemy(section);
+							
+							float centerX = (baseBlock.sprite.bounds.extents.x + nextEnemy.requiredSpace.x) * 2 * nextX + widthOffset +
+								nextEnemy.gameObject.renderer.bounds.extents.x*2;
+							
+							float yPos = (float)UnityEngine.Random.Range(es.lowerBound, es.upperBound);
+							
+							float centerY = (1+yPos) * baseBlock.sprite.bounds.extents.y * 2 * baseBlock.transform.localScale.y;
+							//centerY *= section.Grid.GetLength(1) * height; //This line multiplies by 0
+							centerY += nextEnemy.renderer.bounds.extents.y * 4 * nextEnemy.transform.localScale.y;
+							
+							if (centerX >= 3)
+							{
+								Instantiate(nextEnemy.gameObject, new Vector3(centerX, centerY, 0), new Quaternion());
+							}
+							
+							nextX += (int)nextEnemy.requiredSpace.x;
+						}
+					}
+				}
 
-                    while (nextX < es.rightBound && es.rightBound > 5)
-                    {
-                        EnemyAttachment nextEnemy = GetNextEnemy(section);
-
-                        float centerX = (baseBlock.sprite.bounds.extents.x + nextEnemy.requiredSpace.x) * 2 * nextX + widthOffset +
-                                            nextEnemy.gameObject.renderer.bounds.extents.x*2;
-
-                        float yPos = (float)UnityEngine.Random.Range(es.lowerBound, es.upperBound);
-
-    					float centerY = (1+yPos) * baseBlock.sprite.bounds.extents.y * 2 * baseBlock.transform.localScale.y;
-                        centerY *= section.Grid.GetLength(1) * height;
-                        centerY += nextEnemy.renderer.bounds.extents.y * 4 * nextEnemy.transform.localScale.y;
-
-                        if (centerX >= 3)
-                        {
-                            Instantiate(nextEnemy.gameObject, new Vector3(centerX, centerY, 0), new Quaternion());
-                        }
-
-                        nextX += (int)nextEnemy.requiredSpace.x;
-                    }
-                }
-
-                widthOffset += baseBlock.sprite.bounds.extents.x * 2 * section.Grid.GetLength(0);
-
+				widthOffset += baseBlock.sprite.bounds.extents.x * 2 * section.Grid.GetLength(0);
 			}
 		}
 
 		Decorate();
-		player.OnLevelLoad();
+		Vector2 playerLoc = new Vector2(player.maxPlayerSize.x, ConvertToUnityUnitsY(master[0,0].GroundHeights[0]) + GetBaseBlock().bounds.extents.y + player.maxPlayerSize.y / 2);
+		Instantiate(player, playerLoc, new Quaternion());
+		GameObject obj = GameObject.FindGameObjectWithTag("Player");
+
+		((PlayerAttachment) obj.GetComponent(typeof(PlayerAttachment))).repeatingLevel = infiniteLevel;
+		((PlayerAttachment)	obj.GetComponent(typeof(PlayerAttachment))).OnLevelLoad();
 	}
 	#endregion
 
@@ -301,9 +305,7 @@ public class LevelGenerator : MonoBehaviour
 		float widthOffset = 0;
 		for (int width = 0; width < master.GetLength(0); width++)
 		{
-			for (int height = 0; height < master.GetLength(1); height++)
-			{
-				Section section = master[width,height];
+				Section section = master[width,0];
 				float avgNumbDecs = section.Attributes.decorativeParameter * section.getWidth() / (2*(Enum.GetValues(typeof(DecorationAttachment.DecorationType)).Length - (float) section.Attributes.GetNumberOfTypersOfDecorations() + 1));
 				int numbDecorations = (int) GenerateNormalVar(avgNumbDecs, avgNumbDecs / 6);
 
@@ -318,7 +320,6 @@ public class LevelGenerator : MonoBehaviour
 				}
 
 				widthOffset += ConvertToUnityUnitsX(section.Grid.GetLength(0));
-			}
 		}
 	}
 
@@ -467,13 +468,41 @@ public class LevelGenerator : MonoBehaviour
 		switch (type)
 		{
 		case AssetTypeKey.UndergroundBlock:
-			return GetBlockFromArrays(globalAttributes.belowGroundBlocks, s.Attributes.belowGroundBlocks);
+			if (globalAttributes != null)
+			{
+				return GetBlockFromArrays(globalAttributes.belowGroundBlocks, s.Attributes.belowGroundBlocks);
+			}
+			else
+			{
+				return GetBlockFromArrays(s.Attributes.belowGroundBlocks);
+			}
 		case AssetTypeKey.TopGroundBlock:
-			return GetBlockFromArrays(globalAttributes.topGroundBlocks, s.Attributes.topGroundBlocks);
+			if (globalAttributes != null)
+			{
+				return GetBlockFromArrays(globalAttributes.belowGroundBlocks, s.Attributes.topGroundBlocks);
+			}
+			else
+			{
+				return GetBlockFromArrays(s.Attributes.topGroundBlocks);
+			}
 		case AssetTypeKey.CeilingBlock:
-			return GetBlockFromArrays(globalAttributes.ceilingBlocks, s.Attributes.ceilingBlocks);
+			if (globalAttributes != null)
+			{
+				return GetBlockFromArrays(globalAttributes.belowGroundBlocks, s.Attributes.ceilingBlocks);
+			}
+			else
+			{
+				return GetBlockFromArrays(s.Attributes.ceilingBlocks);
+			}
 		case AssetTypeKey.Platform:
-			return GetBlockFromArrays(globalAttributes.platformBlocks, s.Attributes.platformBlocks);
+			if (globalAttributes != null)
+			{
+				return GetBlockFromArrays(globalAttributes.platformBlocks, s.Attributes.platformBlocks);
+			}
+			else
+			{
+				return GetBlockFromArrays(s.Attributes.platformBlocks);
+			}
 		default:
 			return null;
 		}
@@ -481,7 +510,7 @@ public class LevelGenerator : MonoBehaviour
 
 	public SpriteRenderer GetBaseBlock()
 	{
-		if (globalAttributes.belowGroundBlocks.GetLength(0) > 0)
+		if (globalAttributes != null && globalAttributes.belowGroundBlocks.GetLength(0) > 0)
 		{
 			return globalAttributes.belowGroundBlocks[0];
 		}

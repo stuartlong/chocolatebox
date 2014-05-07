@@ -369,7 +369,7 @@ public class SectionBuilder {
 	private void ChangeCeilingHeightIfAble(int currentX)
 	{
 		int minVal = (int) (groundHeight + 2 + playerSize.y);
-		if (platforms.Contains(currentX + 1) || platforms.Contains(currentX))
+		if (PlatformWithinRange(currentX - (int) playerSize.y, currentX + (int) playerSize.x))
 		{
 			minVal = Mathf.Max((int) minVal, (int) (platformHeight + 1 + playerSize.y));
 		}
@@ -491,4 +491,17 @@ public class SectionBuilder {
 		}
 	}
 	#endregion
+
+	private bool PlatformWithinRange(int min, int max)
+	{
+		for (int i = min; i <= max; i++)
+		{
+			if (platforms.Contains(i))
+			{
+				return true;
+			}
+		}
+		
+		return false;
+	}
 }
