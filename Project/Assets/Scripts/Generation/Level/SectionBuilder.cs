@@ -68,11 +68,7 @@ public class SectionBuilder {
 		platforms = new List<int>();
 		playerSize = new Vector2(generator.ConvertToBlocksX(generator.player.maxPlayerSize.x), generator.ConvertToBlocksY(generator.player.maxPlayerSize.y));
 
-		//MAX_PITS = (int)(1 + 3 * sbParams.difficulty);
-
-		//MIN_PIT_LENGTH = (int)(2 + 2 * sbParams.difficulty);
-		minPitLength = (int) playerSize.x + 1;// Random.Range(1, (int) (sbParams.difficulty * generator.player.maxJumpDistance.x));
-		//MAX_PITS = (int)(numberBlocksX / (MIN_PIT_LENGTH * MIN_PIT_LENGTH) * sbParams.Pittiness);\
+		minPitLength = (int) playerSize.x + 1;
 		maxNumberPits = (int)((numberBlocksX / (minPitLength)) * sbParams.Pittiness);
 	}
 
