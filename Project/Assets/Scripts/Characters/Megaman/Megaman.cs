@@ -232,7 +232,7 @@ public class Megaman : MonoBehaviour
 
     public void UpdatePhysics()
     {
-        if (transform.position.y < 0)
+        if (transform.position.y < -5)
         {
             Application.LoadLevel("PlayerTest");
         }
