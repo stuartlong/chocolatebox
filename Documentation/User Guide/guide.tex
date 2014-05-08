@@ -47,7 +47,6 @@ Talk briefly about what features exist in ChocolateBox
 \item Level Generator
 \begin{enumerate}
 \item Section Generation
-\item Transitions
 \item User Parameters
 \begin{enumerate}
 \item Pits/Spikes
@@ -75,18 +74,6 @@ Talk briefly about what features exist in ChocolateBox
 \end{enumerate}
 \end{enumerate}
 
-\item{Item Generator}
-\begin{enumerate}
-\item Item Placement Algorithms
-\item User Parameters
-\begin{enumerate}
-\item Frequency
-\item Value
-\item Type
-\end{enumerate}
-\item Item Scripting
-\end{enumerate}
-
 \item{Unity Demo Game}
 \begin{enumerate}
 \item Level Design and Development
@@ -97,30 +84,31 @@ Talk briefly about what features exist in ChocolateBox
 \end{enumerate}
 
 \section{Getting Started}
-Talk about how each script works together to achieve functionality.
-Minimum scripts needed for basic functionality.
+To begin using \textit{ChocolateBox}, place an object in the scene you want to generate for. Attach a Level Generator and a Section Attributes script to it.  Using the inspector, you will now need to select prefabs for the level, namely the player and level end prefabs. Next, you will need to select the sprites which will be used to develop the level in Section Attributes. Sprites will be required for pits, top of ground blocks, below ground blocks, ceiling blocks, decorations, and platform blocks. Section Attributes also has a subsection in sprites that will accept selections for what enemies you want to have spawn in your level. 
 
 \section{Application}
 \subsection{Overview}
-This section provides a low level overview of the features and individual scripts of \textit{Chocolate Box}.
-~~~~~~~~~~~HOW MANY ARE INTERNAL USE ONLY?~~~~~~~~~~~~
+This section provides a low level overview of the individual scripts of \textit{Chocolate Box}.
 \subsection{Level Generation}
 \subsubsection{Decoration Attachment}
 Use this to describe the decoration to the level generation scripts. Has values for it's size, how often you want it to appear, and what types of places you want it to spawn in (On ceiling, in the air, on the ground, etc.).
 \subsubsection{Entrance Position}
-This is used to determine the desired location of the entrance, as well as its size.
+This is used to store the desired location of the entrance, as well as its size.
 \subsubsection{Entrance Positions}
-This is used to describe where each entrance into a section is. THIS HAS VALUES FOR NORTH AND SOUTH, WHICH ARE NOT IMPLEMENTED!!!
+This is used by the sectionbuilder to describe where each entrance into a section is. Note: This has values for north and south entrances, which are not implemented.
 \subsubsection{Level Generator}
-This is the script that actually generates the level. This should be placed in a scene at the point where the generated scene should start appearing. This script also has many arguments that modify the level generated. Some of these include level size, the number of sections that should exist in the area determined earlier (THIS INCLUDES VERTICAL SECTIONS WE DON'T REALLY IMPLEMENT), Section Attributes, and difficulty. 
+This is the script that actually generates the level. This should be placed in a scene at the point where the generated scene should start appearing. This script also has many arguments that modify the level generated. Some of these include level size, the number of sections that should exist in the area determined earlier, Section Attributes, and difficulty. 
 \subsubsection{SB Params}
-This script serves to contain all parameters passed to the section builder script. Internal use only.
+This script serves to contain all parameters passed to the section builder script.
 \subsubsection{Section Attributes}
 Specifies sprites to be used in various sections
 \subsubsection{Section Builder}
+This is a script called by LevelGenerator that generates the individual sections of the level.
 \subsection{Enemy Generation}
 \subsubsection{Enemy Generator}
+This script determines what spaces are available to spawn enemies in. It then selects an enemy from a list of possible enemies that fit in that area to place it.
 \subsubsection{Enemy Section}
+This script is used to store the sections that enemies are spawned in.
 
 \begin{thebibliography}{3}
 \bibitem{unity}Unity Technologies (2013). \textit{Unity Scripting Reference} [Online]. \url{http://docs.unity3d.com/Documentation/ScriptReference/index.html}
