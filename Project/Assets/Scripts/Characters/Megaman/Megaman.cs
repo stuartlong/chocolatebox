@@ -66,7 +66,7 @@ public class Megaman : MonoBehaviour
         // Reset level TEST ONLY
         if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.R))
         {
-            Application.LoadLevel(0);
+            Application.LoadLevel("PlayerTest");
         }
 
         if (hit)
@@ -232,6 +232,12 @@ public class Megaman : MonoBehaviour
 
     public void UpdatePhysics()
     {
+        if (transform.position.y < -5)
+        {
+            Application.LoadLevel("PlayerTest");
+        }
+
+
         if (alive == false) return;
 
         physVec = Vector2.zero;

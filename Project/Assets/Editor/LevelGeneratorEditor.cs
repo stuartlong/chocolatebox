@@ -90,5 +90,7 @@ public class LevelGeneratorEditor : Editor
 		generator.seed = EditorGUILayout.IntField("Seed", generator.seed);
 		EditorGUILayout.EndToggleGroup();
 		EditorGUILayout.EndVertical();
+
+		generator.allowEnemies = EditorGUILayout.Toggle("Allow Enemies", generator.allowEnemies);
 	}
 }
