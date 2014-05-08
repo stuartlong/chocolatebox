@@ -244,7 +244,7 @@ Frank Singel & Initial level generation, user parameters, and the demo game.\\\h
 The final version of the project will include the \textit{Chocolate Box} library comprised of a number of scripts, documentation explaining how to use the library, and a demo game illustrating the use of the library.
 \FloatBarrier
 \section{User Interface}
-\textit{Chocolate Box} will be fully integrated into Unity. Thus it will not requires its own User Interface. Instead, it will be used through Unity's own interface, specifically the part known as the Inspector. A mock up of this interface can be seen on the right-hand side of the figure below.\\\\
+\textit{Chocolate Box} will be fully integrated into Unity. Thus it will not requires its own User Interface. Instead, it will be used through Unity's own interface, specifically the part known as the Inspector. The current state of the interface for one of the system's modules is shown below.\\\\
 \centerline{\includegraphics[width=7in]{UnitySS.png}}
 \FloatBarrier
 \section{Lessons Learned}
@@ -278,6 +278,61 @@ Unity can be installed for free from \url{https://unity3d.com/}. The Unity websi
 \textit{Chocolate Box} is used through Unity as its own Unity project. Once completed, the source code can be obtained from \url{https://github.com/stuartlong/chocolatebox}. To open \textit{Chocolate Box} in Unity, start Unity and select "Open Project" and navigate to the /ChocolateBox/Project folder and select it.
 \subsubsection{Code}
 For a brief overview of the code see Section \ref{Modules}. The code itself is explained in great detail in the comments and the project documentation provided on GitHub.
+\section{User's Guide}
+\subsection{Introduction}
+\subsubsection{Overview}
+\textit{ChocolateBox} is a procedural level generator for Unity. This library is capable of accepting user-made assets and parameters, and generating a level matching the user's specifications. These parameters range anywhere from level size, to pit frequency and general difficulty, to what enemies should spawn and where they can spawn.
+\subsubsection{Features}
+This is a list of features that exist in \textit{ChocolateBox}
+\begin{enumerate}
+\item Level Generator
+\begin{enumerate}
+\item Section Generation
+\item User Parameters
+\item Decorations
+\end{enumerate}
+
+\item Enemy Generator
+\begin{enumerate}
+\item Generation Algorithm
+\item Enemy User Parameters
+\item Enemy Assets
+\end{enumerate}
+
+\item{Unity Demo Game}
+\begin{enumerate}
+\item Level Design and Development
+\item Enemy Design and Development
+\item Non-Generated Game Elements
+\end{enumerate}
+\end{enumerate}
+
+\subsection{Getting Started}
+To begin using \textit{ChocolateBox}, place an object in the scene you want to generate for. Attach a Level Generator and a Section Attributes script to it.  Using the inspector, you will now need to select prefabs for the level, namely the player and level end prefabs. Next, you will need to select the sprites which will be used to develop the level in Section Attributes. Sprites will be required for pits, top of ground blocks, below ground blocks, ceiling blocks, decorations, and platform blocks. Section Attributes also has a subsection in sprites that will accept selections for what enemies you want to have spawn in your level. 
+
+\subsection{Overview}
+This section provides a low level overview of the individual scripts of \textit{Chocolate Box}.
+\subsection{Level Generation}
+\textit{Chocolate Box} is capable of taking much user input into account, such as how flat of a level or what pit frequency is desired. This can also incorporate user assets, such as the character, enemies, and platform tiles. 
+\subsubsection{Decoration Attachment}
+Use this to describe the decoration to the level generation scripts. Has values for it's size, how often you want it to appear, and what types of places you want it to spawn in (On ceiling, in the air, on the ground, etc.).
+\subsubsection{Entrance Position}
+This is used to store the desired location of the entrance, as well as its size.
+\subsubsection{Entrance Positions}
+This is used by the sectionbuilder to describe where each entrance into a section is. Note: This has values for north and south entrances, which are not implemented.
+\subsubsection{Level Generator}
+This is the script that actually generates the level. This should be placed in a scene at the point where the generated scene should start appearing. This script also has many arguments that modify the level generated. Some of these include level size, the number of sections that should exist in the area determined earlier, Section Attributes, and difficulty. 
+\subsubsection{SB Params}
+This script serves to contain all parameters passed to the section builder script.
+\subsubsection{Section Attributes}
+Specifies sprites to be used in various sections
+\subsubsection{Section Builder}
+This is a script called by LevelGenerator that generates the individual sections of the level.
+\subsection{Enemy Generation}
+\subsubsection{Enemy Generator}
+This script determines what spaces are available to spawn enemies in. It then selects an enemy from a list of possible enemies that fit in that area to place it. Some attributes that can be adjusted for enemies include the space required to spawn and how frequently they spawn.
+\subsubsection{Enemy Section}
+This script is used to store the sections that enemies are spawned in.
 
 \FloatBarrier
 \end{document}
