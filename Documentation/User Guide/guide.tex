@@ -40,9 +40,9 @@ April 22, 2014\\
 
 \section{Introduction}
 \subsection{Overview}
-Talk about what to expect from ChocolateBox
+\textit{ChocolateBox} is a procedural level generator for Unity. This library is capable of accepting user-made assets and parameters, and generating a level matching the user's specifications. These parameters range anywhere from level size, to pit frequency and general difficulty, to what enemies should spawn and where they can spawn.
 \subsection{Features}
-Talk briefly about what features exist in ChocolateBox
+This is a list of features that exist in \textit{ChocolateBox}
 \begin{enumerate}
 \item Level Generator
 \begin{enumerate}
@@ -62,9 +62,7 @@ Talk briefly about what features exist in ChocolateBox
 \item Enemy User Parameters
 \begin{enumerate}
 \item Required Space
-\item Movement Type
 \item Frequency
-\item Difficulty
 \end{enumerate}
 \item Enemy Assets
 \begin{enumerate}
@@ -78,7 +76,6 @@ Talk briefly about what features exist in ChocolateBox
 \begin{enumerate}
 \item Level Design and Development
 \item Enemy Design and Development
-\item Item Design and Development
 \item Non-Generated Game Elements
 \end{enumerate}
 \end{enumerate}
@@ -90,6 +87,7 @@ To begin using \textit{ChocolateBox}, place an object in the scene you want to g
 \subsection{Overview}
 This section provides a low level overview of the individual scripts of \textit{Chocolate Box}.
 \subsection{Level Generation}
+\textit{Chocolate Box} is capable of taking much user input into account, such as how flat of a level or what pit frequency is desired. This can also incorporate user assets, such as the character, enemies, and platform tiles. 
 \subsubsection{Decoration Attachment}
 Use this to describe the decoration to the level generation scripts. Has values for it's size, how often you want it to appear, and what types of places you want it to spawn in (On ceiling, in the air, on the ground, etc.).
 \subsubsection{Entrance Position}
@@ -106,7 +104,7 @@ Specifies sprites to be used in various sections
 This is a script called by LevelGenerator that generates the individual sections of the level.
 \subsection{Enemy Generation}
 \subsubsection{Enemy Generator}
-This script determines what spaces are available to spawn enemies in. It then selects an enemy from a list of possible enemies that fit in that area to place it.
+This script determines what spaces are available to spawn enemies in. It then selects an enemy from a list of possible enemies that fit in that area to place it. Some attributes that can be adjusted for enemies include the space required to spawn and how frequently they spawn.
 \subsubsection{Enemy Section}
 This script is used to store the sections that enemies are spawned in.
 
@@ -120,10 +118,7 @@ This script is used to store the sections that enemies are spawned in.
 \subsection{Using Unity}
 Unity can be installed for free from \url{https://unity3d.com/}. The Unity website also provides extensive documentation on its use.
 \subsection{Chocolate Box}
-\subsubsection{Installation}
-\textit{Chocolate Box} is used through Unity as its own Unity project. Once completed, the source code can be obtained from \url{https://github.com/stuartlong/chocolatebox}. To open \textit{Chocolate Box} in Unity, start Unity and select "Open Project" and navigate to the /ChocolateBox/Project folder and select it.
-\subsubsection{Code}
-For a brief overview of the code see Section \ref{Modules}. The code itself is explained in great detail in the comments and the project documentation provided on GitHub.
+\textit{Chocolate Box} is used through Unity as its own Unity project. Once completed, the source code can be obtained from \url{https://github.com/stuartlong/chocolatebox}. To open \textit{Chocolate Box} in Unity, start Unity and select "Open Project" and navigate to the /ChocolateBox/Project folder and select it. The code itself is explained in great detail in the comments and the project documentation provided on GitHub.
 
 \FloatBarrier
 \end{document}
